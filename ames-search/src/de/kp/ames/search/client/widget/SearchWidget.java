@@ -1,22 +1,7 @@
 package de.kp.ames.search.client.widget;
-
 /**
- *	Copyright 2012 Dr. Krusche & Partner PartG
- *
- *	AMES-Web-GUI is free software: you can redistribute it and/or 
- *	modify it under the terms of the GNU General Public License 
- *	as published by the Free Software Foundation, either version 3 of 
- *	the License, or (at your option) any later version.
- *
- *	AMES- Web-GUI is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- * 
- *  See the GNU General Public License for more details. 
- *
- *	You should have received a copy of the GNU General Public License
- *	along with this software. If not, see <http://www.gnu.org/licenses/>.
- *
+ * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
+ * Please contact: team@dr-kruscheundpartner.de
  */
 
 import com.google.gwt.user.client.ui.RootPanel;
@@ -30,10 +15,9 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
-import de.kp.ames.search.client.globals.GUIGlobals;
+import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.handler.SearchHandler;
-import de.kp.ames.search.client.widget.grid.SuggestGridImpl;
 
 public class SearchWidget extends VLayout {
 
@@ -45,40 +29,57 @@ public class SearchWidget extends VLayout {
 	private String query;
 	private SearchHandler searchHandler;
 	
-	private SuggestImpl suggest;
+	/*
+	 * Reference to SuggestImpl
+	 */
+	private SuggestImpl suggestor;
 
 	/*
-	 * The offset position of the search widget from the top right corner of the
-	 * viewport
+	 * Indicates centered positioning
 	 */
-	private static int X_OFF = 392;
-	private static int Y_OFF = 24;
-
 	private boolean centered;
+
+	/*
+	 * Absolute position of search widget
+	 */
 	private int x;
 	private int y;
 
+	/*
+	 * Predefined dimensions
+	 */
 	private static int SEARCHBOX_WIDTH = 320;
 
 	private static int WIDGET_WIDTH = 360;
 	private static int WIDGET_HEIGHT = 28;
 
+	/**
+	 * Constructor
+	 */
 	public SearchWidget() {
 
 		centered = true;
-		reCenter();
+		calculateCenterPosition();
 
-		build(this.x, this.y);
+		setupWidget(this.x, this.y);
 
 	}
 
+	/**
+	 * Constructor requires external coordinates
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public SearchWidget(int x, int y) {
-
-		build(x, y);
-
+		setupWidget(x, y);
 	}
 
-	private void build(int x, int y) {
+	private void setupWidget(int x, int y) {
+		
+		/*
+		 * Register coordinates
+		 */
 		this.x = x;
 		this.y = y;
 
@@ -97,14 +98,17 @@ public class SearchWidget extends VLayout {
 		RootPanel root = RootPanel.get();
 		root.add(this);
 
-		// int cx = (int) (0.5 * root.getOffsetWidth() - WIDGET_WIDTH);
-		// int cy = (int) (0.5 * root.getOffsetHeight() - WIDGET_HEIGHT);
-
-		this.moveTo(x, y);
-		this.draw();
+		/*
+		 * Locate widget
+		 */
+		setWidget();
+		
 	}
 
-	private void reCenter() {
+	/**
+	 * Calculate center position
+	 */
+	private void calculateCenterPosition() {
 		/*
 		 * The search widget is applied to the root panel, i.e. it is position
 		 * on the viewport with respect to the offset position defined
@@ -113,7 +117,7 @@ public class SearchWidget extends VLayout {
 
 		x = (int) (0.5 * (root.getOffsetWidth() - WIDGET_WIDTH));
 		// y = (int) (0.5 * (root.getOffsetHeight() - WIDGET_HEIGHT));
-		y = 40; // for better debugging with FireBug
+		y = 80; // for better debugging with FireBug
 
 	}
 
@@ -145,65 +149,96 @@ public class SearchWidget extends VLayout {
 	 * @param event
 	 */
 	public void afterResized(ResizedEvent event) {
-		if (isCentered())
-			reCenter();
+		
+		/*
+		 * Locate widget
+		 */
+		setWidget();
+
+		/*
+		 * Locate suggestor
+		 */
+		setSuggestor();
+		
+	}
+
+	/**
+	 * A helper method to create suggestor from TextItem value
+	 * 
+	 * @param event
+	 */
+	private void afterChanged(ChangedEvent event) {
+		
+		/*
+		 * Retrieve search query from text item
+		 */
+		TextItem item = (TextItem) event.getItem();
+		String val = item.getValueAsString();
+
+		/*
+		 * Do no term suggest in case of empty value
+		 */
+		if (val == null || val.length() == 0 )
+			return;
+
+		/*
+		 * build suggestor
+		 */
+		buildSuggestor(val);
+		
+		/*
+		 * position suggestor
+		 */
+		setSuggestor();
+
+	}
+
+	/**
+	 * A helper method to remove the suggestor
+	 */
+	private void buildSuggestor(String val) {
+
+		RootPanel rp = RootPanel.get();
+		
+		if (suggestor != null) {
+			rp.remove(suggestor);
+			
+			suggestor.destroy();
+			suggestor = null;
+
+		}
+
+		suggestor = new SuggestImpl(val);		
+		rp.add(suggestor);
+
+	}
+	
+	/**
+	 * Locate suggestor
+	 */
+	private void setSuggestor() {
+		
+		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
+
+		int x = this.getAbsoluteLeft() + 39;
+		int y = this.getAbsoluteTop()  - 14;
+		
+		suggestor.moveTo(x, y);
+
+	}
+	
+	/**
+	 * Locate widget
+	 */
+	private void setWidget() {
+
+		if (centered == true) calculateCenterPosition();
 
 		this.moveTo(x, y);
 		this.draw();
 
-		// reposition grid
-		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
-		int gx = this.getAbsoluteLeft() + 39;
-		int gy = this.getAbsoluteTop() - 14;
-		
-		suggest.moveTo(gx, gy);
-		
-		// dynamic height (does not work in Firefox 3.6 yet)
-//		suggest.setHeight(RootPanel.get().getOffsetHeight() - y - 100);
-		
 	}
-
-	private boolean isCentered() {
-		// TODO Auto-generated method stub
-		return this.centered;
-	}
-
-	private void afterChanged(ChangedEvent event) {
-		TextItem item = (TextItem) event.getItem();
-		String val = item.getValueAsString();
-		RootPanel root = RootPanel.get();
-
-		if (suggest != null) {
-			root.remove(suggest);
-			
-			suggest.destroy();
-			suggest = null;
-
-		}
-		
-		if (val == null || val.length() == 0 )
-			return;
-		
-		// rebuild grid for every suggest, to stabilize expanded grouping
-		suggest = new SuggestImpl(val);
-		
-		root.add(suggest);
-		
-		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
-		int x = this.getAbsoluteLeft() + 39;
-		int y = this.getAbsoluteTop() - 14;
-		
-		suggest.moveTo(x, y);
-		
-		// dynamic height (does not work in Firefox 3.6 yet)
-//		suggest.setHeight(root.getOffsetHeight() - y - 100);
-
-		/*
-		 * The content of the searchbox has changed, so initiate another search
-		 */
-		// doSearch(rec);
-	}
-
+	
 	/**
 	 * @param url
 	 * @param params
@@ -218,33 +253,15 @@ public class SearchWidget extends VLayout {
 		ts.setWidth100();
 		ts.setHeight(WIDGET_HEIGHT);
 
-		/*
-		 * The textbox is used to display the name field of the respective data
-		 * source
-		 */
 		searchBox = new TextItem();
-
-		// setValueField may be conflict with criteria on the same field name
-		// doubled
-		// searchBox.setValueField(JsonConstants.J_QUERY);
 
 		searchBox.setTitle("<b>search</b>:");
 		searchBox.setWidth(SEARCHBOX_WIDTH);
 
 		searchBox.addChangedHandler(new ChangedHandler() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * com.smartgwt.client.widgets.form.fields.events.ChangedHandler
-			 * #onChanged
-			 * (com.smartgwt.client.widgets.form.fields.events.ChangedEvent)
-			 */
 			public void onChanged(ChangedEvent event) {
 				afterChanged(event);
 			}
-
 		});
 
 		/*
@@ -274,7 +291,7 @@ public class SearchWidget extends VLayout {
 			/*
 			 * The selected application is not searchable
 			 */
-			SC.say(GUIGlobals.APP_TITLE + ": Search Error", "The current application is not searchable.");
+			SC.say(GuiGlobals.APP_TITLE + ": Search Error", "The current application is not searchable.");
 
 		} else {
 			/*

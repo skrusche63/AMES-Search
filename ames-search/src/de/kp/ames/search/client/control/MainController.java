@@ -27,7 +27,7 @@ import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.GUIGlobals;
+import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.widget.SearchWidget;
 import de.kp.ames.search.client.widget.Viewport;
 
@@ -85,7 +85,7 @@ public class MainController {
 		/* 
 		 * Remove the initial splash screen
 		 */
-		Element splash = DOM.getElementById(GUIGlobals.SPLASH_ID);
+		Element splash = DOM.getElementById(GuiGlobals.SPLASH_ID);
 		DOM.removeChild(RootPanel.getBodyElement(), splash);
 		
 		/*

@@ -1,13 +1,12 @@
 package de.kp.ames.search.client.widget.grid;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 
-import de.kp.ames.search.client.globals.GUIGlobals;
+import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.handler.SuggestRecordHandlerImpl;
@@ -20,8 +19,12 @@ public class SuggestGridImpl extends GridImpl {
 
 	private String query;
 
+	/**
+	 * @param query
+	 */
 	public SuggestGridImpl(String query) {
-		super(GUIGlobals.SEARCH_URL, "search");
+		super(GuiGlobals.SEARCH_URL, "search");
+
 		/*
 		 * No border style
 		 */
@@ -37,27 +40,22 @@ public class SuggestGridImpl extends GridImpl {
 		setQuery(query);
 
 		/*
-		 * Register data
-		 */
-		HashMap<String, String> attributes = new HashMap<String, String>();
-
-		/*
 		 * Create data object
 		 */
-		this.dataObject = createDataObject(attributes);
+		this.dataObject = createDataObject();
 
 		/*
 		 * Create data source
 		 */
-		this.createScGridDS(attributes);
+		this.createScGridDS();
 
 		/*
 		 * Create grid fields
 		 */
-		this.setFields(createGridFields(attributes));
+		this.setFields(createGridFields());
 
 		this.setGroupStartOpen(GroupStartOpen.ALL);
-		this.setGroupByField("hypernym");
+		this.setGroupByField(JsonConstants.J_HYPERNYM);
 
 		this.setShowHeader(false);
 		this.setCellHeight(32);
@@ -66,7 +64,6 @@ public class SuggestGridImpl extends GridImpl {
 		 * Add Record Handler
 		 */
 		SuggestRecordHandlerImpl recordHandler = new SuggestRecordHandlerImpl(this);
-
 		this.addRecordHandler(recordHandler);
 
 	}
@@ -75,37 +72,26 @@ public class SuggestGridImpl extends GridImpl {
 		this.query = query;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.widget.grid.GridImpl#getRequestParams()
+	 */
 	public Map<String, String> getRequestParams() {
 
-		HashMap<String, String> attributes = new HashMap<String, String>();
-		attributes.put(JsonConstants.J_QUERY, this.query);
 		/*
-		 * Retrieve request method for attributes
+		 * Update attributes
 		 */
-		RequestMethod requestMethod = createMethod(attributes);
+		attributes.put(JsonConstants.J_QUERY, this.query);
 
+		RequestMethod requestMethod = createMethod();
 		return requestMethod.toParams();
+		
 	}
 
 	/**
-	 * @param attributes
 	 * @return
 	 */
-	private DataObject createDataObject(HashMap<String, String> attributes) {
-		/*
-		 * Distinguish between accessor and remote object
-		 */
-
+	private DataObject createDataObject() {
 		return new SuggestObject();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.kp.ames.web.client.core.grid.GridImpl#getDetailFieldName()
-	 */
-	public String getDetailFieldName() {
-		return null;
 	}
 
 	/*
@@ -119,14 +105,10 @@ public class SuggestGridImpl extends GridImpl {
 		// TODO: to override
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.kp.ames.search.client.core.grid.BaseGrid#createMethod(java.util.HashMap
-	 * )
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.widget.grid.GridImpl#createMethod()
 	 */
-	public RequestMethod createMethod(HashMap<String, String> attributes) {
+	public RequestMethod createMethod() {
 
 		RequestMethodImpl requestMethod = new RequestMethodImpl();
 		requestMethod.setName(MethodConstants.METH_SUGGEST);

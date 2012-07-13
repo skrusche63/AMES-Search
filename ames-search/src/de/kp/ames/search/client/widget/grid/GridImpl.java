@@ -1,21 +1,7 @@
 package de.kp.ames.search.client.widget.grid;
 /**
- *	Copyright 2012 Dr. Krusche & Partner PartG
- *
- *	AMES-Web-GUI is free software: you can redistribute it and/or 
- *	modify it under the terms of the GNU General Public License 
- *	as published by the Free Software Foundation, either version 3 of 
- *	the License, or (at your option) any later version.
- *
- *	AMES- Web-GUI is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- * 
- *  See the GNU General Public License for more details. 
- *
- *	You should have received a copy of the GNU General Public License
- *	along with this software. If not, see <http://www.gnu.org/licenses/>.
- *
+ * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
+ * Please contact: team@dr-kruscheundpartner.de
  */
 
 import java.util.HashMap;
@@ -27,7 +13,6 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.types.DSDataFormat;
 import com.smartgwt.client.types.DSProtocol;
-import com.smartgwt.client.types.ExpansionMode;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -37,7 +22,6 @@ import com.smartgwt.client.widgets.grid.events.DataArrivedHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
-import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.handler.GridRecordHandler;
 import de.kp.ames.search.client.method.RequestMethod;
 import de.kp.ames.search.client.model.DataObject;
@@ -69,19 +53,13 @@ public class GridImpl extends ListGrid implements Grid {
 	/*
 	 * The unique service identifier
 	 */
-	protected String sid;
+	protected String sid;	
 
 	/*
-	 * Page size
+	 * Reference to request parameters
 	 */
-	protected int pageSize = 25;
+	protected HashMap<String,String> attributes;
 	
-	/*
-	 * Reference to name of detail field
-	 */
-	String detailFieldName;
-	
-
 	/**
 	 * Constructor
 	 * 
@@ -96,32 +74,17 @@ public class GridImpl extends ListGrid implements Grid {
 		this.base = base;
 		this.sid  = sid;
 		
+		/*
+		 * Initiate request parameters
+		 */
+		attributes = new HashMap<String,String>();
 		
 		/*
 		 * Dimensions
 		 */		
 		this.setWidth100();
 		this.setHeight100();
-
-		/*
-		 * Page size support
-		 */
-//		this.setDataPageSize(pageSize);
 		
-		/*
-		 * List entry may be expanded on click
-		 */
-		String detailFieldName = getDetailFieldName();
-
-		if (detailFieldName != null) {
-
-			this.setCanExpandRecords(true);
-			this.setExpansionMode(ExpansionMode.DETAIL_FIELD);
-
-			this.setDetailField(detailFieldName);
-			
-		}
-
 		/*
 		 * Data handling
 		 */
@@ -174,13 +137,6 @@ public class GridImpl extends ListGrid implements Grid {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.Grid#getDetailFieldName()
-	 */
-	public String getDetailFieldName() {
-		return JsonConstants.J_DESC;
-	}
-	
-	/* (non-Javadoc)
 	 * @see de.kp.ames.search.client.core.grid.Grid#reload()
 	 */
 	public void reload() {
@@ -197,6 +153,16 @@ public class GridImpl extends ListGrid implements Grid {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#reload(java.util.HashMap)
+	 */
+	public void reload(HashMap<String,String> attributes) {
+
+		attributes.putAll(attributes);
+		reload();
+	
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.search.client.core.grid.BaseGrid#getRequestUrl()
 	 */
 	public String getRequestUrl() {
@@ -207,23 +173,23 @@ public class GridImpl extends ListGrid implements Grid {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.GridImpl#createFields(java.util.HashMap)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#createDataFields()
 	 */
-	public DataSourceField[] createDataFields(HashMap<String,String> attributes) {
+	public DataSourceField[] createDataFields() {
 		return this.dataObject.createDataFields();
 	}
 
 	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.GridImpl#createGridFields(java.util.HashMap)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#createGridFields()
 	 */
-	public ListGridField[] createGridFields(HashMap<String,String> attributes) {
+	public ListGridField[] createGridFields() {
 		return this.dataObject.createGridFields();
 	}
 
 	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.BaseGrid#createMethod(java.util.HashMap)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#createMethod()
 	 */
-	public RequestMethod createMethod(HashMap<String,String> attributes) {
+	public RequestMethod createMethod() {
 
 		// must be overridden
 		return null;
@@ -233,7 +199,7 @@ public class GridImpl extends ListGrid implements Grid {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.search.client.core.grid.BaseGrid#createScGridDS()
 	 */
-	public void createScGridDS(HashMap<String,String> attributes) {
+	public void createScGridDS() {
 		/*
 		 * Retrieve request url
 		 */
@@ -243,20 +209,12 @@ public class GridImpl extends ListGrid implements Grid {
 		/*
 		 * Retrieve request fields from attributes
 		 */
-		DataSourceField[] requestFields = createDataFields(attributes);
+		DataSourceField[] requestFields = createDataFields();
 		
 		/*
 		 * Finally create data source
 		 */
-		createScGridDS(requestUrl, requestFields);
-		
-	}
 
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.gui.grid.BaseGrid#createScGridDS(java.lang.String, de.kp.ames.search.client.core.method.RequestMethod, com.smartgwt.client.data.DataSourceField[])
-	 */
-	public void createScGridDS(final String url, final DataSourceField[] fields) {
-		
 		dataSource = new DataSource() {
 			  
 			protected Object transformRequest(DSRequest dsRequest) {  
@@ -273,14 +231,14 @@ public class GridImpl extends ListGrid implements Grid {
 		dataSource.setDataFormat(DSDataFormat.JSON);
 		dataSource.setDataProtocol(DSProtocol.GETPARAMS);  
 		
-		dataSource.setDataURL(url);		
-		dataSource.setFields(fields);
+		dataSource.setDataURL(requestUrl);		
+		dataSource.setFields(requestFields);
 
 		/*
 		 * finally set data source
 		 */
 		setDataSource(dataSource);
-
+		
 	}
 
 	/* (non-Javadoc)
@@ -290,6 +248,14 @@ public class GridImpl extends ListGrid implements Grid {
 		/*
 		 * Must be overridden
 		 */
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#getRequestParams()
+	 */
+	public Map<String, String> getRequestParams() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/**
@@ -308,20 +274,6 @@ public class GridImpl extends ListGrid implements Grid {
 	 */
 	public void afterDraw(DrawEvent event) {
 		this.fetchData();
-	}
-
-
-	@Override
-	public void createScGridDS(String url, RequestMethod method, DataSourceField[] fields) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public Map<String, String> getRequestParams() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

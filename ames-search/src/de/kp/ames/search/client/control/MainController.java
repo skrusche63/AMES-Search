@@ -25,17 +25,13 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.widget.SearchWidget;
 import de.kp.ames.search.client.widget.Viewport;
 
-
-/**
- * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
- *
- */
 public class MainController {
 
 	private static MainController instance = new MainController();
@@ -46,25 +42,10 @@ public class MainController {
 	private VLayout container;
 	private Viewport viewport;
 	
-//	/*
-//	 * Reference to the selected application
-//	 */
-//	private BaseApp selectedApp;
-	
 	/*
 	 * Reference to the SearchWidget
 	 */
 	private SearchWidget searchWidget;
-		
-	/*
-	 * Reference to the search query
-	 */
-	private String searchQuery;
-	
-//	/*
-//	 * Search (result) handler
-//	 */
-//	private ISearch searchHandler;
 	
 	/**
 	 * Constructor
@@ -92,58 +73,18 @@ public class MainController {
 		 * Create viewport
 		 */
 		createViewport();
-		
-		
-		/*
-		 * Create search widget
-		 */
-		// delayed
-//		createSearchWidget();
 			
 	}
 	
-	public void createSearchWidget() {
-		
+	private void createSearchWidget() {		
 		openSearch();
-//		SC.say("SearchWidget left: " + searchWidget.getAbsoluteLeft() + " root width: " + RootPanel.get().getOffsetWidth());
-		
 	}
-	
-	/**
-	 * A helper method to append a selected application
-	 * to the viewport, depending on the specific profile
-	 * 
-	 * @param profile
-	 */
-	public void createApp(String profile) {
-		
-//		/*
-//		 * All apps are derived from an HLayout
-//		 */
-//		BaseApp app = null;		
-//		if (profile.equals(FncGlobals.FNC_APP_ID_Bulletin)) {
-//			app = new BulletinImpl();
-//
-//		} 
-//
-//		if (app == null) return;
-//
-//		/*
-//		 * Append selected app
-//		 */
-//		replaceApp(app);
-		
-	}
-	
 	
 	/**
 	 * A helper method to create the viewport
 	 */
 	public void createViewport() {
 
-		/*
-		 * Build view port of the application
-		 */
 		container = new VLayout();
 		container.setShowEdges(false);
 		
@@ -153,14 +94,11 @@ public class MainController {
 		container.setOverflow(Overflow.HIDDEN);
 				
 		container.addDrawHandler(new DrawHandler() {
-			
-			@Override
 			public void onDraw(DrawEvent event) {
 				createSearchWidget();
 			}
 		});
-		
-		
+				
 		viewport = new Viewport();
 		container.addMember(viewport);
 		
@@ -169,45 +107,6 @@ public class MainController {
 
 	}
 
-//	/**
-//	 * A helper method to replace the actual
-//	 * app with a new app
-//	 * 
-//	 * @param newApp
-//	 */
-//	public void replaceApp(BaseApp newApp) {
-//
-//		/*
-//		 * Remove existing application from viewport;
-//		 * take into account that apps are always
-//		 * wrapped by vertical layouts
-//		 */
-//		
-//		/*
-//		 * Call application specific functionality
-//		 * before it is removed from the viewport
-//		 */
-//		if (selectedApp != null) selectedApp.beforeRemove();
-//		viewport.removeMember(viewport.getMember(1));
-//		
-//		/*
-//		 * Register new application as selected app
-//		 */
-//		selectedApp = newApp;
-//		
-//		/* 
-//		 * The wrapper is essential to get the vertical 
-//		 * scrollbar right in case of many portlets
-//		 */
-//		VLayout newWrapper = new VLayout();
-//		newWrapper.setOverflow(Overflow.AUTO);
-//		
-//		newWrapper.addMember(newApp);		
-//		viewport.addMember(newWrapper);
-//
-//		container.draw();
-//
-//	}
 	
 	/**
 	 * This method controls all actions that have to be
@@ -217,25 +116,6 @@ public class MainController {
 	 */
 	public void afterResized(ResizedEvent event) {		
 		if (searchWidget != null) searchWidget.afterResized(event);		
-	}
-	
-//	/**
-//	 * Set current application that acts as a
-//	 * response handler for search result
-//	 * 
-//	 * @param handler
-//	 */
-//	public void setSearchHandler(ISearch handler) {
-//		this.searchHandler = handler;
-//	}
-	
-	/**
-	 * Search query term for 'suggest' search
-	 * 
-	 * @param query
-	 */
-	public void setSearchQuery(String query) {
-		this.searchQuery = query;
 	}
 	
 	/**
@@ -262,9 +142,6 @@ public class MainController {
 		 * Setup search widget
 		 */
 		searchWidget = new SearchWidget();
-		
-//		searchWidget.setQuery(this.searchQuery);
-//		searchWidget.setHandler(this.searchHandler);
 
 	}
 	
@@ -280,4 +157,14 @@ public class MainController {
 			closeSearch();
 		
 	}
+	
+	/**
+	 * Main method to establish after suggest handling
+	 * 
+	 * @param record
+	 */
+	public void doAfterSuggest(ListGridRecord record) {
+		// TODO
+	}
+
 }

@@ -5,19 +5,13 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-
-import de.kp.ames.search.client.globals.GuiGlobals;
-import de.kp.ames.search.client.globals.JsonConstants;
-import de.kp.ames.search.client.handler.SearchHandler;
 
 public class SearchWidget extends VLayout {
 
@@ -27,7 +21,6 @@ public class SearchWidget extends VLayout {
 	 * The query string sent to the search service
 	 */
 	private String query;
-	private SearchHandler searchHandler;
 	
 	/*
 	 * Reference to SuggestImpl
@@ -134,15 +127,6 @@ public class SearchWidget extends VLayout {
 		 */
 		this.searchBox.setValue(this.query);
 
-	}
-
-	/**
-	 * Register search handler for search widget
-	 * 
-	 * @param searchHandler
-	 */
-	public void addSearchHandler(SearchHandler searchHandler) {
-		this.searchHandler = searchHandler;
 	}
 
 	/**
@@ -281,30 +265,5 @@ public class SearchWidget extends VLayout {
 		return ts;
 
 	}
-
-	/**
-	 * @param record
-	 */
-	private void doSearch(ListGridRecord record) {
-
-		if (this.searchHandler == null) {
-			/*
-			 * The selected application is not searchable
-			 */
-			SC.say(GuiGlobals.APP_TITLE + ": Search Error", "The current application is not searchable.");
-
-		} else {
-			/*
-			 * Initiate search request
-			 */
-			String query = record.getAttributeAsString(JsonConstants.J_TERM);
-			this.searchHandler.doSearch(query);
-
-		}
-
-	}
-
-
-
 
 }

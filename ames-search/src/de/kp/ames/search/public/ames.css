@@ -16,11 +16,6 @@ body {
 .x-bd-style-3 {border-top:1px solid #A0A0A0;}
 
 .x-header {background-color:#000000;border:0;border-bottom:1px solid #A0A0A0;}
-.x-headline {font:bold 11px tahoma, arial, helvetica, sans-serif;white-space:normal;color:#708491;}
-.x-topline {font:normal 11px tahoma, arial, helvetica, sans-serif;white-space:normal;color:#708491;background-color:#f2f4f4;}
-
-.x-user {font:bold 11px tahoma, arial, helvetica, sans-serif;white-space:normal;color:#333333;text-align:right;}
-
 .x-imagehover {
     background-color:#f2f2f2;border:1px solid #708491;color:#333333;font-family:tahoma, arial, helvetica, sans-serif;font-size:11px;padding:5px;
 }

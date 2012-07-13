@@ -30,7 +30,7 @@ public class SearchWidget extends VLayout {
 	/*
 	 * Indicates centered positioning
 	 */
-	private boolean centered;
+	private boolean top = false;
 
 	/*
 	 * Absolute position of search widget
@@ -51,21 +51,10 @@ public class SearchWidget extends VLayout {
 	 */
 	public SearchWidget() {
 
-		centered = true;
 		calculateCenterPosition();
 
 		setupWidget(this.x, this.y);
 
-	}
-
-	/**
-	 * Constructor requires external coordinates
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public SearchWidget(int x, int y) {
-		setupWidget(x, y);
 	}
 
 	private void setupWidget(int x, int y) {
@@ -197,6 +186,26 @@ public class SearchWidget extends VLayout {
 
 	}
 	
+	public void removeSuggestor() {
+
+		RootPanel rp = RootPanel.get();
+		
+		if (suggestor != null) {
+			rp.remove(suggestor);
+			
+			suggestor.destroy();
+			suggestor = null;
+
+		}
+	}
+	
+	public void moveToTop() {
+		
+		this.top = true;
+		this.y = 3;
+		this.setWidget();
+	}
+	
 	/**
 	 * Locate suggestor
 	 */
@@ -216,7 +225,9 @@ public class SearchWidget extends VLayout {
 	 */
 	private void setWidget() {
 
-		if (centered == true) calculateCenterPosition();
+		calculateCenterPosition();
+		
+		if (top == true) this.y = 3; 
 
 		this.moveTo(x, y);
 		this.draw();

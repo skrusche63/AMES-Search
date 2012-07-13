@@ -6,6 +6,7 @@ package de.kp.ames.search.client.globals;
 
 public class JsonConstants {
 
+	public static String J_QUERYSTRING = "qs";
 	public static String J_DESC     = "desc";
 	public static String J_HYPERNYM = "hypernym";
 	public static String J_SYNONYMS = "synonyms";

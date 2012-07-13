@@ -14,6 +14,7 @@ body {
 .x-bd-style-2 {border-right:1px solid #A0A0A0;}
 
 .x-bd-style-3 {border-top:1px solid #A0A0A0;}
+.x-bd-style-4 {border-top:1px solid #A0A0A0;border-left:1px solid #A0A0A0;}
 
 .x-header {background-color:#191920;border:0;border-bottom:1px solid #a0a0a0;}
 .x-imagehover {
@@ -30,6 +31,7 @@ body {
 .sg-th {color:#0000FF;}
 
 .sg {margin:4px;}
+.sg-fb {margin:10px;}
 .sg-s {font:normal 11px tahoma,arial,sans-serif;color:#606060;}
 .sg-dg {font:normal 11px tahoma,arial,sans-serif;padding-top:4px;}
 .sg-dl {text-decoration:underline;}

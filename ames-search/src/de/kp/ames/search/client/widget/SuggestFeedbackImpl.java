@@ -1,0 +1,41 @@
+package de.kp.ames.search.client.widget;
+
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.HTMLPane;
+import com.smartgwt.client.widgets.layout.VLayout;
+
+import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.globals.JsonConstants;
+
+public class SuggestFeedbackImpl extends VLayout {
+	public SuggestFeedbackImpl(Record record) {
+
+		this.setShowEdges(false);
+		this.setStyleName(GuiStyles.X_BD_STYLE_0);
+		
+		this.setWidth100();
+		this.setHeight100();
+		this.setBackgroundColor(GuiStyles.SUGGEST_FEEDBACK_BG);
+//		this.setMembersMargin(10);
+		
+		this.setOverflow(Overflow.AUTO);
+
+		HTMLPane pane = new HTMLPane();
+//		pane.setWidth100();
+//		pane.setHeight100();
+		pane.setContents(recordToHtml(record));
+		
+		this.setMembers(pane);
+
+	}
+	
+	private String recordToHtml(Record record) {
+		
+		String result = "<div class=\"sg-fb\">"  
+				 + record.getAttributeAsString(JsonConstants.J_SYNONYMS)
+				 + "</div>"; 
+		return result;
+	}
+	
+}

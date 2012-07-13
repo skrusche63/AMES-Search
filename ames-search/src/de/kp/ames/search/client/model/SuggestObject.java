@@ -34,6 +34,7 @@ public class SuggestObject implements DataObject {
 
 		fields.add(new DataSourceTextField(JsonConstants.J_SYNONYMS));
 		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
+		fields.add(new DataSourceTextField(JsonConstants.J_QUERYSTRING));
 
 		return (DataSourceField[]) fields.toArray(new DataSourceField[fields.size()]);
 	}

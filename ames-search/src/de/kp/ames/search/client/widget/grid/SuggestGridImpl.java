@@ -2,8 +2,10 @@ package de.kp.ames.search.client.widget.grid;
 
 import java.util.Map;
 
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 
 import de.kp.ames.search.client.globals.GuiGlobals;
@@ -102,7 +104,16 @@ public class SuggestGridImpl extends GridImpl {
 	 * .client.widgets.grid.events.RecordClickEvent)
 	 */
 	public void afterRecordClick(RecordClickEvent event) {
-		// TODO: to override
+		
+		event.cancel();
+		
+		if (this.recordHandler == null) {
+			SC.say("afterRecordClick: 1"); 
+			return;
+		}
+			
+		Record record = event.getRecord();
+		this.recordHandler.doSelect(record);
 	}
 
 	/* (non-Javadoc)

@@ -6,7 +6,7 @@ package de.kp.ames.search.client.handler;
 
 import java.util.HashMap;
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.data.Record;
 
 import de.kp.ames.search.client.widget.grid.Grid;
 
@@ -39,7 +39,7 @@ public class GridRecordHandlerImpl implements GridRecordHandler {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.client.handler.GridRecordHandler#doSelect(com.smartgwt.client.widgets.grid.ListGridRecord)
 	 */
-	public void doSelect(ListGridRecord record) {
+	public void doSelect(Record record) {
 		/*
 		 * Must be overridden
 		 */

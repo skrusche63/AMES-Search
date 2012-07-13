@@ -4,7 +4,7 @@ package de.kp.ames.search.client.handler;
  * Please contact: team@dr-kruscheundpartner.de
  */
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.data.Record;
 
 import de.kp.ames.search.client.control.MainController;
 import de.kp.ames.search.client.widget.grid.Grid;
@@ -23,7 +23,7 @@ public class SuggestRecordHandlerImpl extends GridRecordHandlerImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.search.client.handler.GridRecordHandlerImpl#doSelect(com.smartgwt.client.widgets.grid.ListGridRecord)
 	 */
-	public void doSelect(ListGridRecord record) {
+	public void doSelect(Record record) {
 		MainController.getInstance().doAfterSuggest(record);
 	}
 	

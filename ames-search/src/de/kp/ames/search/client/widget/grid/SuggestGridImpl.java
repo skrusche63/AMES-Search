@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.smartgwt.client.types.GroupStartOpen;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 
 import de.kp.ames.search.client.globals.GUIGlobals;
@@ -21,9 +22,17 @@ public class SuggestGridImpl extends GridImpl {
 
 	public SuggestGridImpl(String query) {
 		super(GUIGlobals.SEARCH_URL, "search");
+		/*
+		 * No border style
+		 */
+		this.setBorder("0");
+
+		this.setHeight(1);
+		this.setWidth100();
 		
-		this.setWidth(320);
-		//this.setHeight(240);
+		this.setBodyOverflow(Overflow.VISIBLE);
+		this.setOverflow(Overflow.VISIBLE);
+		this.setLeaveScrollbarGap(false);
 
 		setQuery(query);
 
@@ -46,13 +55,13 @@ public class SuggestGridImpl extends GridImpl {
 		 * Create grid fields
 		 */
 		this.setFields(createGridFields(attributes));
-		
+
 		this.setGroupStartOpen(GroupStartOpen.ALL);
 		this.setGroupByField("hypernym");
-		
+
 		this.setShowHeader(false);
 		this.setCellHeight(32);
-		
+
 		/*
 		 * Add Record Handler
 		 */
@@ -61,25 +70,23 @@ public class SuggestGridImpl extends GridImpl {
 		this.addRecordHandler(recordHandler);
 
 	}
-	
+
 	public void setQuery(String query) {
 		this.query = query;
 	}
 
+	public Map<String, String> getRequestParams() {
 
-	public Map<String,String> getRequestParams() {
-		
-		HashMap<String,String> attributes = new HashMap<String,String>();
+		HashMap<String, String> attributes = new HashMap<String, String>();
 		attributes.put(JsonConstants.J_QUERY, this.query);
 		/*
 		 * Retrieve request method for attributes
 		 */
 		RequestMethod requestMethod = createMethod(attributes);
-		
+
 		return requestMethod.toParams();
 	}
 
-	
 	/**
 	 * @param attributes
 	 * @return
@@ -112,18 +119,21 @@ public class SuggestGridImpl extends GridImpl {
 		// TODO: to override
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.BaseGrid#createMethod(java.util.HashMap)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kp.ames.search.client.core.grid.BaseGrid#createMethod(java.util.HashMap
+	 * )
 	 */
-	public RequestMethod createMethod(HashMap<String,String> attributes) {
+	public RequestMethod createMethod(HashMap<String, String> attributes) {
 
 		RequestMethodImpl requestMethod = new RequestMethodImpl();
 		requestMethod.setName(MethodConstants.METH_SUGGEST);
-		
+
 		requestMethod.setAttributes(attributes);
 		return requestMethod;
 
 	}
 
-	
 }

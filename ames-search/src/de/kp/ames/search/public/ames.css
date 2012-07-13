@@ -40,3 +40,12 @@ body {
 
 .x-tile-cell {font:normal 11px tahoma,arial,sans-serif;color:#f2f2f4;white-space:nowrap;cursor:pointer;}
 
+/* suggest specific styles */
+.sg-t, .sg-th {font:bold 11px tahoma,arial,sans-serif;}
+.sg-th {color:#0000FF;}
+
+.sg {margin:4px;}
+.sg-s {font:normal 11px tahoma,arial,sans-serif;color:#606060;}
+.sg-dg {font:normal 11px tahoma,arial,sans-serif;padding-top:4px;}
+.sg-dl {text-decoration:underline;}
+.sg-d {color:#606060;}

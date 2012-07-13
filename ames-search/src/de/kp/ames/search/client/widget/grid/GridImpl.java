@@ -96,10 +96,6 @@ public class GridImpl extends ListGrid implements Grid {
 		this.base = base;
 		this.sid  = sid;
 		
-		/*
-		 * No border style
-		 */
-//		this.setBorder("0");
 		
 		/*
 		 * Dimensions

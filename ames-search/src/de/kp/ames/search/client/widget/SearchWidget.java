@@ -45,7 +45,7 @@ public class SearchWidget extends VLayout {
 	private String query;
 	private SearchHandler searchHandler;
 	
-	private SuggestGridImpl grid;
+	private SuggestImpl suggest;
 
 	/*
 	 * The offset position of the search widget from the top right corner of the
@@ -150,6 +150,17 @@ public class SearchWidget extends VLayout {
 
 		this.moveTo(x, y);
 		this.draw();
+
+		// reposition grid
+		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
+		int gx = this.getAbsoluteLeft() + 39;
+		int gy = this.getAbsoluteTop() - 14;
+		
+		suggest.moveTo(gx, gy);
+		
+		// dynamic height (does not work in Firefox 3.6 yet)
+//		suggest.setHeight(RootPanel.get().getOffsetHeight() - y - 100);
+		
 	}
 
 	private boolean isCentered() {
@@ -160,37 +171,32 @@ public class SearchWidget extends VLayout {
 	private void afterChanged(ChangedEvent event) {
 		TextItem item = (TextItem) event.getItem();
 		String val = item.getValueAsString();
+		RootPanel root = RootPanel.get();
 
-		if (grid != null) {
-			RootPanel.get().remove(grid);
+		if (suggest != null) {
+			root.remove(suggest);
 			
-			grid.destroy();
-			grid = null;
+			suggest.destroy();
+			suggest = null;
 
 		}
 		
+		if (val == null || val.length() == 0 )
+			return;
+		
 		// rebuild grid for every suggest, to stabilize expanded grouping
-		grid = new SuggestGridImpl(val);
+		suggest = new SuggestImpl(val);
 		
-//		if (grid == null) {
-//			grid = new SuggestGridImpl(val);
-//		} else {
-//			grid.setQuery(val);
-//			grid.reload();
-//		}
-		
-		RootPanel root = RootPanel.get();
-		root.add(grid);
+		root.add(suggest);
 		
 		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
-		int x = this.getAbsoluteLeft() + 43;
-		int y = this.getAbsoluteTop() - 11;
+		int x = this.getAbsoluteLeft() + 39;
+		int y = this.getAbsoluteTop() - 14;
 		
-		grid.moveTo(x, y);
+		suggest.moveTo(x, y);
 		
-		// dynamic height
-		// TODO: how to set grid suggest height a) dynamic to content and b) not over a max height?
-		grid.setMaxHeight(root.getOffsetHeight() - y -50);
+		// dynamic height (does not work in Firefox 3.6 yet)
+//		suggest.setHeight(root.getOffsetHeight() - y - 100);
 
 		/*
 		 * The content of the searchbox has changed, so initiate another search

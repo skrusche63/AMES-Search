@@ -34,20 +34,22 @@ public class SuggestObject implements DataObject {
 	public ListGridField[] createGridFields() {
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
-		ListGridField termField = new ListGridField(JsonConstants.J_TERM);
-		termField.setWidth(50);
+//		ListGridField termField = new ListGridField(JsonConstants.J_TERM);
+//		termField.setWidth(50);
 
 		ListGridField hypernymField = new ListGridField("hypernym");
 		hypernymField.setHidden(true);
 		
 		ListGridField synonymsField = new ListGridField("synonyms");
-		synonymsField.setWidth(280);
+//		synonymsField.setAutoFitWidth(true); // does not work with wrap
+		synonymsField.setWidth(380); // same as parent Grid 
 		
 		// http://www.smartclient.com/smartgwt/showcase/#grid_autofit_values
 		synonymsField.setAlign(Alignment.LEFT);  
-				
-		fields.add(hypernymField);
-		fields.add(synonymsField);
+
+		// both fields are needed, one for grouping the other for display
+		fields.add(hypernymField); // group
+		fields.add(synonymsField); // display
 		
 		return (ListGridField[]) fields.toArray(new ListGridField[fields.size()]);
 	}

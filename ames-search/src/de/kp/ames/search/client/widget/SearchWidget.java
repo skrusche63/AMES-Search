@@ -253,6 +253,9 @@ public class SearchWidget extends VLayout {
 		searchBox.setTitle("<b>search</b>:");
 		searchBox.setWidth(SEARCHBOX_WIDTH);
 
+		// TODO: set focus in TextItem does not work, TextItem will not show up at all
+//		searchBox.focusInItem();
+
 		searchBox.addChangedHandler(new ChangedHandler() {
 			public void onChanged(ChangedEvent event) {
 				afterChanged(event);

@@ -32,7 +32,7 @@ public class SuggestObject implements DataObject {
 		fields.add(new DataSourceTextField(JsonConstants.J_TERM));
 		fields.add(new DataSourceTextField(JsonConstants.J_HYPERNYM));
 
-		fields.add(new DataSourceTextField(JsonConstants.J_SYNONYMS));
+		fields.add(new DataSourceTextField(JsonConstants.J_RESULT));
 		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
 		fields.add(new DataSourceTextField(JsonConstants.J_QUERYSTRING));
 
@@ -49,14 +49,12 @@ public class SuggestObject implements DataObject {
 		ListGridField hypernymField = new ListGridField(JsonConstants.J_HYPERNYM);
 		hypernymField.setHidden(true);
 		
-		ListGridField synonymsField = new ListGridField(JsonConstants.J_SYNONYMS);
-		synonymsField.setWidth(380); // same as parent Grid 
-		
-		// http://www.smartclient.com/smartgwt/showcase/#grid_autofit_values
-		synonymsField.setAlign(Alignment.LEFT);  
+		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
+		resultField.setWidth(380); // same as parent Grid 
+		resultField.setAlign(Alignment.LEFT);  
 
 		fields.add(hypernymField);
-		fields.add(synonymsField);
+		fields.add(resultField);
 		
 		return (ListGridField[]) fields.toArray(new ListGridField[fields.size()]);
 		

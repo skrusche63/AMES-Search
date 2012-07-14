@@ -12,5 +12,8 @@ public class JsonConstants {
 	public static String J_SYNONYMS = "synonyms";
 	public static String J_TERM     = "term";
 	public static String J_QUERY    = "query";
+	public static String J_ID       = "id";
+	public static String J_RESULT   = "result";
+	public static String J_TITLE    = "title";
 	
 }

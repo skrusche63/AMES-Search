@@ -31,10 +31,16 @@ public class SuggestFeedbackImpl extends VLayout {
 	}
 	
 	private String recordToHtml(Record record) {
-		
-		String result = "<div class=\"sg-fb\">"  
-				 + record.getAttributeAsString(JsonConstants.J_SYNONYMS)
-				 + "</div>"; 
+		// wrap search term context into an additional DIV for layout-control
+		String result = "<div class=\"sg-fb\">" +
+				 record.getAttributeAsString(JsonConstants.J_RESULT) +
+				"<div class=\"sg\">" +
+					 "<p class=\"sg-dg\">" + 
+						"<span class=\"sg-dl\">Hypernym:</span>" + 
+						"<span class=\"sg-d\"> " + record.getAttributeAsString(JsonConstants.J_HYPERNYM) + "</span>" + 
+					"</p>" +
+				 "</div>" + 
+				 "</div>"; 
 		return result;
 	}
 	

@@ -1,11 +1,14 @@
 package de.kp.ames.search.client.widget.grid;
+/**
+ * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
+ * Please contact: team@dr-kruscheundpartner.de
+ */
 
 import java.util.Map;
 
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.JSONCircularReferenceMode;
-
 import de.kp.ames.search.client.globals.GuiGlobals;
+import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.method.RequestMethod;
@@ -21,7 +24,7 @@ public class SearchResultGridImpl extends GridImpl {
 		/*
 		 * No border style
 		 */
-		this.setBorder("0");
+		this.setStyleName(GuiStyles.X_BD_STYLE_0);
 
 		this.setHeight100();
 		this.setWidth100();
@@ -47,9 +50,16 @@ public class SearchResultGridImpl extends GridImpl {
 
 	}
 
+	/**
+	 * Prepare search data from suggest result
+	 * 
+	 * @param record
+	 */
 	public void setSearchData(Record record) {
+
 		String queryString = record.getAttributeAsString(JsonConstants.J_QUERYSTRING);
 		attributes.put(MethodConstants.ATTR_QUERY, queryString);
+	
 	}
 
 	/*
@@ -58,11 +68,6 @@ public class SearchResultGridImpl extends GridImpl {
 	 * @see de.kp.ames.search.client.widget.grid.GridImpl#getRequestParams()
 	 */
 	public Map<String, String> getRequestParams() {
-
-		/*
-		 * Update attributes
-		 */
-//		attributes.put(JsonConstants.J_QUERY, this.query);
 
 		RequestMethod requestMethod = createMethod();
 		return requestMethod.toParams();
@@ -90,4 +95,5 @@ public class SearchResultGridImpl extends GridImpl {
 		return requestMethod;
 
 	}
+	
 }

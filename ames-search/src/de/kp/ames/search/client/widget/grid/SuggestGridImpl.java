@@ -9,6 +9,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 
 import de.kp.ames.search.client.globals.GuiGlobals;
+import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.handler.SuggestRecordHandlerImpl;
@@ -30,7 +31,7 @@ public class SuggestGridImpl extends GridImpl {
 		/*
 		 * No border style
 		 */
-		this.setBorder("0");
+		this.setStyleName(GuiStyles.X_BD_STYLE_0);
 
 		this.setHeight(1);
 		this.setWidth100();

@@ -1,4 +1,4 @@
-package de.kp.ames.search.client.widget;
+package de.kp.ames.search.client.layout;
 /**
  * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
  * Please contact: team@dr-kruscheundpartner.de

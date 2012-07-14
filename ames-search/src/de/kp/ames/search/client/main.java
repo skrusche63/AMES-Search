@@ -17,7 +17,9 @@ public class main implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		MainController.getInstance().createWelcome();
+		// MainController.getInstance().createWelcome();
+		MainController.getInstance().createTestCase();
+
 	}
 
 }

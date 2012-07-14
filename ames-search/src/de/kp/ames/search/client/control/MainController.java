@@ -1,5 +1,4 @@
 package de.kp.ames.search.client.control;
-
 /**
  * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
  * Please contact: team@dr-kruscheundpartner.de
@@ -10,16 +9,14 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.globals.GuiGlobals;
+import de.kp.ames.search.client.layout.Viewport;
+import de.kp.ames.search.client.test.SplitterTestCase;
 import de.kp.ames.search.client.widget.ResultImpl;
 import de.kp.ames.search.client.widget.SearchWidget;
-import de.kp.ames.search.client.widget.Viewport;
 
 public class MainController {
 
@@ -63,7 +60,32 @@ public class MainController {
 		 * Create viewport
 		 */
 		createViewport();
+		
+		/*
+		 * Create search widget
+		 */
+		createSearchWidget();
+		
+	}
 
+	public void createTestCase() {
+
+		/*
+		 * Remove the initial splash screen
+		 */
+		Element splash = DOM.getElementById(GuiGlobals.SPLASH_ID);
+		DOM.removeChild(RootPanel.getBodyElement(), splash);
+
+		/*
+		 * Create viewport
+		 */
+		createViewport();
+
+		/*
+		 * Create splitter testcase
+		 */
+		createSplitterTestCase();
+		
 	}
 
 	private void createSearchWidget() {
@@ -83,12 +105,6 @@ public class MainController {
 
 		container.setOverflow(Overflow.HIDDEN);
 
-		container.addDrawHandler(new DrawHandler() {
-			public void onDraw(DrawEvent event) {
-				createSearchWidget();
-			}
-		});
-
 		viewport = new Viewport();
 		container.addMember(viewport);
 
@@ -98,10 +114,11 @@ public class MainController {
 
 	private void createResult(Record record) {
 		
-		// removed placehholder
+		/* 
+		 * Remove placeholder
+		 */
 		viewport.removeMember(viewport.getMember(1));
 		
-		// add 3 line result layout
 		VLayout newWrapper = new VLayout();
 		newWrapper.setOverflow(Overflow.AUTO);
 
@@ -111,6 +128,23 @@ public class MainController {
 		container.draw();
 	}
 
+	private void createSplitterTestCase() {
+
+		/* 
+		 * Remove placeholder
+		 */
+		viewport.removeMember(viewport.getMember(1));
+		
+		VLayout newWrapper = new VLayout();
+		newWrapper.setOverflow(Overflow.AUTO);
+
+		newWrapper.addMember(new SplitterTestCase());
+		viewport.addMember(newWrapper);
+
+		container.draw();
+		
+	}
+	
 	/**
 	 * This method controls all actions that have to be taken after the main
 	 * application as changed its size

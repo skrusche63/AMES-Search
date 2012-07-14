@@ -1,27 +1,23 @@
-package de.kp.ames.search.client.widget;
-/**
- * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
- * Please contact: team@dr-kruscheundpartner.de
- */
+package de.kp.ames.search.client.test;
 
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 import de.kp.ames.search.client.layout.LeftportImpl;
 import de.kp.ames.search.client.layout.RightportImpl;
 
-public class ResultImpl extends HLayout {
+public class SplitterTestCase extends HLayout {
 	
 	private LeftportImpl leftPort;
-	private ResultPortImpl centerPort;
 	private RightportImpl rightPort;
+
+	private SplitterTestPortImpl centerPort;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param record
 	 */
-	public ResultImpl(Record record) {
+	public SplitterTestCase() {
 		
 		this.setWidth100();
 		this.setHeight100();
@@ -29,12 +25,12 @@ public class ResultImpl extends HLayout {
 		/*
 		 * Left viewport is empty
 		 */
-		leftPort   = new LeftportImpl();
+		leftPort = new LeftportImpl();
 		
 		/*
-		 * Center viewport holds search results
+		 * Center viewport
 		 */
-		centerPort = new ResultPortImpl(record);
+		centerPort = new SplitterTestPortImpl();
 		
 		/*
 		 * Right viewport is empty

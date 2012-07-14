@@ -2,22 +2,15 @@ package de.kp.ames.search.client.widget;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.layout.VLayout;
+import de.kp.ames.search.client.layout.CenterportImpl;
 
-import de.kp.ames.search.client.globals.GuiStyles;
-
-public class CenterLineImpl extends VLayout {
+public class ResultPortImpl extends CenterportImpl {
 
 	private SuggestFeedbackImpl suggestFeedback;
 	private SearchResultImpl searchResult;
 
-	public CenterLineImpl(Record record) {
-		
-		this.setShowEdges(false);
-		this.setStyleName(GuiStyles.X_BD_STYLE_4);
-		
-		this.setWidth(GuiStyles.CENTER_LINE_WIDTH);
-		this.setHeight100();
+	public ResultPortImpl(Record record) {
+		super();
 		
 		this.setOverflow(Overflow.HIDDEN);
 

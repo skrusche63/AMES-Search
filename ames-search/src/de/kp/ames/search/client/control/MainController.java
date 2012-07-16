@@ -13,6 +13,7 @@ import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.globals.GuiGlobals;
+import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.layout.Viewport;
 import de.kp.ames.search.client.test.SplitterTestCase;
 import de.kp.ames.search.client.widget.ResultImpl;
@@ -205,6 +206,7 @@ public class MainController {
 
 		searchWidget.removeSuggestor();
 		searchWidget.moveToTop();
+		searchWidget.setQuery(record.getAttributeAsString(JsonConstants.J_QUERYRAWSTRING));
 		
 		createResult(record);
 	}

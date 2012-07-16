@@ -118,7 +118,6 @@ public class GridImpl extends ListGrid implements Grid {
 			}
 			
 		});
-		
 
 	}
 

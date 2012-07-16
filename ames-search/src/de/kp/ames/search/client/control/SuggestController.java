@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 
 import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
@@ -34,6 +35,14 @@ public class SuggestController {
 		return instance;
 	}
 	
+	public void afterKeyPressEvent(KeyPressEvent event) {
+		
+		String keyName = event.getKeyName();
+		if (keyName.equals("Arrow_Down") && (suggestor != null)) suggestor.afterArrowDown();
+		
+	}
+	
+	
 	public void createSuggestor(int x, int y, String query) {
 
 		/*
@@ -56,22 +65,10 @@ public class SuggestController {
 		}
 				
 		/*
-		 * Build request data
+		 * Build requestor
 		 */
-		HashMap<String,String> attributes = new HashMap<String,String>();
-		attributes.put(MethodConstants.ATTR_QUERY, query);
-		
-		/*
-		 * Create Service
-		 */
-		ServiceImpl service = new ServiceImpl(GuiGlobals.SEARCH_URL, "search");
-		service.doSuggest(attributes, new ActivityImpl() {
-
-			public void execute(JSONValue jValue) {
-				doAfterDataArrived(jValue);				
-			}
-			
-		});
+		//buildSuggestorAsync(query);
+		buildSuggestorSync(query);
 		
 		
 	}
@@ -93,7 +90,40 @@ public class SuggestController {
 		}
 	}
 
+	private void buildSuggestorSync(String query) {
+
+		suggestor = new SuggestImpl(query);
+
+		RootPanel rp = RootPanel.get();
+		rp.add(suggestor);
+
+		moveSuggestorTo(x,y);
+		
+	}
+	
+	private void buildSuggestorAsync(String query) {
+		/*
+		 * Build request data
+		 */
+		HashMap<String,String> attributes = new HashMap<String,String>();
+		attributes.put(MethodConstants.ATTR_QUERY, query);
+		
+		/*
+		 * Create Service
+		 */
+		ServiceImpl service = new ServiceImpl(GuiGlobals.SEARCH_URL, "search");
+		service.doSuggest(attributes, new ActivityImpl() {
+
+			public void execute(JSONValue jValue) {
+				doAfterDataArrived(jValue);				
+			}
+			
+		});
+		
+	}
+
 	private void doAfterDataArrived(JSONValue jValue) {
+
 		suggestor = new SuggestImpl(jValue);
 
 		RootPanel rp = RootPanel.get();

@@ -20,6 +20,8 @@ import de.kp.ames.search.client.widget.grid.SuggestGridImpl;
 
 public class SuggestImpl extends VLayout {
 	
+	private SuggestGridImpl grid;
+	
 	/**
 	 * Constructor depends on search query 
 	 * 
@@ -36,7 +38,7 @@ public class SuggestImpl extends VLayout {
 		 */
 		this.setOverflow(Overflow.AUTO);
 
-		SuggestGridImpl grid = new SuggestGridImpl(query);		
+		grid = new SuggestGridImpl(query);		
 		this.addMember(grid);
 		
 	};
@@ -53,10 +55,13 @@ public class SuggestImpl extends VLayout {
 		this.setOverflow(Overflow.AUTO);
 		
 		ListGridRecord[] records = new SuggestObject().createListGridRecords(jValue);
-		SuggestGridImpl grid = new SuggestGridImpl(records);
+		grid = new SuggestGridImpl(records);
 
 		this.addMember(grid);
 
 	}
 
+	public void afterArrowDown() {
+		grid.afterArrowDown();
+	}
 }

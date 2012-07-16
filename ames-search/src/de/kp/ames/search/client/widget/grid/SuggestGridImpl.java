@@ -1,17 +1,13 @@
 package de.kp.ames.search.client.widget.grid;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
@@ -21,7 +17,6 @@ import de.kp.ames.search.client.method.RequestMethod;
 import de.kp.ames.search.client.method.RequestMethodImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.SuggestObject;
-import de.kp.ames.search.client.service.ServiceImpl;
 
 public class SuggestGridImpl extends GridImpl {
 
@@ -147,6 +142,18 @@ public class SuggestGridImpl extends GridImpl {
 		return new SuggestObject();
 	}
 
+	public void afterArrowDown() {
+		
+		if (this.getRecords().length == 0) return;
+		
+		this.focus();
+		this.ungroup();
+		
+		this.selectRecord(this.getRecords()[0]);
+		this.groupBy(JsonConstants.J_HYPERNYM);
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

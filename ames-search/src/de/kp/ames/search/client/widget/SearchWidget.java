@@ -10,6 +10,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
@@ -211,13 +213,22 @@ public class SearchWidget extends VLayout {
 				afterChanged(event);
 			}
 		});
-
+		
+		searchBox.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				SuggestController.getInstance().afterKeyPressEvent(event);
+				
+			}
+			
+		});
+		
 		/*
 		 * A dynamic form is used as a wrapper to get the search box centered in
 		 * height
 		 */
 
 		DynamicForm form = new DynamicForm();
+		form.setAutoFocus(true);
 
 		form.setTitleSuffix(""); // default ":"
 		form.setWidth100();

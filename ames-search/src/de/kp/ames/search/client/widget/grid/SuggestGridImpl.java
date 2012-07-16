@@ -1,13 +1,17 @@
 package de.kp.ames.search.client.widget.grid;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-
+import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
@@ -17,10 +21,56 @@ import de.kp.ames.search.client.method.RequestMethod;
 import de.kp.ames.search.client.method.RequestMethodImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.SuggestObject;
+import de.kp.ames.search.client.service.ServiceImpl;
 
 public class SuggestGridImpl extends GridImpl {
 
 	private String query;
+
+	public SuggestGridImpl(ListGridRecord[] records) {
+		super(GuiGlobals.SEARCH_URL, "search");
+
+		/*
+		 * No border style
+		 */
+		this.setStyleName(GuiStyles.X_BD_STYLE_0);
+
+		this.setHeight(1);
+		this.setWidth100();
+		
+		this.setBodyOverflow(Overflow.VISIBLE);
+		this.setOverflow(Overflow.VISIBLE);
+
+		this.setLeaveScrollbarGap(false);
+
+		/*
+		 * Create data object
+		 */
+		this.dataObject = createDataObject();
+
+		/*
+		 * Create data
+		 */
+		this.setData(records);
+
+		/*
+		 * Create grid fields
+		 */
+		this.setFields(createGridFields());
+
+		this.setGroupStartOpen(GroupStartOpen.ALL);
+		this.setGroupByField(JsonConstants.J_HYPERNYM);
+
+		this.setShowHeader(false);
+		this.setCellHeight(32);
+
+		/*
+		 * Add Record Handler
+		 */
+		SuggestRecordHandlerImpl recordHandler = new SuggestRecordHandlerImpl(this);
+		this.addRecordHandler(recordHandler);
+
+	}
 
 	/**
 	 * @param query

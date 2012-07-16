@@ -5,11 +5,16 @@ package de.kp.ames.search.client.model;
  */
 
 import java.util.ArrayList;
+import java.util.Set;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 import de.kp.ames.search.client.globals.JsonConstants;
 
@@ -20,6 +25,32 @@ public class SuggestObject implements DataObject {
 	 */
 	public SuggestObject() {
 
+	}
+
+	public ListGridRecord[] createListGridRecords(JSONValue jValue) {
+
+		ArrayList<ListGridRecord> records = new ArrayList<ListGridRecord>();
+
+		JSONArray jArray = jValue.isArray();
+		for (int i=0; i < jArray.size(); i++) {
+			
+			JSONObject jRecord = jArray.get(i).isObject();
+			ListGridRecord record = new ListGridRecord();
+			
+			Set<String> keys = jRecord.keySet();
+			for (String key:keys) {
+				
+				String val = jRecord.get(key).isString().stringValue();
+				record.setAttribute(key, val);
+				
+				records.add(record);
+				
+			}
+			
+		}
+		
+		return (ListGridRecord[]) records.toArray(new ListGridRecord[records.size()]);
+		
 	}
 
 	/* (non-Javadoc)

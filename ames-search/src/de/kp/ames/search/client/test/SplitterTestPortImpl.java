@@ -16,10 +16,12 @@ public class SplitterTestPortImpl extends CenterportImpl {
 		this.setOverflow(Overflow.HIDDEN);
 
 		VLayout top = createTop();
-		top.setHeight("15%");
+		//top.setHeight("15%");
+		top.setHeight(80);
 		
 		VLayout bottom = createBottom();
-		bottom.setHeight("85%");
+		//bottom.setHeight("85%");
+		bottom.setHeight("100%");
 		
 		top.setShowResizeBar(true);
 		
@@ -80,7 +82,10 @@ public class SplitterTestPortImpl extends CenterportImpl {
 		grid.setWidth100();
 
 		grid.setShowHeader(false);
-		
+
+		grid.setWrapCells(true);  
+		grid.setFixedRecordHeights(false); 
+
 		return grid;
 	}
 	
@@ -88,7 +93,10 @@ public class SplitterTestPortImpl extends CenterportImpl {
 		
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("<div class=\"sg-fb\">This is a test text.</div>");
+		sb.append("<div class=\"sg-fb\">");
+		sb.append("<div class=\"sg\">This is a test text.");
+		sb.append("</div>");
+		sb.append("</div>");
 		
 		return sb.toString();
 	}

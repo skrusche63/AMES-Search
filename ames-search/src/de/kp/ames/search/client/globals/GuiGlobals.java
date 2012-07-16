@@ -9,6 +9,11 @@ import com.google.gwt.user.client.DOM;
 public class GuiGlobals {
 
 	/*
+	 * Connection Parameters
+	 */
+	public static int CONNECTION_TIMEOUT = 180000;
+
+	/*
 	 * DOM identifier
 	 */
 	public static String SPLASH_ID = "x-splash";

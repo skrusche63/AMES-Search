@@ -8,7 +8,8 @@ public class GuiStyles {
 
 	public static String LEFT_LINE_BG = "#F2F2F4";
 	public static String RIGHT_LINE_BG = "#F2F2F4";
-	public static String SUGGEST_FEEDBACK_BG = "#FFFFFF";
+	
+	public static String SUGGEST_FEEDBACK_BG = "#F2F2F4";
 
 	public static String BG_COLOR = "#191920;";
 	

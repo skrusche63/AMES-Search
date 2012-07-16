@@ -13,6 +13,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
+import de.kp.ames.search.client.control.SuggestController;
+
 public class SearchWidget extends VLayout {
 
 	private TextItem searchBox;
@@ -25,7 +27,7 @@ public class SearchWidget extends VLayout {
 	/*
 	 * Reference to SuggestImpl
 	 */
-	private SuggestImpl suggestor;
+	//private SuggestImpl suggestor;
 
 	/*
 	 * Indicates centered positioning
@@ -52,18 +54,11 @@ public class SearchWidget extends VLayout {
 	public SearchWidget() {
 
 		calculateCenterPosition();
-
-		setupWidget(this.x, this.y);
+		setupWidget();
 
 	}
 
-	private void setupWidget(int x, int y) {
-		
-		/*
-		 * Register coordinates
-		 */
-		this.x = x;
-		this.y = y;
+	private void setupWidget() {
 
 		/*
 		 * Appearance & Dimensions
@@ -131,7 +126,10 @@ public class SearchWidget extends VLayout {
 		/*
 		 * Locate suggestor
 		 */
-		setSuggestor();
+		int x = this.getAbsoluteLeft() + 39;
+		int y = this.getAbsoluteTop()  - 14;
+
+		SuggestController.getInstance().moveSuggestorTo(x, y);
 		
 	}
 
@@ -157,46 +155,12 @@ public class SearchWidget extends VLayout {
 		/*
 		 * build suggestor
 		 */
-		buildSuggestor(val);
-		
-		/*
-		 * position suggestor
-		 */
-		setSuggestor();
 
-	}
+		int x = this.getAbsoluteLeft() + 39;
+		int y = this.getAbsoluteTop()  - 14;
 
-	/**
-	 * A helper method to remove the suggestor
-	 */
-	private void buildSuggestor(String val) {
+		SuggestController.getInstance().createSuggestor(x,y, val);
 
-		RootPanel rp = RootPanel.get();
-		
-		if (suggestor != null) {
-			rp.remove(suggestor);
-			
-			suggestor.destroy();
-			suggestor = null;
-
-		}
-
-		suggestor = new SuggestImpl(val);		
-		rp.add(suggestor);
-
-	}
-	
-	public void removeSuggestor() {
-
-		RootPanel rp = RootPanel.get();
-		
-		if (suggestor != null) {
-			rp.remove(suggestor);
-			
-			suggestor.destroy();
-			suggestor = null;
-
-		}
 	}
 	
 	public void moveToTop() {
@@ -204,20 +168,6 @@ public class SearchWidget extends VLayout {
 		this.top = true;
 		this.y = 3;
 		this.setWidget();
-	}
-	
-	/**
-	 * Locate suggestor
-	 */
-	private void setSuggestor() {
-		
-		// TODO: positioning in a way that change of browser zoom, will not destroy layout?
-
-		int x = this.getAbsoluteLeft() + 39;
-		int y = this.getAbsoluteTop()  - 14;
-		
-		suggestor.moveTo(x, y);
-
 	}
 	
 	/**

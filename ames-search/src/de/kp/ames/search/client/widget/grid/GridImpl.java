@@ -15,6 +15,8 @@ import com.smartgwt.client.types.DSDataFormat;
 import com.smartgwt.client.types.DSProtocol;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
+import com.smartgwt.client.widgets.events.MouseDownEvent;
+import com.smartgwt.client.widgets.events.MouseDownHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.DataArrivedEvent;
@@ -112,12 +114,21 @@ public class GridImpl extends ListGrid implements Grid {
 			}			
 		});
 		
-		this.addRecordClickHandler(new RecordClickHandler() {
-			public void onRecordClick(RecordClickEvent event) {
-				self.afterRecordClick(event);				
-			}
+//		this.addRecordClickHandler(new RecordClickHandler() {
+//			public void onRecordClick(RecordClickEvent event) {
+//				self.afterRecordClick(event);				
+//			}
+//			
+//		});
+
+		this.addMouseDownHandler(new MouseDownHandler() {
 			
+			@Override
+			public void onMouseDown(MouseDownEvent event) {
+				self.afterMouseDown(event);
+			}
 		});
+
 
 	}
 
@@ -244,6 +255,15 @@ public class GridImpl extends ListGrid implements Grid {
 	 * @see de.kp.ames.search.client.core.grid.Grid#afterRecordClick(com.smartgwt.client.widgets.grid.events.RecordClickEvent)
 	 */
 	public void afterRecordClick(RecordClickEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.core.grid.Grid#afterMouseDown(com.smartgwt.client.widgets.grid.events.MouseDownEvent)
+	 */
+	public void afterMouseDown(MouseDownEvent event) {
 		/*
 		 * Must be overridden
 		 */

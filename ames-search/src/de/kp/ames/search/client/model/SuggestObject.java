@@ -66,6 +66,7 @@ public class SuggestObject implements DataObject {
 		DataSourceTextField primaryKey = new DataSourceTextField(JsonConstants.J_ID);
 		primaryKey.setHidden(true);
 		
+		primaryKey.setPrimaryKey(true);
 		fields.add(primaryKey);
 		
 		fields.add(new DataSourceTextField(JsonConstants.J_TERM));

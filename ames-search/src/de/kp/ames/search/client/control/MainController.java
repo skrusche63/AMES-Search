@@ -204,7 +204,7 @@ public class MainController {
 	 */
 	public void doAfterSuggest(Record record) {
 
-		searchWidget.removeSuggestor();
+		SuggestController.getInstance().removeSuggestor();
 		searchWidget.moveToTop();
 		searchWidget.setQuery(record.getAttributeAsString(JsonConstants.J_QUERYRAWSTRING));
 		

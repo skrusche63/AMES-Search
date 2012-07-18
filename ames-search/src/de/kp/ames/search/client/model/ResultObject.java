@@ -25,13 +25,7 @@ public class ResultObject implements DataObject {
 
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
-		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
-//		synonymsField.setWidth(380); // same as parent Grid 
-//		
-//		// http://www.smartclient.com/smartgwt/showcase/#grid_autofit_values
-//		synonymsField.setAlign(Alignment.LEFT);  
-
-		fields.add(resultField);
+		fields.add(new ListGridField(JsonConstants.J_RESULT));
 		
 		return (ListGridField[]) fields.toArray(new ListGridField[fields.size()]);
 	}

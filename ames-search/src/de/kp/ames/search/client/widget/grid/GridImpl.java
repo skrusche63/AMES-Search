@@ -15,14 +15,27 @@ import com.smartgwt.client.types.DSDataFormat;
 import com.smartgwt.client.types.DSProtocol;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
+import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
+import com.smartgwt.client.widgets.events.KeyPressEvent;
+import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.events.MouseDownEvent;
 import com.smartgwt.client.widgets.events.MouseDownHandler;
+import com.smartgwt.client.widgets.events.RightMouseDownEvent;
+import com.smartgwt.client.widgets.events.RightMouseDownHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
+import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.DataArrivedEvent;
 import com.smartgwt.client.widgets.grid.events.DataArrivedHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
+import com.smartgwt.client.widgets.grid.events.RowContextClickEvent;
+import com.smartgwt.client.widgets.grid.events.RowContextClickHandler;
 
 import de.kp.ames.search.client.handler.GridRecordHandler;
 import de.kp.ames.search.client.method.RequestMethod;
@@ -114,24 +127,137 @@ public class GridImpl extends ListGrid implements Grid {
 			}			
 		});
 		
-//		this.addRecordClickHandler(new RecordClickHandler() {
-//			public void onRecordClick(RecordClickEvent event) {
-//				self.afterRecordClick(event);				
-//			}
-//			
-//		});
+		this.addRecordClickHandler(new RecordClickHandler() {
+			public void onRecordClick(RecordClickEvent event) {
+				self.afterRecordClick(event);				
+			}
+		});
 
-		this.addMouseDownHandler(new MouseDownHandler() {
+		this.addCellClickHandler(new CellClickHandler() {
+			public void onCellClick(CellClickEvent event) {
+				self.afterCellClick(event);
+			}
+		});
+			
+		
+        this.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {  
+            public void onRecordDoubleClick(RecordDoubleClickEvent event) {  
+                self.afterRecordDoubleClick(event);  
+            }  
+        });  
+
+        this.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				self.afterKeyPress(event);	
+			}
+		}); 
+        
+        this.addKeyDownHandler(new KeyDownHandler() {
+			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				self.afterKeyDown(event);
+			}
+		}); 
+
+        this.addRightMouseDownHandler(new RightMouseDownHandler() {
+			
+			@Override
+			public void onRightMouseDown(RightMouseDownEvent event) {
+				self.afterRightMouseDown(event);
+				
+			}
+		});
+        
+        this.addMouseDownHandler(new MouseDownHandler() {
 			
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
 				self.afterMouseDown(event);
+				
 			}
 		});
-
-
+        
+        this.addRowContextClickHandler(new RowContextClickHandler() {
+			
+			@Override
+			public void onRowContextClick(RowContextClickEvent event) {
+				self.afterRowContextClick(event);				
+			}
+		});
+        
+        /*
+         * have a bug in v3.0 and blocks native navigation
+         * nightys 3.0d or 3.1 are fixed  
+         */
+//        this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
+//			
+//			@Override
+//			public void onBodyKeyPress(BodyKeyPressEvent event) {
+//				self.afterBodyKeyPress(event);
+//			}
+//		});
+        
 	}
 
+	public void afterRowContextClick(RowContextClickEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	public void afterMouseDown(MouseDownEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	public void afterRightMouseDown(RightMouseDownEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.core.grid.Grid#afterRecordDoubleClick(com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent)
+	 */
+	public void afterRecordDoubleClick(RecordDoubleClickEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+	
+	
+	public void afterBodyKeyPress(BodyKeyPressEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+	public void afterCellClick(CellClickEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	public void afterKeyPress(KeyPressEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	public void afterKeyDown(KeyDownEvent event) {
+		/*
+		 * Must be overridden
+		 */
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.widget.grid.Grid#getRequestParams()
+	 */
+	public Map<String, String> getRequestParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.search.client.core.grid.Grid#addRecordHandler(de.kp.ames.search.client.handler.GridRecordHandler)
@@ -260,22 +386,6 @@ public class GridImpl extends ListGrid implements Grid {
 		 */
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.core.grid.Grid#afterMouseDown(com.smartgwt.client.widgets.grid.events.MouseDownEvent)
-	 */
-	public void afterMouseDown(MouseDownEvent event) {
-		/*
-		 * Must be overridden
-		 */
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.widget.grid.Grid#getRequestParams()
-	 */
-	public Map<String, String> getRequestParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	/**
 	 * @param event

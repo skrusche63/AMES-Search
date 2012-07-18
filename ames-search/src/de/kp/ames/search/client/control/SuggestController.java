@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 
 import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.service.ServiceImpl;
+import de.kp.ames.search.client.widget.SearchWidget;
 import de.kp.ames.search.client.widget.SuggestImpl;
 
 public class SuggestController {
@@ -35,13 +35,18 @@ public class SuggestController {
 		return instance;
 	}
 	
-	public void afterKeyPressEvent(KeyPressEvent event) {
+	public void focusToSuggestGrid() {
 		
-		String keyName = event.getKeyName();
-		if (keyName.equals("Arrow_Down") && (suggestor != null)) suggestor.afterArrowDown();
+		if (suggestor != null) suggestor.focusToSuggestGrid();
 		
 	}
 	
+	public void focusToSearchBox() {
+		
+		SearchWidget searchWidget = MainController.getInstance().getSearchWidget();
+		if (searchWidget != null) searchWidget.focusToSearchBox();
+		
+	}
 	
 	public void createSuggestor(int x, int y, String query) {
 
@@ -74,7 +79,20 @@ public class SuggestController {
 	}
 	
 	public void moveSuggestorTo(int x, int y) {
-		if (suggestor != null) suggestor.moveTo(x, y);
+		if (suggestor != null) {
+			suggestor.moveTo(x, y);
+
+			// dynamic adjust height
+			resizeHeightSuggestor();
+		}
+	}
+
+	private void resizeHeightSuggestor() {
+		if (suggestor != null) {
+			RootPanel rp = RootPanel.get();
+			int h = rp.getOffsetHeight() - 200;
+			suggestor.setHeightTo(h);
+		}
 	}
 	
 	public void removeSuggestor() {

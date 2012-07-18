@@ -90,7 +90,7 @@ public class SuggestObject implements DataObject {
 		hypernymField.setHidden(true);
 		
 		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
-		resultField.setWidth(380); // same as parent Grid 
+//		resultField.setWidth(380); // same as parent Grid 
 		resultField.setAlign(Alignment.LEFT);  
 
 		fields.add(hypernymField);

@@ -25,14 +25,20 @@ body {
 .x-sc-text {font:normal 11px tahoma, arial, helvetica, sans-serif;color:#191920;} 
 
 .x-searchbox {background-color:#a0a0a0;border:0;}
+/* override skin textItem and textItemFocused within class x-searchbox */
+.x-searchbox .textItem, .x-searchbox .textItemFocused {font:normal 13px tahoma, arial, helvetica, sans-serif;}
 
 /* suggest specific styles */
-.sg-t, .sg-th {font:bold 11px tahoma,arial,sans-serif;}
+.sg-t, .sg-th {font:bold 13px tahoma,arial,sans-serif;}
 .sg-th {color:#0000FF;}
 
-.sg {margin:4px;}
-.sg-fb {margin:10px;}
-.sg-s {font:normal 11px tahoma,arial,sans-serif;color:#606060;}
+.sg {margin:4px 10px 4px 15px;}
+.sg-fb {margin:0px;}
+.sg-s {font:normal 13px tahoma,arial,sans-serif;color:#606060;}
 .sg-dg {font:normal 11px tahoma,arial,sans-serif;padding-top:4px;}
 .sg-dl {text-decoration:underline;}
 .sg-d {color:#606060;}
+
+/* suggest group header specific styles */
+.sgh {margin:4px;}
+.sgh-s {font:normal 13px tahoma,arial,sans-serif;}

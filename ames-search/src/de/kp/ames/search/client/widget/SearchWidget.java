@@ -27,11 +27,6 @@ public class SearchWidget extends VLayout {
 	private String query;
 	
 	/*
-	 * Reference to SuggestImpl
-	 */
-	//private SuggestImpl suggestor;
-
-	/*
 	 * Indicates centered positioning
 	 */
 	private boolean top = false;
@@ -72,6 +67,7 @@ public class SearchWidget extends VLayout {
 		this.setShadowSoftness(2);
 
 		this.setShadowOffset(1);
+
 		this.addMember(createToolStrip());
 
 		RootPanel root = RootPanel.get();
@@ -135,35 +131,6 @@ public class SearchWidget extends VLayout {
 		
 	}
 
-	/**
-	 * A helper method to create suggestor from TextItem value
-	 * 
-	 * @param event
-	 */
-	private void afterChanged(ChangedEvent event) {
-		
-		/*
-		 * Retrieve search query from text item
-		 */
-		TextItem item = (TextItem) event.getItem();
-		String val = item.getValueAsString();
-
-		/*
-		 * Do no term suggest in case of empty value
-		 */
-		if (val == null || val.length() == 0 )
-			return;
-
-		/*
-		 * build suggestor
-		 */
-
-		int x = this.getAbsoluteLeft() + 39;
-		int y = this.getAbsoluteTop()  - 14;
-
-		SuggestController.getInstance().createSuggestor(x,y, val);
-
-	}
 	
 	public void moveToTop() {
 		
@@ -205,8 +172,6 @@ public class SearchWidget extends VLayout {
 		searchBox.setTitle("<b>search</b>:");
 		searchBox.setWidth(SEARCHBOX_WIDTH);
 
-		// TODO: set focus in TextItem does not work, TextItem will not show up at all
-//		searchBox.focusInItem();
 
 		searchBox.addChangedHandler(new ChangedHandler() {
 			public void onChanged(ChangedEvent event) {
@@ -216,8 +181,11 @@ public class SearchWidget extends VLayout {
 		
 		searchBox.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
-				SuggestController.getInstance().afterKeyPressEvent(event);
-				
+
+				String keyName = event.getKeyName();
+				if (keyName.equals("Arrow_Down")) {
+					SuggestController.getInstance().focusToSuggestGrid();
+				}				
 			}
 			
 		});
@@ -239,6 +207,44 @@ public class SearchWidget extends VLayout {
 		ts.addMember(form);
 		return ts;
 
+	}
+
+	/**
+	 * A helper method to create suggestor from TextItem value
+	 * 
+	 * @param event
+	 */
+	private void afterChanged(ChangedEvent event) {
+		/*
+		 * Retrieve search query from text item
+		 */
+		TextItem item = (TextItem) event.getItem();
+		String val = item.getValueAsString();
+
+		/*
+		 * Do no term suggest in case of empty value
+		 */
+		if (val == null || val.length() == 0 )
+			return;
+
+		/*
+		 * build suggestor
+		 */
+
+		int x = this.getAbsoluteLeft() + 39;
+		int y = this.getAbsoluteTop()  - 14;
+
+		SuggestController.getInstance().createSuggestor(x,y, val);
+
+	}
+
+	
+	/*
+	 * Set focus back to TextWidget
+	 */
+	public void focusToSearchBox() {
+		searchBox.focusInItem();
+		
 	}
 
 }

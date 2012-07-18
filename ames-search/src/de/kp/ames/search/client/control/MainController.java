@@ -153,8 +153,8 @@ public class MainController {
 	 * @param event
 	 */
 	public void afterResized(ResizedEvent event) {
-		if (searchWidget != null)
-			searchWidget.afterResized(event);
+		if (getSearchWidget() != null)
+			getSearchWidget().afterResized(event);
 	}
 
 	/**
@@ -162,9 +162,9 @@ public class MainController {
 	 */
 	public void closeSearch() {
 
-		RootPanel.get().remove(searchWidget);
+		RootPanel.get().remove(getSearchWidget());
 
-		searchWidget.destroy();
+		getSearchWidget().destroy();
 		searchWidget = null;
 
 	}
@@ -174,7 +174,7 @@ public class MainController {
 	 */
 	public void openSearch() {
 
-		if (searchWidget != null)
+		if (getSearchWidget() != null)
 			closeSearch();
 
 		/*
@@ -189,7 +189,7 @@ public class MainController {
 	 */
 	public void toggleSearch() {
 
-		if (searchWidget == null)
+		if (getSearchWidget() == null)
 			openSearch();
 
 		else
@@ -205,10 +205,17 @@ public class MainController {
 	public void doAfterSuggest(Record record) {
 
 		SuggestController.getInstance().removeSuggestor();
-		searchWidget.moveToTop();
-		searchWidget.setQuery(record.getAttributeAsString(JsonConstants.J_QUERYRAWSTRING));
+		getSearchWidget().moveToTop();
+		getSearchWidget().setQuery(record.getAttributeAsString(JsonConstants.J_QUERYRAWSTRING));
 		
 		createResult(record);
+	}
+
+	/**
+	 * @return the searchWidget
+	 */
+	public SearchWidget getSearchWidget() {
+		return searchWidget;
 	}
 
 }

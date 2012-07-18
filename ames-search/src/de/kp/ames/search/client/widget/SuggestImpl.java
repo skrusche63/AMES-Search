@@ -4,18 +4,13 @@ package de.kp.ames.search.client.widget;
  * Please contact: team@dr-kruscheundpartner.de
  */
 
-import java.util.HashMap;
-
 import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
-import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.model.SuggestObject;
-import de.kp.ames.search.client.service.ServiceImpl;
 import de.kp.ames.search.client.widget.grid.SuggestGridImpl;
 
 public class SuggestImpl extends VLayout {
@@ -30,6 +25,7 @@ public class SuggestImpl extends VLayout {
 	public SuggestImpl(String query) {
 
 		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
+		// height will be set dynamic in relation to rootpanel height
 		this.setHeight(GuiGlobals.SUGESST_HEIGHT);
 
 		/*
@@ -46,6 +42,7 @@ public class SuggestImpl extends VLayout {
 	public SuggestImpl(JSONValue jValue) {
 
 		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
+		// height will be set dynamic in relation to rootpanel height
 		this.setHeight(GuiGlobals.SUGESST_HEIGHT);
 
 		/*
@@ -61,7 +58,18 @@ public class SuggestImpl extends VLayout {
 
 	}
 
-	public void afterArrowDown() {
-		grid.afterArrowDown();
+	/*
+	 * focus moves from SearchBox to SuggestGrid
+	 */
+	public void focusToSuggestGrid() {
+		grid.focusToSuggestGrid();
 	}
+
+	/*
+	 * dynamic calculated new height
+	 */
+	public void setHeightTo(int h) {
+		this.setHeight(h);
+	}
+
 }

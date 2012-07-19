@@ -2,6 +2,7 @@ package de.kp.ames.search.client.widget.grid;
 
 import java.util.Map;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.Overflow;
@@ -17,8 +18,7 @@ import com.smartgwt.client.widgets.grid.events.CellClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RowContextClickEvent;
-import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeNode;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 import de.kp.ames.search.client.control.SuggestController;
 import de.kp.ames.search.client.globals.GuiGlobals;
@@ -166,6 +166,8 @@ public class SuggestGridImpl extends GridImpl {
 			return;
 
 		this.focus();
+		
+		SC.logWarn("====> focus"); 
 
 		if (this.getSelectedRecords().length == 0) {
 			/*
@@ -173,11 +175,131 @@ public class SuggestGridImpl extends GridImpl {
 			 * available there must be a group header first because of this we
 			 * select second record, which contains first suggestion
 			 */
-			this.selectRecord(this.getRecords()[1]);
+			this.selectSingleRecord(this.getRecords()[1]);
 		}
 
 	}
+	
+	/*
+	 * KeyDown is called for each single Key
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kp.ames.search.client.widget.grid.GridImpl#afterKeyDown(com.smartgwt
+	 * .client.widgets.events.KeyDownEvent)
+	 */
+	public void afterKeyDown(KeyDownEvent event) {
+		// has: event.cancel();
+		String key = EventHandler.getKey();
+		SC.logWarn("====> KeyDown key> " + key);
 
+		/*
+		 * KeyDown is called before navigation to next record finished
+		 * selectedRecord is in that case the last or start position
+		 */
+		if (key.equals("Arrow_Left") || key.equals("Arrow_Right")) {
+			// move focus up to text widget
+			SuggestController.getInstance().focusToSearchBox();
+			SC.logWarn("======> KeyDown left/right move focus to TextWidget: " + key);
+			
+		} else if (key.equals("Arrow_Down") || key.equals("Arrow_Up")) {
+			
+//			Integer focusRow = this.getFocusRow();
+//			Integer selectedRow = this.getRecordIndex(this.getSelectedRecord());
+//			
+//			SC.logWarn("======> KeyDown focusRow:" + focusRow + " selectedRow:" + selectedRow);
+//			if (focusRow == null) focusRow = 1;
+			
+//			this.selectSingleRecord(focusRow);
+		}
+
+		
+
+
+	}
+
+	public void afterSelectionChanged(SelectionEvent event) {
+		
+		/*
+		 * react on state=select only
+		 */
+		if (!event.getState()) return;
+
+		Record selected = event.getSelectedRecord();
+		Record record = this.getSelectedRecord();
+		String key = EventHandler.getKey();
+
+		SC.logWarn("====> SelectionChanged ev.selected " +
+				"record: <" + selected.getAttributeAsString("qsraw") + "> " + 
+				" id> " + selected.getAttributeAsString(JsonConstants.J_ID) + 
+				" focus> " + this.getFocusRow() 
+				);
+		
+		SC.logWarn("====> SelectionChanged ts.selected " +
+				"record: <" + record.getAttributeAsString("qsraw") + "> " + 
+				" id> " + record.getAttributeAsString(JsonConstants.J_ID) + 
+				" #>" + this.getRecordIndex(record) + 
+				" key> " + key
+				);
+		
+		int index = this.getRecordIndex(selected);
+
+		if (selected.getAttributeAsString("type").equals("group")) {
+			SC.logWarn("======> SelectionChanged stepped on group header");
+			/*
+			 * pseudo record group header detected 
+			 * Assertions: 
+			 * - there must be a next record 
+			 * - next record cannot be a group header
+			 */
+
+			if (key == "Arrow_Down") {
+				// way down
+				if (index + 1 < this.getRecords().length) {
+					// not the last one
+					this.selectSingleRecord(index + 1);
+										
+//					SC.logWarn("======> SelectionChanged Arrow_Down move down to> " + (index + 1));
+					return;
+
+				}
+			} else if (key == "Arrow_Up") {
+				// way up
+				if (index != 0) {
+					// not the first one
+					this.selectSingleRecord(index - 1);
+					
+//					SC.logWarn("======> SelectionChanged Arrow_Up move up to> " + (index - 1));
+					return;
+					
+				} else {
+					// move selection back to first suggest record, 
+					// don't select group header
+					this.selectSingleRecord(1);
+
+					// move focus up to text widget
+					SuggestController.getInstance().focusToSearchBox();
+					SC.logWarn("======> SelectionChanged Arrow_Up move upto TextWidget> " + key);
+
+				}
+			} else {
+				SC.logWarn("======> RecordClick mover ??> " + key);
+			}
+
+//			/*
+//			 * check result selected record
+//			 */
+//			Record selectedCheck = this.getSelectedRecord();
+//			SC.logWarn("======> SelectionChanged selected " +
+//					"record: <" + selectedCheck.getAttributeAsString("qsraw") + "> " + 
+//					" #>" + this.getRecordIndex(selectedCheck) + 
+//					" id> " + selectedCheck.getAttributeAsString(JsonConstants.J_ID)  + 
+//					" focus> " + this.getFocusRow());
+		}
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,52 +318,6 @@ public class SuggestGridImpl extends GridImpl {
 		int index = this.getRecordIndex(record);
 		SC.logWarn("======> RecordClick index: " + index);
 
-		if (record.getAttributeAsString("type").equals("group")) {
-			SC.logWarn("======> RecordClick stepped on group header");
-			/*
-			 * pseudo record group header detected 
-			 * Assertions: 
-			 * - there must be a next record 
-			 * - next record cannot be a group header
-			 */
-
-			String key = EventHandler.getKey();
-			if (key == "Arrow_Down") {
-				// way down
-				if (index + 1 < this.getRecords().length) {
-					// not the last one
-					this.deselectRecord(index);
-					this.selectRecord(index + 1);
-					this.scrollToRow(index);
-					SC.logWarn("======> RecordClick Arrow_Down move down to> " + (index + 1));
-
-				}
-			} else if (key == "Arrow_Up") {
-				// way up
-				if (index != 0) {
-					// not the first one
-					this.deselectRecord(index);
-					this.selectRecord(index - 1);
-					this.scrollToRow(index);
-					SC.logWarn("======> RecordClick Arrow_Up move up to> " + (index - 1));
-
-				} else {
-					// move selection back to first suggest record, 
-					// don't select group header
-					this.deselectRecord(index);
-					this.selectRecord(index + 1);
-
-					// move focus up to text widget
-					SuggestController.getInstance().focusToSearchBox();
-					SC.logWarn("======> RecordClick Arrow_Up move upto TextWidget> " + key);
-
-				}
-			} else {
-				SC.logWarn("======> RecordClick mover ??> " + key);
-			}
-
-		}
-
 		/*
 		 * check selected record
 		 */
@@ -249,49 +325,8 @@ public class SuggestGridImpl extends GridImpl {
 		SC.logWarn("======> RecordClick selected record: <" + selected.getAttributeAsString("qsraw") + "> " + " #>"
 				+ this.getRecordIndex(selected) + " id> " + selected.getAttributeAsString(JsonConstants.J_ID));
 
-		/*
-		 * test event cancel effects
-		 */
-		// event.cancel();
-
-		/*
-		 * fire an event test, works but does not have the effect of a repeated
-		 * key press or down
-		 */
-		// this.fireEvent(new KeyDownEvent(null));
-		// SC.logWarn("====> RecordClick fireEvent: ");
-
 	}
 
-	/*
-	 * KeyDown is called for each single Key
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.kp.ames.search.client.widget.grid.GridImpl#afterKeyDown(com.smartgwt
-	 * .client.widgets.events.KeyDownEvent)
-	 */
-	public void afterKeyDown(KeyDownEvent event) {
-		// has: event.cancel();
-		SC.logWarn("====> KeyDown ");
-
-		Record record = this.getSelectedRecord();
-
-		/*
-		 * KeyDown is called before navigation to next record finished
-		 * selectedRecord is in that case the last or start position
-		 */
-		SC.logWarn("======> KeyDown last selected record: " + record.getAttributeAsString(JsonConstants.J_ID));
-
-		String key = EventHandler.getKey();
-		if (key.equals("Arrow_Left") || key.equals("Arrow_Right")) {
-			// move focus up to text widget
-			SuggestController.getInstance().focusToSearchBox();
-			SC.logWarn("======> KeyDown left/right move focus to TextWidget: " + key);
-		}
-
-	}
 
 	/*
 	 * KeyPress is called after a KeyDown KeyPress.getKeyName() results in a
@@ -399,4 +434,10 @@ public class SuggestGridImpl extends GridImpl {
 
 	}
 
+	public native static void setStartRow(int row, JavaScriptObject self) /*-{
+		self.selection.startRow = row;
+		self.selection.lastRow = row;
+		self.selection.test = "hallo";
+	}-*/;
+	
 }

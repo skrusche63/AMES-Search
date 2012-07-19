@@ -13,6 +13,7 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.types.DSDataFormat;
 import com.smartgwt.client.types.DSProtocol;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.KeyDownEvent;
@@ -36,6 +37,8 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RowContextClickEvent;
 import com.smartgwt.client.widgets.grid.events.RowContextClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 import de.kp.ames.search.client.handler.GridRecordHandler;
 import de.kp.ames.search.client.method.RequestMethod;
@@ -106,6 +109,8 @@ public class GridImpl extends ListGrid implements Grid {
 		this.setAutoFetchData(false);		
 		this.setShowAllRecords(true);
 		
+		this.setSelectionType(SelectionStyle.SINGLE);
+		
 		// http://www.smartclient.com/smartgwt/showcase/#grid_autofit_values
 		this.setWrapCells(true);  
         this.setFixedRecordHeights(false); 
@@ -127,31 +132,40 @@ public class GridImpl extends ListGrid implements Grid {
 			}			
 		});
 		
-		this.addRecordClickHandler(new RecordClickHandler() {
-			public void onRecordClick(RecordClickEvent event) {
-				self.afterRecordClick(event);				
-			}
-		});
-
-		this.addCellClickHandler(new CellClickHandler() {
-			public void onCellClick(CellClickEvent event) {
-				self.afterCellClick(event);
-			}
-		});
-			
-		
-        this.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {  
-            public void onRecordDoubleClick(RecordDoubleClickEvent event) {  
-                self.afterRecordDoubleClick(event);  
-            }  
-        });  
-
-        this.addKeyPressHandler(new KeyPressHandler() {
-			public void onKeyPress(KeyPressEvent event) {
-				self.afterKeyPress(event);	
-			}
-		}); 
+//		this.addRecordClickHandler(new RecordClickHandler() {
+//			public void onRecordClick(RecordClickEvent event) {
+//				self.afterRecordClick(event);				
+//			}
+//		});
+//
+//		this.addCellClickHandler(new CellClickHandler() {
+//			public void onCellClick(CellClickEvent event) {
+//				self.afterCellClick(event);
+//			}
+//		});
+//			
+//		
+//        this.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {  
+//            public void onRecordDoubleClick(RecordDoubleClickEvent event) {  
+//                self.afterRecordDoubleClick(event);  
+//            }  
+//        });  
         
+        this.addSelectionChangedHandler(new SelectionChangedHandler() {
+			
+			@Override
+			public void onSelectionChanged(SelectionEvent event) {
+				self.afterSelectionChanged(event);  
+				
+			}
+		});
+
+//        this.addKeyPressHandler(new KeyPressHandler() {
+//			public void onKeyPress(KeyPressEvent event) {
+//				self.afterKeyPress(event);	
+//			}
+//		}); 
+//        
         this.addKeyDownHandler(new KeyDownHandler() {
 			
 			@Override
@@ -159,32 +173,32 @@ public class GridImpl extends ListGrid implements Grid {
 				self.afterKeyDown(event);
 			}
 		}); 
-
-        this.addRightMouseDownHandler(new RightMouseDownHandler() {
-			
-			@Override
-			public void onRightMouseDown(RightMouseDownEvent event) {
-				self.afterRightMouseDown(event);
-				
-			}
-		});
-        
-        this.addMouseDownHandler(new MouseDownHandler() {
-			
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				self.afterMouseDown(event);
-				
-			}
-		});
-        
-        this.addRowContextClickHandler(new RowContextClickHandler() {
-			
-			@Override
-			public void onRowContextClick(RowContextClickEvent event) {
-				self.afterRowContextClick(event);				
-			}
-		});
+//
+//        this.addRightMouseDownHandler(new RightMouseDownHandler() {
+//			
+//			@Override
+//			public void onRightMouseDown(RightMouseDownEvent event) {
+//				self.afterRightMouseDown(event);
+//				
+//			}
+//		});
+//        
+//        this.addMouseDownHandler(new MouseDownHandler() {
+//			
+//			@Override
+//			public void onMouseDown(MouseDownEvent event) {
+//				self.afterMouseDown(event);
+//				
+//			}
+//		});
+//        
+//        this.addRowContextClickHandler(new RowContextClickHandler() {
+//			
+//			@Override
+//			public void onRowContextClick(RowContextClickEvent event) {
+//				self.afterRowContextClick(event);				
+//			}
+//		});
         
         /*
          * have a bug in v3.0 and blocks native navigation
@@ -198,6 +212,12 @@ public class GridImpl extends ListGrid implements Grid {
 //			}
 //		});
         
+	}
+
+	public void afterSelectionChanged(SelectionEvent event) {
+		/*
+		 * Must be overridden
+		 */
 	}
 
 	public void afterRowContextClick(RowContextClickEvent event) {

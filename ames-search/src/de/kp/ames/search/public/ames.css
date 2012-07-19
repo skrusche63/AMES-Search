@@ -25,7 +25,6 @@ body {
 .x-sc-text {font:normal 11px tahoma, arial, helvetica, sans-serif;color:#191920;} 
 
 .x-searchbox {background-color:#a0a0a0;border:0;}
-/* override skin textItem and textItemFocused within class x-searchbox */
 .x-searchbox .textItem, .x-searchbox .textItemFocused {font:normal 13px tahoma, arial, helvetica, sans-serif;}
 
 /* suggest specific styles */
@@ -40,5 +39,5 @@ body {
 .sg-d {color:#606060;}
 
 /* suggest group header specific styles */
-.sgh {margin:4px;}
-.sgh-s {font:normal 13px tahoma,arial,sans-serif;}
+.sgh {margin:4px;padding:2px;background-color:#a5d321;}
+.sgh-s {font:bold 12px tahoma,arial,sans-serif;}

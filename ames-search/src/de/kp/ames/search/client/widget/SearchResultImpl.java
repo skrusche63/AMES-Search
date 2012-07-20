@@ -18,7 +18,7 @@ public class SearchResultImpl extends VLayout {
 		this.setWidth100();
 		this.setHeight100();
 		
-		this.setOverflow(Overflow.AUTO);
+//		this.setOverflow(Overflow.AUTO);
 		
 		grid = new SearchResultGridImpl(record);
 

@@ -5,7 +5,9 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.google.gwt.json.client.JSONValue;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -26,15 +28,16 @@ public class SuggestImpl extends VLayout {
 
 		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
 		// height will be set dynamic in relation to rootpanel height
-		this.setHeight(GuiGlobals.SUGESST_HEIGHT);
+		this.setHeight(GuiGlobals.SUGGEST_HEIGHT);
 
 		/*
 		 * This is an essential feature to ensure
 		 * proper scrollbars, i.e vertical ones only
 		 */
-		this.setOverflow(Overflow.AUTO);
+		this.setOverflow(Overflow.HIDDEN);
 
-		grid = new SuggestGridImpl(query);		
+		grid = new SuggestGridImpl(query);
+	
 		this.addMember(grid);
 		
 	};
@@ -43,13 +46,13 @@ public class SuggestImpl extends VLayout {
 
 		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
 		// height will be set dynamic in relation to rootpanel height
-		this.setHeight(GuiGlobals.SUGESST_HEIGHT);
+		this.setHeight(GuiGlobals.SUGGEST_HEIGHT);
 
 		/*
 		 * This is an essential feature to ensure
 		 * proper scrollbars, i.e vertical ones only
 		 */
-		this.setOverflow(Overflow.AUTO);
+		this.setOverflow(Overflow.HIDDEN);
 		
 		ListGridRecord[] records = new SuggestObject().createListGridRecords(jValue);
 		grid = new SuggestGridImpl(records);
@@ -65,11 +68,29 @@ public class SuggestImpl extends VLayout {
 		grid.focusToSuggestGrid();
 	}
 
+
+	private int getDrawnHeight() {
+		Integer[] visibleRows = grid.getVisibleRows();
+		
+		SC.logWarn("====> grid visibleRows: " + visibleRows[0] + " : " + visibleRows[1]);
+		
+		int visibleHeight = 0; 
+		for (int visibleRow = visibleRows[0]; visibleRow <= visibleRows[1]; visibleRow++) {
+			visibleHeight += grid.getDrawnRowHeight(visibleRow);
+		}
+		return visibleHeight;
+	}
 	/*
 	 * dynamic calculated new height
 	 */
 	public void setHeightTo(int h) {
-		this.setHeight(h);
+
+//		grid.setMaxHeight(h);
+		int drawnHeight = getDrawnHeight();
+		SC.logWarn("====> grid drawnHeight: " + drawnHeight);
+		if (drawnHeight < GuiGlobals.SUGGEST_HEIGHT) {
+			this.setHeight(drawnHeight);
+		}
 	}
 
 }

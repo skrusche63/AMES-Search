@@ -20,7 +20,19 @@ public class SearchResultGridImpl extends GridImpl {
 
 	public SearchResultGridImpl(Record record) {
 		super(GuiGlobals.SEARCH_URL, "search");
+		init();
+		setSearchData(record);
 
+	}
+
+	public SearchResultGridImpl(String query) {
+		super(GuiGlobals.SEARCH_URL, "search");
+		init();
+		setSearchData(query);
+
+	}
+
+	private void init() {
 		/*
 		 * No border style
 		 */
@@ -29,7 +41,6 @@ public class SearchResultGridImpl extends GridImpl {
 		this.setHeight100();
 		this.setWidth100();
 
-		setSearchData(record);
 
 		/*
 		 * Create data object
@@ -47,7 +58,6 @@ public class SearchResultGridImpl extends GridImpl {
 		this.setFields(createGridFields());
 
 		this.setShowHeader(false);
-
 	}
 
 	/**
@@ -58,7 +68,18 @@ public class SearchResultGridImpl extends GridImpl {
 	public void setSearchData(Record record) {
 
 		String queryString = record.getAttributeAsString(JsonConstants.J_QUERYSTRING);
-		attributes.put(MethodConstants.ATTR_QUERY, queryString);
+		setSearchData(queryString);
+	
+	}
+
+	/**
+	 * Prepare search data from suggest result
+	 * 
+	 * @param String
+	 */
+	public void setSearchData(String query) {
+
+		attributes.put(MethodConstants.ATTR_QUERY, query);
 	
 	}
 

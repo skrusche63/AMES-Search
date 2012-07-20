@@ -9,35 +9,29 @@ import java.util.Map;
 
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
+import com.smartgwt.client.data.RestDataSource;
 import com.smartgwt.client.types.DSDataFormat;
 import com.smartgwt.client.types.DSProtocol;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.KeyDownEvent;
 import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.events.KeyPressEvent;
-import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.events.MouseDownEvent;
-import com.smartgwt.client.widgets.events.MouseDownHandler;
 import com.smartgwt.client.widgets.events.RightMouseDownEvent;
-import com.smartgwt.client.widgets.events.RightMouseDownHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
 import com.smartgwt.client.widgets.grid.events.CellClickEvent;
-import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.DataArrivedEvent;
 import com.smartgwt.client.widgets.grid.events.DataArrivedHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RowContextClickEvent;
-import com.smartgwt.client.widgets.grid.events.RowContextClickHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 import de.kp.ames.search.client.handler.GridRecordHandler;
@@ -55,12 +49,13 @@ public class GridImpl extends ListGrid implements Grid {
 	/*
 	 * Reference to DataSource
 	 */
-	protected DataSource dataSource;
+	protected RestDataSource dataSource;
 
 	/*
 	 * Reference to RecordHandler
 	 */
 	protected GridRecordHandler recordHandler;
+	
 	
 	/*
 	 * The base url necessary to invoke the
@@ -106,8 +101,13 @@ public class GridImpl extends ListGrid implements Grid {
 		/*
 		 * Data handling
 		 */
-		this.setAutoFetchData(false);		
-		this.setShowAllRecords(true);
+		this.setAutoFetchData(false);
+//		this.setFetchOperation("isOne");
+		
+		// don't load all available data
+//		this.setShowAllRecords(true);
+		
+//		this.setDataPageSize(20);
 		
 		this.setSelectionType(SelectionStyle.SINGLE);
 		
@@ -132,40 +132,6 @@ public class GridImpl extends ListGrid implements Grid {
 			}			
 		});
 		
-//		this.addRecordClickHandler(new RecordClickHandler() {
-//			public void onRecordClick(RecordClickEvent event) {
-//				self.afterRecordClick(event);				
-//			}
-//		});
-//
-//		this.addCellClickHandler(new CellClickHandler() {
-//			public void onCellClick(CellClickEvent event) {
-//				self.afterCellClick(event);
-//			}
-//		});
-//			
-//		
-//        this.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {  
-//            public void onRecordDoubleClick(RecordDoubleClickEvent event) {  
-//                self.afterRecordDoubleClick(event);  
-//            }  
-//        });  
-        
-        this.addSelectionChangedHandler(new SelectionChangedHandler() {
-			
-			@Override
-			public void onSelectionChanged(SelectionEvent event) {
-				self.afterSelectionChanged(event);  
-				
-			}
-		});
-
-//        this.addKeyPressHandler(new KeyPressHandler() {
-//			public void onKeyPress(KeyPressEvent event) {
-//				self.afterKeyPress(event);	
-//			}
-//		}); 
-//        
         this.addKeyDownHandler(new KeyDownHandler() {
 			
 			@Override
@@ -173,6 +139,44 @@ public class GridImpl extends ListGrid implements Grid {
 				self.afterKeyDown(event);
 			}
 		}); 
+
+        this.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {  
+            public void onRecordDoubleClick(RecordDoubleClickEvent event) {  
+                self.afterRecordDoubleClick(event);  
+            }  
+        });
+        
+        /*
+         * deactivated handlers
+         */
+
+//      this.addSelectionChangedHandler(new SelectionChangedHandler() {
+//			
+//			@Override
+//			public void onSelectionChanged(SelectionEvent event) {
+//				self.afterSelectionChanged(event);  
+//				
+//			}
+//		});
+        
+//    	this.addCellClickHandler(new CellClickHandler() {
+//			public void onCellClick(CellClickEvent event) {
+//				self.afterCellClick(event);
+//			}
+//		});
+//		this.addRecordClickHandler(new RecordClickHandler() {
+//			public void onRecordClick(RecordClickEvent event) {
+//				self.afterRecordClick(event);				
+//			}
+//		});
+//
+
+//        this.addKeyPressHandler(new KeyPressHandler() {
+//			public void onKeyPress(KeyPressEvent event) {
+//				self.afterKeyPress(event);	
+//			}
+//		}); 
+//        
 //
 //        this.addRightMouseDownHandler(new RightMouseDownHandler() {
 //			
@@ -201,7 +205,7 @@ public class GridImpl extends ListGrid implements Grid {
 //		});
         
         /*
-         * have a bug in v3.0 and blocks native navigation
+         * has a bug in v3.0 and blocks native navigation
          * nightys 3.0d or 3.1 are fixed  
          */
 //        this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
@@ -224,18 +228,23 @@ public class GridImpl extends ListGrid implements Grid {
 		/*
 		 * Must be overridden
 		 */
+//		Record record = event.getRecord();
+//		int row = event.getRowNum();
+//		SC.logWarn("====> RowContextClick: event recid> " + record.getAttributeAsString(JsonConstants.J_ID) + " row: " + row);
 	}
 
 	public void afterMouseDown(MouseDownEvent event) {
 		/*
 		 * Must be overridden
 		 */
+//		SC.logWarn("====> MouseDown: ");
 	}
 
 	public void afterRightMouseDown(RightMouseDownEvent event) {
 		/*
 		 * Must be overridden
 		 */
+		SC.logWarn("====> RightMouseDown: ");
 	}
 
 	/* (non-Javadoc)
@@ -252,17 +261,40 @@ public class GridImpl extends ListGrid implements Grid {
 		/*
 		 * Must be overridden
 		 */
+//		String key = EventHandler.getKey();
+//		SC.logWarn("====> BodyKeyPress: " + key);
 	}
+	
+	/*
+	 * CellClick is called after mouse click into cell and resolution is on
+	 * row/col level CellClick is followed by a RecordClick which can process
+	 * the result on record level
+	 */
 	public void afterCellClick(CellClickEvent event) {
 		/*
 		 * Must be overridden
 		 */
+//		Record record = event.getRecord();
+//		Record selected = this.getSelectedRecord();		
+//
+//		SC.logWarn("====> CellClick event col: " + event.getColNum() + " row:" + event.getRowNum());
+//		SC.logWarn("======> CellClick  event recid> " + record.getAttributeAsString(JsonConstants.J_ID));
+//		SC.logWarn("======> CellClick  selected recid> " + selected.getAttributeAsString(JsonConstants.J_ID));
+
 	}
 
+	/*
+	 * KeyPress is called after a KeyDown KeyPress.getKeyName() results in a
+	 * possible combination of keys, such as Shift + a => A KeyPress is not
+	 * called for Shift, Ctrl, Alt, F1 - F12, Arrow keys
+	 * 
+	 */
 	public void afterKeyPress(KeyPressEvent event) {
 		/*
 		 * Must be overridden
 		 */
+//		String key = event.getKeyName();
+//		SC.logWarn("====> KeyPress pressed: " + key);
 	}
 
 	public void afterKeyDown(KeyDownEvent event) {
@@ -371,21 +403,25 @@ public class GridImpl extends ListGrid implements Grid {
 		 * Finally create data source
 		 */
 
-		dataSource = new DataSource() {
+		dataSource = new RestDataSource() {
 			  
 			protected Object transformRequest(DSRequest dsRequest) {  
+				
+//				dsRequest.getResultSet().setFetchMode(FetchMode.PAGED);
+//				dsRequest.setEndRow(dsRequest.getStartRow() + 20);
 				dsRequest.setParams(getRequestParams());				
 				return super.transformRequest(dsRequest);  
 			}  
 
-			protected void transformResponse(DSResponse response, DSRequest request, Object data) {  
+			protected void transformResponse(DSResponse response, DSRequest request, Object data) {
+//				response.setTotalRows(30);
 				super.transformResponse(response, request, data);  
 			}  
 			
 		};
 		
 		dataSource.setDataFormat(DSDataFormat.JSON);
-		dataSource.setDataProtocol(DSProtocol.GETPARAMS);  
+		dataSource.setDataProtocol(DSProtocol.GETPARAMS);
 		
 		dataSource.setDataURL(requestUrl);		
 		dataSource.setFields(requestFields);
@@ -422,6 +458,8 @@ public class GridImpl extends ListGrid implements Grid {
 	 * @param event
 	 */
 	public void afterDraw(DrawEvent event) {
+		SC.logWarn("====> afterDraw");
+		
 		this.fetchData();
 	}
 	

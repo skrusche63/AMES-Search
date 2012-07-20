@@ -29,6 +29,6 @@ public class GuiGlobals {
 	 * Widget Dimensions
 	 */
 	public static int SUGGEST_WIDTH  = 420;
-	public static int SUGESST_HEIGHT = 600;
+	public static int SUGGEST_HEIGHT = 600;
 	
 }

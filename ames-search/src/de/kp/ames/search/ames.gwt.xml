@@ -28,7 +28,7 @@
   
   <!-- Optimze compile permutation during development.            -->
   <!-- <set-property name="user.agent" value="safari,gecko1_8" /> -->
-  <set-property name="user.agent" value="safari" />
+  <set-property name="user.agent" value="gecko1_8" />
   
 
 </module>

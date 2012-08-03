@@ -7,27 +7,31 @@ import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 import de.kp.ames.search.client.globals.JsonConstants;
+import de.kp.ames.search.client.model.external.ExternalObject;
 
-public class ResultObject implements DataObject {
+public class ResultObject extends ExternalObject {
 
-	@Override
-	public DataSourceField[] createDataFields() {
+	public ArrayList<DataSourceField> createDataFieldsAsList() {
 		ArrayList<DataSourceField> fields = new ArrayList<DataSourceField>();
 
 		fields.add(new DataSourceTextField(JsonConstants.J_ID));
 		fields.add(new DataSourceTextField(JsonConstants.J_RESULT));
 		fields.add(new DataSourceTextField(JsonConstants.J_TITLE));
+		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
 
-		return (DataSourceField[]) fields.toArray(new DataSourceField[fields.size()]);	}
+		return fields; 
+}
 
-	@Override
-	public ListGridField[] createGridFields() {
+	public ArrayList<ListGridField> createListGridFieldsAsList() {
 
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
 		fields.add(new ListGridField(JsonConstants.J_RESULT));
+		ListGridField descField = new ListGridField(JsonConstants.J_DESC);
+		descField.setHidden(true);
+		fields.add(descField);
 		
-		return (ListGridField[]) fields.toArray(new ListGridField[fields.size()]);
+		return fields;
 	}
 
 }

@@ -5,6 +5,7 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -16,6 +17,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.control.SuggestController;
+import de.kp.ames.search.client.event.SearchEventManager;
 
 public class SearchWidget extends VLayout {
 
@@ -184,6 +186,9 @@ public class SearchWidget extends VLayout {
 
 				String keyName = event.getKeyName();
 				if (keyName.equals("Arrow_Down")) {
+					
+					SC.logWarn("====> searchBox.keydown Arrow Down");
+					
 					SuggestController.getInstance().focusToSuggestGrid();
 				}				
 			}

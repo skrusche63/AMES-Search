@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.SC;
 
 import de.kp.ames.search.client.activity.ActivityImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
@@ -36,7 +37,9 @@ public class SuggestController {
 	}
 	
 	public void focusToSuggestGrid() {
-		
+
+		SC.logWarn("====> SuggestController.focusToSuggestGrid");
+
 		if (suggestor != null) suggestor.focusToSuggestGrid();
 		
 	}
@@ -119,6 +122,8 @@ public class SuggestController {
 		
 	}
 	
+	
+	@SuppressWarnings("unused")
 	private void buildSuggestorAsync(String query) {
 		/*
 		 * Build request data

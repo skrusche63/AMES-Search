@@ -1,16 +1,17 @@
-package de.kp.ames.search.client.widget.grid;
+package de.kp.ames.search.client.data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.GroupStartOpen;
-import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.EventHandler;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 import de.kp.ames.search.client.control.SuggestController;
 import de.kp.ames.search.client.globals.GuiGlobals;
@@ -23,55 +24,10 @@ import de.kp.ames.search.client.method.RequestMethodImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.SuggestObject;
 
-public class SuggestGridImpl extends GridImpl {
+public class SuggestGridImpl extends RemoteGridImpl {
 
 	private String query;
 
-	public SuggestGridImpl(ListGridRecord[] records) {
-		super(GuiGlobals.SEARCH_URL, "search");
-
-		/*
-		 * No border style
-		 */
-		this.setStyleName(GuiStyles.X_BD_STYLE_0);
-
-//		this.setHeight(1);
-		this.setHeight100();
-		this.setWidth100();
-
-//		this.setBodyOverflow(Overflow.VISIBLE);
-//		this.setOverflow(Overflow.VISIBLE);
-
-		this.setLeaveScrollbarGap(false);
-
-		/*
-		 * Create data object
-		 */
-		this.dataObject = createDataObject();
-
-		/*
-		 * Create data
-		 */
-		this.setData(records);
-
-		/*
-		 * Create grid fields
-		 */
-		this.setFields(createGridFields());
-
-		this.setGroupStartOpen(GroupStartOpen.ALL);
-		this.setGroupByField(JsonConstants.J_HYPERNYM);
-
-		this.setShowHeader(false);
-		this.setCellHeight(32);
-
-		/*
-		 * Add Record Handler
-		 */
-		SuggestRecordHandlerImpl recordHandler = new SuggestRecordHandlerImpl(this);
-		this.addRecordHandler(recordHandler);
-
-	}
 
 	/**
 	 * @param query
@@ -80,20 +36,43 @@ public class SuggestGridImpl extends GridImpl {
 		super(GuiGlobals.SEARCH_URL, "search");
 
 		/*
+		 * Set query
+		 */
+		this.query = query;
+
+		initialize();
+
+	}
+
+	public SuggestGridImpl(ListGridRecord[] records) {
+		super(GuiGlobals.SEARCH_URL, "search");
+
+		initialize();
+
+		/*
+		 * Create data
+		 */
+		this.setData(records);
+
+	}
+
+	private void initialize() {
+		/*
 		 * No border style
 		 */
 		this.setStyleName(GuiStyles.X_BD_STYLE_0);
 
-//		this.setHeight(1);
 		this.setHeight100();
 		this.setWidth100();
 
-//		this.setBodyOverflow(Overflow.VISIBLE);
-//		this.setOverflow(Overflow.AUTO);
+		this.setLeaveScrollbarGap(false);
+		this.setSelectionType(SelectionStyle.SINGLE);
+		this.setShowHeader(false);
 
-//		this.setLeaveScrollbarGap(false);
-
-		setQuery(query);
+		/*
+		 * Register data
+		 */
+		attributes = new HashMap<String,String>();
 
 		/*
 		 * Create data object
@@ -109,32 +88,49 @@ public class SuggestGridImpl extends GridImpl {
 		 * Create grid fields
 		 */
 		this.setFields(createGridFields());
-
-		// this.setGroupStartOpen(GroupStartOpen.ALL);
-		// this.setGroupByField(JsonConstants.J_HYPERNYM);
-
-		this.setShowHeader(false);
-//		this.setCellHeight(32);
+		
+		/*
+		 * add keydown handler
+		 */
+		final SuggestGridImpl self = this;
+		this.addKeyDownHandler(new KeyDownHandler() {
+			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				self.afterKeyDown(event);
+				
+			}
+		});
 
 		/*
 		 * Add Record Handler
 		 */
 		SuggestRecordHandlerImpl recordHandler = new SuggestRecordHandlerImpl(this);
 		this.addRecordHandler(recordHandler);
-
+	}
+	
+	@Override
+	public void afterSelectionChanged(SelectionEvent event) {
+		// do nothing on single select
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
+
+	@Override
+	public String getDetailFieldName() {
+		// suppress detail field expansion option
+		return null;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see de.kp.ames.search.client.widget.grid.GridImpl#getRequestParams()
 	 */
+	@Override
 	public Map<String, String> getRequestParams() {
 
+		SC.logWarn("====> SuggestGridImpl: getRequestParams: " + this.query);
 		/*
 		 * Update attributes
 		 */
@@ -145,24 +141,23 @@ public class SuggestGridImpl extends GridImpl {
 
 	}
 
-	/**
-	 * @return
-	 */
-	private DataObject createDataObject() {
-		return new SuggestObject();
-	}
-
 	/*
 	 * Grid get focus from TextWidget with Arrow_Down
 	 */
 	public void focusToSuggestGrid() {
 
-		if (this.getRecords().length == 0)
+		SC.logWarn("====> SuggestGridImpl.focusToSuggestGrid 1");
+		SC.logWarn("====> SuggestGridImpl.focusToSuggestGrid empty?: " + this.getResultSet().isEmpty());
+
+//		if (this.getRecords().length == 0)
+		if (this.getResultSet().isEmpty())
 			return;
 
+		SC.logWarn("====> SuggestGridImpl.focusToSuggestGrid 2");
+
 		this.focus();
-		
-		SC.logWarn("====> focus"); 
+
+		SC.logWarn("====> SuggestGridImpl.focusToSuggestGrid 3: selected: " + this.getSelectedRecords().length);
 
 		if (this.getSelectedRecords().length == 0) {
 			/*
@@ -170,11 +165,13 @@ public class SuggestGridImpl extends GridImpl {
 			 * available there must be a group header first because of this we
 			 * select second record, which contains first suggestion
 			 */
-			this.selectSingleRecord(this.getRecords()[1]);
+			SC.logWarn("====> SuggestGridImpl.focusToSuggestGrid 4");
+			this.selectSingleRecord(1);
+//			this.selectSingleRecord(this.getRecords()[1]);
 		}
 
 	}
-	
+
 	/*
 	 * KeyDown is called for each single Key
 	 * 
@@ -199,7 +196,7 @@ public class SuggestGridImpl extends GridImpl {
 			SC.logWarn("======> KeyDown left/right move focus to TextWidget: " + key);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -207,26 +204,25 @@ public class SuggestGridImpl extends GridImpl {
 	 * de.kp.ames.search.client.core.grid.Grid#afterRecordClick(com.smartgwt
 	 * .client.widgets.grid.events.RecordClickEvent)
 	 */
-	public void afterRecordClick(RecordClickEvent event) {
-
-		// group headers will not trigger that even
-		Record record = event.getRecord();
-
-		SC.logWarn("====> RecordClick event record: <" + record.getAttributeAsString("qsraw") + "> " + " id> "
-				+ record.getAttributeAsString(JsonConstants.J_ID));
-
-		int index = this.getRecordIndex(record);
-		SC.logWarn("======> RecordClick index: " + index);
-
-		/*
-		 * check selected record
-		 */
-		Record selected = this.getSelectedRecord();
-		SC.logWarn("======> RecordClick selected record: <" + selected.getAttributeAsString("qsraw") + "> " + " #>"
-				+ this.getRecordIndex(selected) + " id> " + selected.getAttributeAsString(JsonConstants.J_ID));
-
-	}
-
+//	public void afterRecordClick(RecordClickEvent event) {
+//
+//		// group headers will not trigger that even
+//		Record record = event.getRecord();
+//
+//		SC.logWarn("====> RecordClick event record: <" + record.getAttributeAsString("qsraw") + "> " + " id> "
+//				+ record.getAttributeAsString(JsonConstants.J_ID));
+//
+//		int index = this.getRecordIndex(record);
+//		SC.logWarn("======> RecordClick index: " + index);
+//
+//		/*
+//		 * check selected record
+//		 */
+//		Record selected = this.getSelectedRecord();
+//		SC.logWarn("======> RecordClick selected record: <" + selected.getAttributeAsString("qsraw") + "> " + " #>"
+//				+ this.getRecordIndex(selected) + " id> " + selected.getAttributeAsString(JsonConstants.J_ID));
+//
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -235,6 +231,7 @@ public class SuggestGridImpl extends GridImpl {
 	 * de.kp.ames.search.client.core.grid.Grid#afterRecordDoubleClick(com.smartgwt
 	 * .client.widgets.grid.events.RecordDoubleClickEvent)
 	 */
+	@Override
 	public void afterRecordDoubleClick(RecordDoubleClickEvent event) {
 		// does not have event.cancel();
 		Record record = event.getRecord();
@@ -251,12 +248,12 @@ public class SuggestGridImpl extends GridImpl {
 		SC.logWarn("======> RecordDoubleClick: event record search triggered");
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see de.kp.ames.search.client.widget.grid.GridImpl#createMethod()
 	 */
+	@Override
 	public RequestMethod createMethod() {
 
 		RequestMethodImpl requestMethod = new RequestMethodImpl();
@@ -265,6 +262,13 @@ public class SuggestGridImpl extends GridImpl {
 		requestMethod.setAttributes(attributes);
 		return requestMethod;
 
+	}
+
+	/**
+	 * @return
+	 */
+	private DataObject createDataObject() {
+		return new SuggestObject();
 	}
 
 }

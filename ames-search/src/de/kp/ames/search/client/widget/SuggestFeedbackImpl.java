@@ -9,6 +9,8 @@ import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
 
 public class SuggestFeedbackImpl extends VLayout {
+	private HTMLPane pane;
+
 	public SuggestFeedbackImpl(Record record) {
 
 		this.setShowEdges(false);
@@ -21,7 +23,7 @@ public class SuggestFeedbackImpl extends VLayout {
 		
 		this.setOverflow(Overflow.AUTO);
 
-		HTMLPane pane = new HTMLPane();
+		pane = new HTMLPane();
 //		pane.setWidth100();
 //		pane.setHeight100();
 		pane.setContents(recordToHtml(record));
@@ -42,6 +44,10 @@ public class SuggestFeedbackImpl extends VLayout {
 				 "</div>" + 
 				 "</div>"; 
 		return result;
+	}
+
+	public void update(Record record) {
+		pane.setContents(recordToHtml(record));
 	}
 	
 }

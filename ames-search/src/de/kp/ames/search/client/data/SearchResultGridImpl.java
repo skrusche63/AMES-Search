@@ -1,38 +1,45 @@
-package de.kp.ames.search.client.widget.grid;
+package de.kp.ames.search.client.data;
 /**
  * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
  * Please contact: team@dr-kruscheundpartner.de
  */
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.util.SC;
+
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
+import de.kp.ames.search.client.handler.SearchRecordHandlerImpl;
 import de.kp.ames.search.client.method.RequestMethod;
 import de.kp.ames.search.client.method.RequestMethodImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.ResultObject;
 
-public class SearchResultGridImpl extends GridImpl {
+public class SearchResultGridImpl extends RemoteGridImpl {
 
 	public SearchResultGridImpl(Record record) {
 		super(GuiGlobals.SEARCH_URL, "search");
-		init();
+		initialize();
 		setSearchData(record);
 
 	}
 
 	public SearchResultGridImpl(String query) {
 		super(GuiGlobals.SEARCH_URL, "search");
-		init();
+		initialize();
 		setSearchData(query);
 
 	}
 
-	private void init() {
+	private void initialize() {
+		
+		SC.logWarn("======> SearchResultGridImpl.initialize");
+
 		/*
 		 * No border style
 		 */
@@ -41,6 +48,11 @@ public class SearchResultGridImpl extends GridImpl {
 		this.setHeight100();
 		this.setWidth100();
 
+
+		/*
+		 * Register data
+		 */
+		attributes = new HashMap<String,String>();
 
 		/*
 		 * Create data object
@@ -58,6 +70,13 @@ public class SearchResultGridImpl extends GridImpl {
 		this.setFields(createGridFields());
 
 		this.setShowHeader(false);
+		
+		/*
+		 * Add Record Handler
+		 */
+		SearchRecordHandlerImpl recordHandler = new SearchRecordHandlerImpl(this);
+		this.addRecordHandler(recordHandler);
+
 	}
 
 	/**

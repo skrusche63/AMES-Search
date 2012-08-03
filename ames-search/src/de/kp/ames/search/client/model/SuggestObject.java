@@ -17,8 +17,9 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 import de.kp.ames.search.client.globals.JsonConstants;
+import de.kp.ames.search.client.model.external.ExternalObject;
 
-public class SuggestObject implements DataObject {
+public class SuggestObject extends ExternalObject {
 
 	/**
 	 * Constructor
@@ -27,6 +28,56 @@ public class SuggestObject implements DataObject {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.model.DataObject#createDataFields()
+	 */
+	@Override
+	public ArrayList<DataSourceField> createDataFieldsAsList() {
+
+		ArrayList<DataSourceField> fields = new ArrayList<DataSourceField>();
+
+		/*
+		 * Primary key
+		 */
+		DataSourceTextField primaryKey = new DataSourceTextField(JsonConstants.J_ID);
+		primaryKey.setHidden(true);
+		primaryKey.setPrimaryKey(true);
+		fields.add(primaryKey);
+		
+		fields.add(new DataSourceTextField(JsonConstants.J_TERM));
+		fields.add(new DataSourceTextField(JsonConstants.J_HYPERNYM));
+
+		fields.add(new DataSourceTextField(JsonConstants.J_RESULT));
+		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
+		fields.add(new DataSourceTextField(JsonConstants.J_QUERYSTRING));
+
+		return fields;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.search.client.model.DataObject#createGridFields()
+	 */
+	@Override
+	public ArrayList<ListGridField> createListGridFieldsAsList() {
+
+		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
+
+		ListGridField hypernymField = new ListGridField(JsonConstants.J_HYPERNYM);
+		hypernymField.setHidden(true);
+		
+		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
+		resultField.setAlign(Alignment.LEFT);  
+
+		fields.add(hypernymField);
+		fields.add(resultField);
+		
+		return fields;
+		
+	}
+
+	/*
+	 * create records from JSON (for async pattern)
+	 */
 	public ListGridRecord[] createListGridRecords(JSONValue jValue) {
 
 		ArrayList<ListGridRecord> records = new ArrayList<ListGridRecord>();
@@ -53,51 +104,5 @@ public class SuggestObject implements DataObject {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.model.DataObject#createDataFields()
-	 */
-	public DataSourceField[] createDataFields() {
-
-		ArrayList<DataSourceField> fields = new ArrayList<DataSourceField>();
-
-		/*
-		 * Primary key
-		 */
-		DataSourceTextField primaryKey = new DataSourceTextField(JsonConstants.J_ID);
-		primaryKey.setHidden(true);
-		
-		primaryKey.setPrimaryKey(true);
-		fields.add(primaryKey);
-		
-		fields.add(new DataSourceTextField(JsonConstants.J_TERM));
-		fields.add(new DataSourceTextField(JsonConstants.J_HYPERNYM));
-
-		fields.add(new DataSourceTextField(JsonConstants.J_RESULT));
-		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
-		fields.add(new DataSourceTextField(JsonConstants.J_QUERYSTRING));
-
-		return (DataSourceField[]) fields.toArray(new DataSourceField[fields.size()]);
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kp.ames.search.client.model.DataObject#createGridFields()
-	 */
-	public ListGridField[] createGridFields() {
-
-		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
-
-		ListGridField hypernymField = new ListGridField(JsonConstants.J_HYPERNYM);
-		hypernymField.setHidden(true);
-		
-		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
-//		resultField.setWidth(380); // same as parent Grid 
-		resultField.setAlign(Alignment.LEFT);  
-
-		fields.add(hypernymField);
-		fields.add(resultField);
-		
-		return (ListGridField[]) fields.toArray(new ListGridField[fields.size()]);
-		
-	}
 
 }

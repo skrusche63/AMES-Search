@@ -12,6 +12,8 @@ public class MethodConstants {
 	public static String METH_FACET   = "facet";
 	public static String METH_SEARCH  = "search";
 	public static String METH_SUGGEST = "suggest";
+	public static String METH_GET 	  = "get";
+	public static String ATTR_FORMAT  = "format";
 
     /*
      * Method attributes

@@ -5,15 +5,14 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.google.gwt.json.client.JSONValue;
-import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+import de.kp.ames.search.client.data.SuggestGridImpl;
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.model.SuggestObject;
-import de.kp.ames.search.client.widget.grid.SuggestGridImpl;
 
 public class SuggestImpl extends VLayout {
 	
@@ -65,6 +64,9 @@ public class SuggestImpl extends VLayout {
 	 * focus moves from SearchBox to SuggestGrid
 	 */
 	public void focusToSuggestGrid() {
+
+		SC.logWarn("====> SuggestImpl.focusToSuggestGrid");
+
 		grid.focusToSuggestGrid();
 	}
 

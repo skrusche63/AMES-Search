@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import com.smartgwt.client.data.Record;
 
-import de.kp.ames.search.client.widget.grid.Grid;
+import de.kp.ames.search.client.data.Grid;
 
 public class GridRecordHandlerImpl implements GridRecordHandler {
 	/*

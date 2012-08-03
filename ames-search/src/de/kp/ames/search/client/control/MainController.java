@@ -9,9 +9,12 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+import de.kp.ames.search.client.event.SearchEventManager;
+import de.kp.ames.search.client.event.SuggestListener;
 import de.kp.ames.search.client.globals.GuiGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.layout.Viewport;
@@ -19,7 +22,7 @@ import de.kp.ames.search.client.test.SplitterTestCase;
 import de.kp.ames.search.client.widget.ResultImpl;
 import de.kp.ames.search.client.widget.SearchWidget;
 
-public class MainController {
+public class MainController implements SuggestListener {
 
 	private static MainController instance = new MainController();
 
@@ -34,10 +37,17 @@ public class MainController {
 	 */
 	private SearchWidget searchWidget;
 
+	private boolean isResultLayoutCreated;
+
 	/**
 	 * Constructor
 	 */
 	private MainController() {
+		/*
+		 * register listener
+		 */
+		SearchEventManager.getInstance().addSuggestListener(this);
+		
 	}
 
 	public static MainController getInstance() {
@@ -69,26 +79,6 @@ public class MainController {
 		
 	}
 
-	public void createTestCase() {
-
-		/*
-		 * Remove the initial splash screen
-		 */
-		Element splash = DOM.getElementById(GuiGlobals.SPLASH_ID);
-		DOM.removeChild(RootPanel.getBodyElement(), splash);
-
-		/*
-		 * Create viewport
-		 */
-		createViewport();
-
-		/*
-		 * Create splitter testcase
-		 */
-		createSplitterTestCase();
-		
-	}
-
 	private void createSearchWidget() {
 		openSearch();
 	}
@@ -113,7 +103,12 @@ public class MainController {
 
 	}
 
-	private void createResult(Record record) {
+	private void updateResult(Record record) {
+		// send message to all listeners for update
+		SearchEventManager.getInstance().doAfterSearchUpdate(record);
+	}
+	
+	private void createFirstTimeResult(Record record) {
 		
 		/* 
 		 * Remove placeholder
@@ -129,22 +124,6 @@ public class MainController {
 		container.draw();
 	}
 
-	private void createSplitterTestCase() {
-
-		/* 
-		 * Remove placeholder
-		 */
-		viewport.removeMember(viewport.getMember(1));
-		
-		VLayout newWrapper = new VLayout();
-		newWrapper.setOverflow(Overflow.AUTO);
-
-		newWrapper.addMember(new SplitterTestCase());
-		viewport.addMember(newWrapper);
-
-		container.draw();
-		
-	}
 	
 	/**
 	 * This method controls all actions that have to be taken after the main
@@ -198,17 +177,26 @@ public class MainController {
 	}
 
 	/**
+	 * SuggestListener 
 	 * Main method to establish after suggest handling
 	 * 
 	 * @param record
 	 */
+	@Override
 	public void doAfterSuggest(Record record) {
+
+		SC.logWarn("======> MainController.doAfterSuggest");
 
 		SuggestController.getInstance().removeSuggestor();
 		getSearchWidget().moveToTop();
 		getSearchWidget().setQuery(record.getAttributeAsString(JsonConstants.J_QUERYRAWSTRING));
 		
-		createResult(record);
+		if (!isResultLayoutCreated) {
+			isResultLayoutCreated = true;
+			createFirstTimeResult(record);
+		} else {
+			updateResult(record);
+		}
 	}
 
 	/**
@@ -217,5 +205,6 @@ public class MainController {
 	public SearchWidget getSearchWidget() {
 		return searchWidget;
 	}
+
 
 }

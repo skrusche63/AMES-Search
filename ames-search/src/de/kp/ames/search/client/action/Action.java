@@ -1,4 +1,4 @@
-package de.kp.ames.search.client.http;
+package de.kp.ames.search.client.action;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,30 +18,28 @@ package de.kp.ames.search.client.http;
  *
  */
 
-/**
- * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
- *
- */
-public interface ConnectionCallback {
+import java.util.HashMap;
+
+public interface Action {
 
 	/**
-	 * @param jValue
+	 * Execute controlled action
 	 */
-	public void onSuccess(String response);
+	public void execute();
 
 	/**
-	 * @param throwable
+	 * Request parameters to be sent
+	 * to the server side
+	 * 
+	 * @param params
 	 */
-	public void onError(Throwable throwable);
+	public void setParams(HashMap<String,String> params);
 	
 	/**
-	 * @param message
+	 * Retrieve request parameters
+	 * 
+	 * @return
 	 */
-	public void onTimeout(String message);
-	
-	/**
-	 * @param message
-	 */
-	public void onFailure(String message);
+	public HashMap<String,String> getParams();
 	
 }

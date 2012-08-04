@@ -33,14 +33,6 @@ public class ResultCardGridImpl extends LocalGridImpl {
 		this.setFields(createGridFields());
 		SC.logWarn("==========> ResultCardGridImpl.CTOR 3");
 
-		/*
-		 * Create Grid Data
-		 */
-		// there are none initially
-//		this.setData(createGridRecords());
-//		SC.logWarn("==========> ResultCardGridImpl.CTOR 4");
-
-
 	}
 
 	@Override
@@ -62,6 +54,11 @@ public class ResultCardGridImpl extends LocalGridImpl {
 	 */
 	private DataObject createDataObject() {
 		return new ResultCartObject();
+	}
+
+	public boolean hasCombinedId() {
+		// TODO implement check
+		return false;
 	}
 
 	

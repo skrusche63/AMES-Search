@@ -1,10 +1,11 @@
-package de.kp.ames.search.client.data;
+package de.kp.ames.search.client.widget;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.data.ResultCardGridImpl;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class ResultCartImpl extends VLayout {
 	private ResultCardGridImpl grid;
@@ -28,14 +29,28 @@ public class ResultCartImpl extends VLayout {
 
 	public void addChoice(Record suggestFeedbackRecord, Record resultRecord) {
 		
+		String combinedId = suggestFeedbackRecord.getAttribute("id") + "::" + resultRecord.getAttribute("id");
+		
+		// TODO: check if id is already added
+		if (this.hasCombinedId()) return;
+		
 		Record record = new Record();
-		record.setAttribute("id", suggestFeedbackRecord.getAttribute("id") + "::" + resultRecord.getAttribute("id"));
+		record.setAttribute("id", combinedId);
 		
 		SC.logWarn("========> ResultCartImpl.addChoice combId: " + record.getAttribute("id"));
 
 		record.setAttribute("suggest", suggestFeedbackRecord.getAttribute("term"));
-		record.setAttribute("choice", "choice test");
+		record.setAttribute("choice", resultRecord.getAttribute("title"));
 		grid.addData(record);
+	}
+
+	private boolean hasCombinedId() {
+		return grid.hasCombinedId();
+	}
+
+	public int getCartCount() {
+//		return grid.getRecord().length;
+		return grid.getTotalRows();
 	}
 
 

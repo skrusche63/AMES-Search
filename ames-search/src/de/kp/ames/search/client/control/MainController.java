@@ -15,10 +15,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.event.SearchEventManager;
 import de.kp.ames.search.client.event.SuggestListener;
-import de.kp.ames.search.client.globals.GuiGlobals;
+import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.layout.Viewport;
-import de.kp.ames.search.client.test.SplitterTestCase;
 import de.kp.ames.search.client.widget.ResultImpl;
 import de.kp.ames.search.client.widget.SearchWidget;
 
@@ -64,7 +63,7 @@ public class MainController implements SuggestListener {
 		/*
 		 * Remove the initial splash screen
 		 */
-		Element splash = DOM.getElementById(GuiGlobals.SPLASH_ID);
+		Element splash = DOM.getElementById(GUIGlobals.SPLASH_ID);
 		DOM.removeChild(RootPanel.getBodyElement(), splash);
 
 		/*
@@ -103,13 +102,17 @@ public class MainController implements SuggestListener {
 
 	}
 
-	private void updateResult(Record record) {
+	private void updateResult(Record suggestRecord) {
+		SC.logWarn("======> MainController.updateResult");
+
 		// send message to all listeners for update
-		SearchEventManager.getInstance().doAfterSearchUpdate(record);
+		SearchEventManager.getInstance().doAfterSearchUpdate(suggestRecord);
 	}
 	
-	private void createFirstTimeResult(Record record) {
-		
+	private void createFirstTimeResult(Record suggestRecord) {
+
+		SC.logWarn("======> MainController.createFirstTimeResult");
+
 		/* 
 		 * Remove placeholder
 		 */
@@ -118,10 +121,12 @@ public class MainController implements SuggestListener {
 		VLayout newWrapper = new VLayout();
 		newWrapper.setOverflow(Overflow.AUTO);
 
-		newWrapper.addMember(new ResultImpl(record));
+		newWrapper.addMember(new ResultImpl(suggestRecord));
 		viewport.addMember(newWrapper);
 
 		container.draw();
+
+		SC.logWarn("======> MainController.createFirstTimeResult END");
 	}
 
 	

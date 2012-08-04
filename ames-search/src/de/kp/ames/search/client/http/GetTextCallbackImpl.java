@@ -1,4 +1,8 @@
 package de.kp.ames.search.client.http;
+
+import de.kp.ames.search.client.activity.Activity;
+import de.kp.ames.search.client.service.Service;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,30 +22,34 @@ package de.kp.ames.search.client.http;
  *
  */
 
-/**
- * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
- *
- */
-public interface ConnectionCallback {
+public class GetTextCallbackImpl extends GetCallbackImpl {
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param activity
+	 * @param service
+	 */
+	public GetTextCallbackImpl(Activity activity, Service service) {
+		super(activity, service);
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onSuccess(java.lang.String)
+	 */
+	public void onSuccess(String response) {
 
-	/**
-	 * @param jValue
-	 */
-	public void onSuccess(String response);
+		try {
+			/*
+			 * Text response
+			 */
+			this.activity.execute(response);
+			
+		} catch (NullPointerException e) {
+			doGetFailure();
+			
+		}
 
-	/**
-	 * @param throwable
-	 */
-	public void onError(Throwable throwable);
-	
-	/**
-	 * @param message
-	 */
-	public void onTimeout(String message);
-	
-	/**
-	 * @param message
-	 */
-	public void onFailure(String message);
-	
+	}
+
 }

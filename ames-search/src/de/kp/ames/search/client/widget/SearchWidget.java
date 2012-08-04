@@ -17,7 +17,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.control.SuggestController;
-import de.kp.ames.search.client.event.SearchEventManager;
 
 public class SearchWidget extends VLayout {
 

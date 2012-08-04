@@ -5,8 +5,8 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.globals.JsonConstants;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class SuggestFeedbackImpl extends VLayout {
 	private HTMLPane pane;

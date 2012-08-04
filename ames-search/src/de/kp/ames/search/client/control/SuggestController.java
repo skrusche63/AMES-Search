@@ -1,15 +1,8 @@
 package de.kp.ames.search.client.control;
 
-import java.util.HashMap;
-
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.util.SC;
 
-import de.kp.ames.search.client.activity.ActivityImpl;
-import de.kp.ames.search.client.globals.GuiGlobals;
-import de.kp.ames.search.client.globals.MethodConstants;
-import de.kp.ames.search.client.service.ServiceImpl;
 import de.kp.ames.search.client.widget.SearchWidget;
 import de.kp.ames.search.client.widget.SuggestImpl;
 
@@ -123,37 +116,40 @@ public class SuggestController {
 	}
 	
 	
-	@SuppressWarnings("unused")
-	private void buildSuggestorAsync(String query) {
-		/*
-		 * Build request data
-		 */
-		HashMap<String,String> attributes = new HashMap<String,String>();
-		attributes.put(MethodConstants.ATTR_QUERY, query);
-		
-		/*
-		 * Create Service
-		 */
-		ServiceImpl service = new ServiceImpl(GuiGlobals.SEARCH_URL, "search");
-		service.doSuggest(attributes, new ActivityImpl() {
+	// this is a showcase variant for async service calls
+	// will need a LocalGridImpl instead
 
-			public void execute(JSONValue jValue) {
-				doAfterDataArrived(jValue);				
-			}
-			
-		});
-		
-	}
-
-	private void doAfterDataArrived(JSONValue jValue) {
-
-		suggestor = new SuggestImpl(jValue);
-
-		RootPanel rp = RootPanel.get();
-		rp.add(suggestor);
-
-		moveSuggestorTo(x,y);
-		
-	}
+//	private void buildSuggestorAsync(String query) {
+//		/*
+//		 * Build request data
+//		 */
+//		HashMap<String,String> attributes = new HashMap<String,String>();
+//		attributes.put(MethodConstants.ATTR_TYPE, "suggest");
+//		attributes.put(MethodConstants.ATTR_QUERY, query);
+//		
+//		/*
+//		 * Create Service
+//		 */
+//		ServiceImpl service = new ServiceImpl(GUIGlobals.SEARCH_URL, "search");
+//		service.doGetJson(attributes, new ActivityImpl() {
+//
+//			public void execute(JSONValue jValue) {
+//				doAfterDataArrived(jValue);				
+//			}
+//			
+//		});
+//		
+//	}
+//
+//	private void doAfterDataArrived(JSONValue jValue) {
+//
+//		suggestor = new SuggestImpl(jValue);
+//
+//		RootPanel rp = RootPanel.get();
+//		rp.add(suggestor);
+//
+//		moveSuggestorTo(x,y);
+//		
+//	}
 
 }

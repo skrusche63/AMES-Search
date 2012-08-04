@@ -1,4 +1,4 @@
-package de.kp.ames.search.client.http;
+package de.kp.ames.search.client.action.grid;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,46 +18,52 @@ package de.kp.ames.search.client.http;
  *
  */
 
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.util.SC;
 
-import de.kp.ames.search.client.activity.Activity;
-import de.kp.ames.search.client.service.Service;
+import de.kp.ames.search.client.action.ActionImpl;
+import de.kp.ames.search.client.data.Grid;
+import de.kp.ames.search.client.globals.GUIGlobals;
 
+public class GridCreateImpl extends ActionImpl {
 
-public class GetJsonCallbackImpl extends GetCallbackImpl {
+	/*
+	 * Reference to Grid
+	 */
+	protected Grid grid;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param activity
-	 * @param service
+	 * @param grid
 	 */
-	public GetJsonCallbackImpl(Activity activity, Service service) {
-		super(activity, service);
+	public GridCreateImpl(Grid grid) {	
+		this.grid = grid;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onSuccess(java.lang.String)
+	/**
+	 * A typical after create activity (may be overridden)
+	 * 
+	 * @param jValue (server response)
 	 */
-	public void onSuccess(String response) {
+	public void doAfterCreate(JSONValue jValue) {
 
-		try {
+		this.registerResponse(jValue);
+		if (this.isSuccess()) {					
 			/*
-			 * JSON response
+			 * Update grid
 			 */
-			JSONValue jValue = JSONParser.parseStrict(response);
+			grid.reload();
+		
+		} else {
+			/*
+			 * Fail message
+			 */
+			String message = this.getMessage();
+			SC.say(GUIGlobals.APP_TITLE + ": Request Error", message);		
 
-			SC.logWarn("======> GetJsonCallbackImpl.onSuccess" + this.activity);
-
-			this.activity.execute(jValue);
-			
-		} catch (NullPointerException e) {
-			doGetFailure();
-			
 		}
 
 	}
-
+	
 }

@@ -21,6 +21,9 @@
   <!-- Access to Developer Console                                -->
   <inherits name="com.smartgwt.tools.SmartGwtTools"/>
   
+  <!-- thejit                                                     -->
+  <inherits name="de.kp.ames.thejit.thejit"/>
+  
   <!-- <inherits name="com.smartclient.theme.fleet.Fleet"/> -->
   
   <!-- Specify the app entry point class.                         -->

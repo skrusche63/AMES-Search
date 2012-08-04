@@ -9,6 +9,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 
 import de.kp.ames.search.client.layout.LeftportImpl;
 import de.kp.ames.search.client.layout.RightportImpl;
+import de.kp.ames.search.client.layout.SimilarityPortImpl;
 
 public class ResultImpl extends HLayout {
 	
@@ -39,7 +40,7 @@ public class ResultImpl extends HLayout {
 		/*
 		 * Right viewport is empty
 		 */
-		rightPort  = new RightportImpl();
+		rightPort  = new SimilarityPortImpl();
 
 		this.setMembers(leftPort, centerPort, rightPort);
 		

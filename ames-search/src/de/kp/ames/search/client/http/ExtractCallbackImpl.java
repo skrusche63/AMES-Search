@@ -1,9 +1,4 @@
 package de.kp.ames.search.client.http;
-
-import de.kp.ames.search.client.activity.Activity;
-import de.kp.ames.search.client.service.Service;
-import de.kp.ames.search.client.widget.base.ActionIndicator;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -23,18 +18,24 @@ import de.kp.ames.search.client.widget.base.ActionIndicator;
  *
  */
 
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
-public class GetCallbackImpl implements ConnectionCallback {
+import de.kp.ames.search.client.activity.Activity;
+import de.kp.ames.search.client.service.Service;
+import de.kp.ames.search.client.widget.base.ActionIndicator;
+
+public class ExtractCallbackImpl implements ConnectionCallback {
 
 	/*
 	 * Reference to After Request Activity
 	 */
-	protected Activity activity;
+	private Activity activity;
 	
 	/*
 	 * Reference to Service
 	 */
-	protected Service service;
+	private Service service;
 	
 	/**
 	 * Constructor
@@ -42,7 +43,7 @@ public class GetCallbackImpl implements ConnectionCallback {
 	 * @param activity
 	 * @param service
 	 */
-	public GetCallbackImpl(Activity activity, Service service) {
+	public ExtractCallbackImpl(Activity activity, Service service) {
 		this.activity = activity;
 		this.service  = service;
 	}
@@ -51,45 +52,55 @@ public class GetCallbackImpl implements ConnectionCallback {
 	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onSuccess(java.lang.String)
 	 */
 	public void onSuccess(String response) {
-		/*
-		 * Must be overridden
-		 */
+
+		try {
+			/*
+			 * JSON response
+			 */
+			JSONValue jValue = JSONParser.parseStrict(response);
+			this.activity.execute(jValue);
+			
+		} catch (NullPointerException e) {
+			doExtractFailure();
+			
+		}
+
 	}
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onError(java.lang.Throwable)
 	 */
 	public void onError(Throwable throwable) {
-		doGetFailure();
+		doExtractFailure();
 	}
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onTimeout(java.lang.String)
 	 */
 	public void onTimeout(String message) {
-		doGetFailure();
+		doExtractFailure();
 	}
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.client.core.callback.ConnectionCallback#onFailure(java.lang.String)
 	 */
 	public void onFailure(String message) {
-		doGetFailure();
+		doExtractFailure();
 	}
 	
 	/**
-	 * Get request failure
+	 * Submit request failure
 	 */
-	protected void doGetFailure() {
+	protected void doExtractFailure() {
 		/*
 		 * Reset any action indicator
 		 */
 		ActionIndicator.getInstance().reset();	
 	
-		String message = "Get request failed due to server error.";
+		String message = "Extract request failed due to server error.";
 		service.doRequestError(message);		
 	
 	}
 
-
 }
+

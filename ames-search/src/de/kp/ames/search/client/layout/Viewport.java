@@ -14,7 +14,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.control.MainController;
-import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class Viewport extends VLayout {
 	

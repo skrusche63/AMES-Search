@@ -5,8 +5,8 @@ import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.GuiStyles;
 import de.kp.ames.search.client.layout.CenterportImpl;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class SplitterTestPortImpl extends CenterportImpl {
 

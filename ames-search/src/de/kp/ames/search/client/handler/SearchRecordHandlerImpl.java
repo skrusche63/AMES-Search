@@ -3,8 +3,9 @@ package de.kp.ames.search.client.handler;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 
+import de.kp.ames.search.client.control.SimilarityController;
 import de.kp.ames.search.client.data.Grid;
-import de.kp.ames.search.client.event.SearchEventManager;
+
 
 public class SearchRecordHandlerImpl extends GridRecordHandlerImpl {
 
@@ -22,7 +23,11 @@ public class SearchRecordHandlerImpl extends GridRecordHandlerImpl {
 	 */
 	public void doSelect(Record record) {
 		SC.logWarn("======> SearchRecordHandlerImpl.doSelect");
-		SearchEventManager.getInstance().doAfterSearchResultSelected(record);
+		
+		//SearchEventManager.getInstance().doAfterSearchResultSelected(record);
+		
+		new SimilarityController().doGetSimilarity(record);
+		
 	}
 	
 }

@@ -1,4 +1,5 @@
 package de.kp.ames.search.client.event;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,60 +21,84 @@ package de.kp.ames.search.client.event;
 
 import java.util.ArrayList;
 
+import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 
-
-public class SearchEventManager implements SearchResultListener, SearchUpdateListener, SuggestListener {
+public class SearchEventManager implements SearchResultSelectedListener, SearchResultConfirmedListener,
+		SearchUpdateListener, SuggestListener, SimilarityListener {
 
 	private static SearchEventManager instance = new SearchEventManager();
-	
+
 	/*
 	 * List of registered symbol listeners
 	 */
-	private ArrayList<SearchResultListener> searchResultListener;
+	private ArrayList<SearchResultSelectedListener> searchResultSelectedListener;
+	private ArrayList<SearchResultConfirmedListener> searchResultConfirmedListener;
 	private ArrayList<SearchUpdateListener> searchUpdateListener;
 	private ArrayList<SuggestListener> suggestListener;
+	private ArrayList<SimilarityListener> similarityListener;
 
 	/**
 	 * Constructor
 	 */
 	private SearchEventManager() {
-		
-		searchResultListener = new ArrayList<SearchResultListener>();
+
+		searchResultSelectedListener = new ArrayList<SearchResultSelectedListener>();
+		searchResultConfirmedListener = new ArrayList<SearchResultConfirmedListener>();
 		suggestListener = new ArrayList<SuggestListener>();
 		searchUpdateListener = new ArrayList<SearchUpdateListener>();
-		
+		similarityListener = new ArrayList<SimilarityListener>();
+
 	}
-	
+
 	/**
 	 * Retrieve singleton instance of SearchEventManager
 	 * 
 	 * @return
 	 */
 	public static SearchEventManager getInstance() {
-		if (instance == null) instance = new SearchEventManager();
+		if (instance == null)
+			instance = new SearchEventManager();
 		return instance;
 	}
-	
+
 	/**
-	 * Register search listener
+	 * Register search result selected listener
 	 * 
 	 * @param listener
 	 */
-	public void addSearchResultListener(SearchResultListener listener) {
-		searchResultListener.add(listener);
+	public void addSearchResultSelectedListener(SearchResultSelectedListener listener) {
+		searchResultSelectedListener.add(listener);
 	}
-	
+
 	/**
-	 * Unregister search-result listener
+	 * Unregister search-result selected listener
 	 * 
 	 * @param listener
 	 */
-	public void removeSearchResultListener(SearchResultListener listener) {
-		searchResultListener.remove(listener);
+	public void removeSearchResultSelectedListener(SearchResultSelectedListener listener) {
+		searchResultSelectedListener.remove(listener);
 	}
-	
+
+	/**
+	 * Register search result confirmed listener
+	 * 
+	 * @param listener
+	 */
+	public void addSearchResultConfirmedListener(SearchResultConfirmedListener listener) {
+		searchResultConfirmedListener.add(listener);
+	}
+
+	/**
+	 * Unregister search-result confirmed listener
+	 * 
+	 * @param listener
+	 */
+	public void removeSearchResultConfirmedListener(SearchResultConfirmedListener listener) {
+		searchResultConfirmedListener.remove(listener);
+	}
+
 	/**
 	 * Register search update listener
 	 * 
@@ -82,7 +107,7 @@ public class SearchEventManager implements SearchResultListener, SearchUpdateLis
 	public void addSearchUpdateListener(SearchUpdateListener listener) {
 		searchUpdateListener.add(listener);
 	}
-	
+
 	/**
 	 * Unregister search-result listener
 	 * 
@@ -91,7 +116,6 @@ public class SearchEventManager implements SearchResultListener, SearchUpdateLis
 	public void removeSearchUpdateListener(SearchUpdateListener listener) {
 		searchUpdateListener.remove(listener);
 	}
-	
 
 	/**
 	 * Register suggest-result listener
@@ -101,7 +125,7 @@ public class SearchEventManager implements SearchResultListener, SearchUpdateLis
 	public void addSuggestListener(SuggestListener listener) {
 		suggestListener.add(listener);
 	}
-	
+
 	/**
 	 * Unregister suggest listener
 	 * 
@@ -110,34 +134,69 @@ public class SearchEventManager implements SearchResultListener, SearchUpdateLis
 	public void removeSuggestListener(SuggestListener listener) {
 		suggestListener.remove(listener);
 	}
-	
+
+	/**
+	 * Register similarity listener
+	 * 
+	 * @param listener
+	 */
+	public void addSimilarityListener(SimilarityListener listener) {
+		similarityListener.add(listener);
+	}
+
+	/**
+	 * Unregister similarity listener
+	 * 
+	 * @param listener
+	 */
+	public void removeSimilarityListener(SimilarityListener listener) {
+		similarityListener.remove(listener);
+	}
 
 	@Override
 	public void doAfterSuggest(Record record) {
 
 		SC.logWarn("======> SearchEventManager.doAfterSuggest # " + suggestListener.size());
-		
-		for (SuggestListener listener:suggestListener) {
+
+		for (SuggestListener listener : suggestListener) {
 			listener.doAfterSuggest(record);
-		}		
+		}
 	}
 
 	@Override
 	public void doAfterSearchResultSelected(Record record) {
-		SC.logWarn("======> SearchEventManager.doAfterSearchResultSelected # " + searchResultListener.size());
-		for (SearchResultListener listener:searchResultListener) {
+		SC.logWarn("======> SearchEventManager.doAfterSearchResultSelected # " + searchResultSelectedListener.size());
+		for (SearchResultSelectedListener listener : searchResultSelectedListener) {
 			listener.doAfterSearchResultSelected(record);
 		}
-		
+
 	}
 
 	@Override
 	public void doAfterSearchUpdate(Record record) {
 		SC.logWarn("======> SearchEventManager.doAfterSearchResultSelected # " + searchUpdateListener.size());
-		for (SearchUpdateListener listener:searchUpdateListener) {
+		for (SearchUpdateListener listener : searchUpdateListener) {
 			listener.doAfterSearchUpdate(record);
 		}
-		
+
+	}
+
+	@Override
+	public void doAfterSearchResultConfirmed(Record record) {
+		SC.logWarn("======> SearchEventManager.doAfterSearchResultConfirmed # " + searchResultConfirmedListener.size());
+		for (SearchResultConfirmedListener listener : searchResultConfirmedListener) {
+			listener.doAfterSearchResultConfirmed(record);
+		}
+
+	}
+
+	@Override
+	public void doShowSimilarity(JSONValue jValue) {
+		SC.logWarn("======> SearchEventManager.doShowSimilarity # " + similarityListener.size());
+		for (SimilarityListener listener : similarityListener) {
+			listener.doShowSimilarity(jValue);
+		}
+
 	}
 
 }

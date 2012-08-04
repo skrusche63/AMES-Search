@@ -4,15 +4,12 @@ package de.kp.ames.search.client.widget;
  * Please contact: team@dr-kruscheundpartner.de
  */
 
-import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.data.SuggestGridImpl;
-import de.kp.ames.search.client.globals.GuiGlobals;
-import de.kp.ames.search.client.model.SuggestObject;
+import de.kp.ames.search.client.globals.GUIGlobals;
 
 public class SuggestImpl extends VLayout {
 	
@@ -25,9 +22,9 @@ public class SuggestImpl extends VLayout {
 	 */
 	public SuggestImpl(String query) {
 
-		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
+		this.setWidth(GUIGlobals.SUGGEST_WIDTH);
 		// height will be set dynamic in relation to rootpanel height
-		this.setHeight(GuiGlobals.SUGGEST_HEIGHT);
+		this.setHeight(GUIGlobals.SUGGEST_HEIGHT);
 
 		/*
 		 * This is an essential feature to ensure
@@ -41,24 +38,26 @@ public class SuggestImpl extends VLayout {
 		
 	};
 
-	public SuggestImpl(JSONValue jValue) {
-
-		this.setWidth(GuiGlobals.SUGGEST_WIDTH);
-		// height will be set dynamic in relation to rootpanel height
-		this.setHeight(GuiGlobals.SUGGEST_HEIGHT);
-
-		/*
-		 * This is an essential feature to ensure
-		 * proper scrollbars, i.e vertical ones only
-		 */
-		this.setOverflow(Overflow.HIDDEN);
-		
-		ListGridRecord[] records = new SuggestObject().createListGridRecords(jValue);
-		grid = new SuggestGridImpl(records);
-
-		this.addMember(grid);
-
-	}
+	// this is a showcase variant for async service calls
+	// will need a LocalGridImpl instead
+//	public SuggestImpl(JSONValue jValue) {
+//
+//		this.setWidth(GUIGlobals.SUGGEST_WIDTH);
+//		// height will be set dynamic in relation to rootpanel height
+//		this.setHeight(GUIGlobals.SUGGEST_HEIGHT);
+//
+//		/*
+//		 * This is an essential feature to ensure
+//		 * proper scrollbars, i.e vertical ones only
+//		 */
+//		this.setOverflow(Overflow.HIDDEN);
+//		
+//		ListGridRecord[] records = new SuggestObject().createListGridRecords(jValue);
+//		grid = new SuggestGridImpl(records);
+//
+//		this.addMember(grid);
+//
+//	}
 
 	/*
 	 * focus moves from SearchBox to SuggestGrid
@@ -90,7 +89,7 @@ public class SuggestImpl extends VLayout {
 //		grid.setMaxHeight(h);
 		int drawnHeight = getDrawnHeight();
 		SC.logWarn("====> grid drawnHeight: " + drawnHeight);
-		if (drawnHeight < GuiGlobals.SUGGEST_HEIGHT) {
+		if (drawnHeight < GUIGlobals.SUGGEST_HEIGHT) {
 			this.setHeight(drawnHeight);
 		}
 	}

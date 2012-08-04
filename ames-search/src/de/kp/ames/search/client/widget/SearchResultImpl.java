@@ -4,7 +4,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.kp.ames.search.client.data.SearchResultGridImpl;
-import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class SearchResultImpl extends VLayout {
 	private SearchResultGridImpl grid;

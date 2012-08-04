@@ -63,7 +63,7 @@ public class ResultCartObject extends ExternalObject {
 		/*
 		 * Srs (Projection)
 		 */
-		ListGridField moduleField = new ListGridField("choice", "Choice");
+		ListGridField moduleField = new ListGridField("choice", "Result Choice");
 		moduleField.setType(ListGridFieldType.TEXT);
 
 		fields.add(moduleField);

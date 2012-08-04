@@ -2,7 +2,7 @@ package de.kp.ames.search.client.layout;
 
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class CenterportImpl extends VLayout {
 

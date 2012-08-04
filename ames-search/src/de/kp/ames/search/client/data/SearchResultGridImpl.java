@@ -5,34 +5,34 @@ package de.kp.ames.search.client.data;
  */
 
 import java.util.HashMap;
-import java.util.Map;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 
-import de.kp.ames.search.client.globals.GuiGlobals;
-import de.kp.ames.search.client.globals.GuiStyles;
+import de.kp.ames.search.client.event.SearchEventManager;
+import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
 import de.kp.ames.search.client.handler.SearchRecordHandlerImpl;
-import de.kp.ames.search.client.method.RequestMethod;
-import de.kp.ames.search.client.method.RequestMethodImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.ResultObject;
+import de.kp.ames.search.client.style.GuiStyles;
 
 public class SearchResultGridImpl extends RemoteGridImpl {
 
 	public SearchResultGridImpl(Record record) {
-		super(GuiGlobals.SEARCH_URL, "search");
+		super(GUIGlobals.SEARCH_URL, "search");
 		initialize();
-		setSearchData(record);
+		setQueryAttributeParam(record);
 
 	}
 
 	public SearchResultGridImpl(String query) {
-		super(GuiGlobals.SEARCH_URL, "search");
+		super(GUIGlobals.SEARCH_URL, "search");
 		initialize();
-		setSearchData(query);
+		setQueryAttributeParam(query);
 
 	}
 
@@ -48,11 +48,15 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		this.setHeight100();
 		this.setWidth100();
 
+		this.setFixedRecordHeights(false);
+		this.setWrapCells(true);
+
 
 		/*
 		 * Register data
 		 */
 		attributes = new HashMap<String,String>();
+		attributes.put(MethodConstants.ATTR_TYPE, "search");
 
 		/*
 		 * Create data object
@@ -84,10 +88,10 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 	 * 
 	 * @param record
 	 */
-	public void setSearchData(Record record) {
+	public void setQueryAttributeParam(Record record) {
 
 		String queryString = record.getAttributeAsString(JsonConstants.J_QUERYSTRING);
-		setSearchData(queryString);
+		setQueryAttributeParam(queryString);
 	
 	}
 
@@ -96,23 +100,12 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 	 * 
 	 * @param String
 	 */
-	public void setSearchData(String query) {
+	public void setQueryAttributeParam(String query) {
 
 		attributes.put(MethodConstants.ATTR_QUERY, query);
 	
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.kp.ames.search.client.widget.grid.GridImpl#getRequestParams()
-	 */
-	public Map<String, String> getRequestParams() {
-
-		RequestMethod requestMethod = createMethod();
-		return requestMethod.toParams();
-
-	}
 
 	/**
 	 * @return
@@ -121,19 +114,21 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		return new ResultObject();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.kp.ames.search.client.widget.grid.GridImpl#createMethod()
-	 */
-	public RequestMethod createMethod() {
+	@Override
+	public void afterCellClick(CellClickEvent event) {
+		/*
+		 * do nothing, instead of trigger another recordHandler.doSelect()
+		 */
+	}
 
-		RequestMethodImpl requestMethod = new RequestMethodImpl();
-		requestMethod.setName(MethodConstants.METH_SEARCH);
-
-		requestMethod.setAttributes(attributes);
-		return requestMethod;
-
+	@Override
+	public void afterRecordDoubleClick(RecordDoubleClickEvent event) {
+		
+		/*
+		 * Retrieve affected grid record
+		 */
+		Record record = event.getRecord();
+		SearchEventManager.getInstance().doAfterSearchResultConfirmed(record);
 	}
 	
 }

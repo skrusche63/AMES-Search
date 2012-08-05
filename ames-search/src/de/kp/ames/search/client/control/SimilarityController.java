@@ -24,8 +24,12 @@ public class SimilarityController {
 		 */
 		HashMap<String,String> attributes = new HashMap<String,String>();
 		attributes.put(MethodConstants.ATTR_TYPE, "similar");
-		attributes.put(MethodConstants.ATTR_SOURCE, "wn"); // scm
+		attributes.put(MethodConstants.ATTR_SOURCE, GUIGlobals.SEARCH_SOURCE);
 		attributes.put(MethodConstants.ATTR_QUERY, record.getAttribute(JsonConstants.J_ID));
+		
+		SC.logWarn("======> doGetSimilarity name attribute:" + record.getAttribute(JsonConstants.J_NAME));
+		
+		attributes.put("name", record.getAttribute(JsonConstants.J_NAME));
 		
 		/*
 		 * Create Service

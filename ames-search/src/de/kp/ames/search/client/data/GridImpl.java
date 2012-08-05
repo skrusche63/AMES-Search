@@ -198,11 +198,16 @@ public class GridImpl extends ListGrid implements Grid {
 	 * @see de.kp.ames.web.client.core.grid.Grid#afterSelectionChanged(com.smartgwt.client.widgets.grid.events.SelectionEvent)
 	 */
 	public void afterSelectionChanged(SelectionEvent event) {
+
+		//New selection state (true for selected, false for unselected)
+		if (event.getState() == false)
+			return;
+
 		/*
 		 * Retrieve affected grid record
 		 */
 		Record record = event.getRecord();
-		
+
 		/*
 		 * Invoke Grid RecordHandler
 		 */

@@ -74,6 +74,7 @@ public class SuggestGridImpl extends RemoteGridImpl {
 		 */
 		attributes = new HashMap<String,String>();
 		attributes.put(MethodConstants.ATTR_TYPE, "suggest");
+		attributes.put(MethodConstants.ATTR_SOURCE, GUIGlobals.SEARCH_SOURCE);
 		attributes.put(JsonConstants.J_QUERY, this.query);
 
 

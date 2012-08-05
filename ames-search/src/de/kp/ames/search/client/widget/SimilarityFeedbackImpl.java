@@ -23,12 +23,7 @@ public class SimilarityFeedbackImpl extends VLayout {
 	public void update(JSONValue jValue) {
 		SC.logWarn("======> SimilarityFeedbackImpl.update> width: " + hyperTreeExplorer.getWidth());
 
-//		String test = "{\"id\":\"1\", \"name\":\"Core\", \"children\":["
-//				+ "{\"id\":\"2\", \"name\":\"Leaf1\", \"data\":[], \"children\":[]}, "
-//				+ "{\"id\":\"3\", \"name\":\"Leaf2\", \"data\":[], \"children\":[]}" + "], \"data\":[]}";
-
-		 hyperTreeExplorer.loadJTree(jValue.toString());
-//		hyperTreeExplorer.loadJTree(test);
+		hyperTreeExplorer.loadJTree(jValue.toString());
 	}
 
 	public void update(String jValue) {

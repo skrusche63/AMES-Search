@@ -57,6 +57,7 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		 */
 		attributes = new HashMap<String,String>();
 		attributes.put(MethodConstants.ATTR_TYPE, "search");
+		attributes.put(MethodConstants.ATTR_SOURCE, GUIGlobals.SEARCH_SOURCE);
 
 		/*
 		 * Create data object
@@ -107,13 +108,6 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 	}
 
 
-	/**
-	 * @return
-	 */
-	private DataObject createDataObject() {
-		return new ResultObject();
-	}
-
 	@Override
 	public void afterCellClick(CellClickEvent event) {
 		/*
@@ -130,5 +124,13 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		Record record = event.getRecord();
 		SearchEventManager.getInstance().doAfterSearchResultConfirmed(record);
 	}
+
+	/**
+	 * @return
+	 */
+	private DataObject createDataObject() {
+		return new ResultObject();
+	}
+
 	
 }

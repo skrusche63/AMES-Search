@@ -48,6 +48,7 @@ public class MethodConstants {
 	public static String ATTR_ITEM      = "item";
 	public static String ATTR_PARENT    = "parent";
 	public static String ATTR_QUERY     = "query";   
+	public static String ATTR_NAME      = "name";   
 	public static String ATTR_SERVICE   = "service";
 	public static String ATTR_SOURCE    = "source";
 	public static String ATTR_TARGET    = "target";

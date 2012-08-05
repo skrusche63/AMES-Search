@@ -24,9 +24,14 @@ public class GUIGlobals {
 	/*
 	 * AMES semantic search specific
 	 */
-	public static String SEARCH_ID  = "urn:de:kp:search:url";	
-	public static String SEARCH_URL = DOM.getElementById(SEARCH_ID).getAttribute("content");
-	
+	public static String SEARCH_URL_ID  = "urn:de:kp:search:url";	
+	public static String SEARCH_URL = DOM.getElementById(SEARCH_URL_ID).getAttribute("content");
+	// set search use case by source: wn or scm 
+	public static String SEARCH_SOURCE_ID  = "urn:de:kp:search:source";	
+	public static String SEARCH_SOURCE = DOM.getElementById(SEARCH_SOURCE_ID).getAttribute("content");
+
+	public static String BROADER_LABEL = SEARCH_SOURCE=="wn" ? "Hypernym" : "Context";
+
 	/*
 	 * Widget Dimensions
 	 */

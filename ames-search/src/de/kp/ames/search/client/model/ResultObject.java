@@ -17,6 +17,7 @@ public class ResultObject extends ExternalObject {
 		fields.add(new DataSourceTextField(JsonConstants.J_ID));
 		fields.add(new DataSourceTextField(JsonConstants.J_RESULT));
 		fields.add(new DataSourceTextField(JsonConstants.J_TITLE));
+		fields.add(new DataSourceTextField(JsonConstants.J_NAME));
 		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
 
 		return fields; 

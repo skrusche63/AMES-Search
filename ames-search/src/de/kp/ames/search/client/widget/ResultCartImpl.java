@@ -32,7 +32,7 @@ public class ResultCartImpl extends VLayout {
 		String combinedId = suggestFeedbackRecord.getAttribute("id") + "::" + resultRecord.getAttribute("id");
 		
 		// TODO: check if id is already added
-		if (this.hasCombinedId()) return;
+		if (this.hasCombinedId(combinedId)) return;
 		
 		Record record = new Record();
 		record.setAttribute("id", combinedId);
@@ -44,8 +44,8 @@ public class ResultCartImpl extends VLayout {
 		grid.addData(record);
 	}
 
-	private boolean hasCombinedId() {
-		return grid.hasCombinedId();
+	private boolean hasCombinedId(String id) {
+		return grid.hasCombinedId(id);
 	}
 
 	public int getCartCount() {

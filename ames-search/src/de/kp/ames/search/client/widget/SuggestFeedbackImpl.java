@@ -5,6 +5,7 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.style.GuiStyles;
 
@@ -19,13 +20,10 @@ public class SuggestFeedbackImpl extends VLayout {
 		this.setWidth100();
 		this.setHeight100();
 		this.setBackgroundColor(GuiStyles.SUGGEST_FEEDBACK_BG);
-//		this.setMembersMargin(10);
 		
 		this.setOverflow(Overflow.AUTO);
 
 		pane = new HTMLPane();
-//		pane.setWidth100();
-//		pane.setHeight100();
 		pane.setContents(recordToHtml(record));
 		
 		this.setMembers(pane);
@@ -38,7 +36,7 @@ public class SuggestFeedbackImpl extends VLayout {
 				 record.getAttributeAsString(JsonConstants.J_RESULT) +
 				"<div class=\"sg\">" +
 					 "<p class=\"sg-dg\">" + 
-						"<span class=\"sg-dl\">Hypernym:</span>" + 
+						"<span class=\"sg-dl\">" + GUIGlobals.BROADER_LABEL +  ":</span>" + 
 						"<span class=\"sg-d\"> " + record.getAttributeAsString(JsonConstants.J_HYPERNYM) + "</span>" + 
 					"</p>" +
 				 "</div>" + 

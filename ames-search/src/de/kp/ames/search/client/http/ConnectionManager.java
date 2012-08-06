@@ -140,7 +140,7 @@ public class ConnectionManager {
 	    
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		builder.setTimeoutMillis(CoreGlobals.CONNECTION_TIMEOUT);
-		
+				
 		/*
 		 * Set header parameters
 		 */
@@ -163,7 +163,10 @@ public class ConnectionManager {
 
 	        public void onResponseReceived(Request request, Response response) {
 
-				if (STATUS_CODE_OK == response.getStatusCode()) {						
+				if (STATUS_CODE_OK == response.getStatusCode()) {
+
+					SC.logWarn("====> cm.onResponseReceived");
+					
 					handleSuccess(response, callback);
 				
 				} else {						

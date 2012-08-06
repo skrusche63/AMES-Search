@@ -15,21 +15,21 @@ import de.kp.ames.search.client.event.SearchEventManager;
 import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.globals.MethodConstants;
-import de.kp.ames.search.client.handler.SearchRecordHandlerImpl;
+import de.kp.ames.search.client.handler.ResultRecordHandlerImpl;
 import de.kp.ames.search.client.model.DataObject;
 import de.kp.ames.search.client.model.ResultObject;
 import de.kp.ames.search.client.style.GuiStyles;
 
-public class SearchResultGridImpl extends RemoteGridImpl {
+public class ResultGridImpl extends RemoteGridImpl {
 
-	public SearchResultGridImpl(Record record) {
+	public ResultGridImpl(Record record) {
 		super(GUIGlobals.SEARCH_URL, "search");
 		initialize();
 		setQueryAttributeParam(record);
 
 	}
 
-	public SearchResultGridImpl(String query) {
+	public ResultGridImpl(String query) {
 		super(GUIGlobals.SEARCH_URL, "search");
 		initialize();
 		setQueryAttributeParam(query);
@@ -38,7 +38,7 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 
 	private void initialize() {
 		
-		SC.logWarn("======> SearchResultGridImpl.initialize");
+		SC.logWarn("======> ResultGridImpl.initialize");
 
 		/*
 		 * No border style
@@ -79,7 +79,7 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		/*
 		 * Add Record Handler
 		 */
-		SearchRecordHandlerImpl recordHandler = new SearchRecordHandlerImpl(this);
+		ResultRecordHandlerImpl recordHandler = new ResultRecordHandlerImpl(this);
 		this.addRecordHandler(recordHandler);
 
 	}
@@ -122,7 +122,7 @@ public class SearchResultGridImpl extends RemoteGridImpl {
 		 * Retrieve affected grid record
 		 */
 		Record record = event.getRecord();
-		SearchEventManager.getInstance().doAfterSearchResultConfirmed(record);
+		SearchEventManager.getInstance().doAfterResultRecordConfirmed(record);
 	}
 
 	/**

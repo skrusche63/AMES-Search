@@ -8,8 +8,6 @@ package de.kp.ames.search.client;
 import com.google.gwt.core.client.EntryPoint;
 
 import de.kp.ames.search.client.control.MainController;
-import de.kp.ames.search.client.widget.SimilarityFeedbackImpl;
-import de.kp.ames.thejit.client.HyperTreeExplorer;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

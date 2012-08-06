@@ -35,7 +35,8 @@ body {
 .sg-fb {margin:0px;}
 .sg-s {font:normal 13px tahoma,arial,sans-serif;color:#606060;}
 .sg-dg {font:normal 11px tahoma,arial,sans-serif;padding-top:4px;}
-.sg-dl {text-decoration:underline;}
+/* .sg-dl {text-decoration:underline;} */
+.sg-dl {}
 .sg-d {color:#606060;}
 
 /* suggest group header specific styles */

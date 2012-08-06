@@ -8,17 +8,15 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 
 import de.kp.ames.search.client.event.SearchEventManager;
 import de.kp.ames.search.client.event.SearchResultConfirmedListener;
-import de.kp.ames.search.client.event.SearchResultSelectedListener;
 import de.kp.ames.search.client.event.SearchUpdateListener;
 import de.kp.ames.search.client.layout.CenterportImpl;
 
-public class ResultPortImpl extends CenterportImpl implements SearchUpdateListener, SearchResultSelectedListener,
-		SearchResultConfirmedListener {
+public class ResultPortImpl extends CenterportImpl implements SearchUpdateListener, SearchResultConfirmedListener {
 
 	private final static String CART_TITLE = "Semantic Cart";
 	private SuggestFeedbackImpl suggestFeedback;
 	private SearchResultImpl searchResult;
-	private ResultCartImpl resultCartResult;
+	private CartImpl resultCartResult;
 
 	private Record suggestFeedbackRecord;
 	final private SectionStack sectionStack;
@@ -32,11 +30,12 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		 * remember suggestion record
 		 */
 		this.suggestFeedbackRecord = record;
+		
 
 		suggestFeedback = new SuggestFeedbackImpl(record);
 		suggestFeedback.setHeight("160");
 		searchResult = new SearchResultImpl(record);
-		resultCartResult = new ResultCartImpl();
+		resultCartResult = new CartImpl();
 		sectionStack = new SectionStack();
 		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 		sectionStack.setWidth100();
@@ -60,53 +59,29 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		sectionResultCart.addItem(resultCartResult);
 		sectionStack.addSection(sectionResultCart);
 		
-		
-
 		this.setMembers(sectionStack);
 
 		/*
 		 * register listener
 		 */
-		SearchEventManager.getInstance().addSearchResultSelectedListener(this);
+//		SearchEventManager.getInstance().addSearchResultSelectedListener(this);
 		SearchEventManager.getInstance().addSearchResultConfirmedListener(this);
 		SearchEventManager.getInstance().addSearchUpdateListener(this);
 
 		SC.logWarn("======> ResultPortImpl.CTOR end");
 
-		
-		// this.setOverflow(Overflow.HIDDEN);
-
-		// suggestFeedback = new SuggestFeedbackImpl(record);
-		// suggestFeedback.setHeight("15%");
-		//
-		// searchResult = new SearchResultImpl(record);
-		// searchResult.setHeight("70%");
-		//
-		// suggestFeedback.setShowResizeBar(true);
-		//
-		// SC.logWarn("======> ResultPortImpl.CTOR 1");
-		//
-		// resultCartResult = new ResultCartImpl();
-		// resultCartResult.setHeight("15%");
-		//
-		// SC.logWarn("======> ResultPortImpl.CTOR 2");
-		//
-		// searchResult.setShowResizeBar(true);
-		//
-		// this.setMembers(suggestFeedback, searchResult, resultCartResult);
-		// this.setMembers(suggestFeedback, searchResult);
-
-
 	};
+	
+
+//	@Override
+//	public void doAfterSearchResultSelected(Record resultRecord) {
+//		SC.logWarn("======> ResultPortImpl.doAfterSearchResultSelected");
+//		// TODO: update HyperTree
+//	}
 
 	@Override
-	public void doAfterSearchResultSelected(Record resultRecord) {
-		SC.logWarn("======> ResultPortImpl.doAfterSearchResultSelected");
-		// TODO: update HyperTree
-	}
-
-	@Override
-	public void doAfterSearchResultConfirmed(Record resultRecord) {
+	public void doAfterResultRecordConfirmed(Record resultRecord) {
+		
 		// get SectionStackSection (field does not work)
 		SectionStackSection sectionResultCart = sectionStack.getSection(2);
 		
@@ -119,8 +94,10 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		sectionResultCart.setTitle(CART_TITLE + " (" + cartCount + ")");
 		
 		// expand on first cart item
-		if (cartCount==1)
+		if (cartCount==1) {
 			sectionResultCart.setExpanded(true);
+			resultCartResult.activateCheckout();
+		}
 		
 	}
 

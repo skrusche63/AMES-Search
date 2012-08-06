@@ -32,6 +32,17 @@ public class GUIGlobals {
 
 	public static String BROADER_LABEL = SEARCH_SOURCE=="wn" ? "Hypernym" : "Context";
 
+	public static final String CHECKOUT_C_TITLE = "Checkout";
+	public static final String CHECKOUT_C_SLOGAN = "Add a comment for your checkout";
+
+	/*
+	 * AMES FncGlobals imported
+	 */
+	public static String ADF_EDITOR = "ADF - Editor";
+	public static String ADF_VIEWER = "ADF - Viewer";
+
+	
+	
 	/*
 	 * Widget Dimensions
 	 */
@@ -47,7 +58,7 @@ public class GUIGlobals {
 	 * Main title of the application
 	 */
 	public static String APP_SLOGAN = "Share and visualize knowledge through the web.";
-	public static String APP_TITLE  = "AMES Web";
+	public static String APP_TITLE  = "AMES SCM";
 	
 	public static int APP_TITLE_WIDTH = 80;
 

@@ -10,17 +10,16 @@ import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 
-import de.kp.ames.search.client.event.SearchEventManager;
+import de.kp.ames.search.client.model.CartObject;
 import de.kp.ames.search.client.model.DataObject;
-import de.kp.ames.search.client.model.ResultCartObject;
 
 
-public class ResultCardGridImpl extends LocalGridImpl {
+public class CartGridImpl extends LocalGridImpl {
 
-	public ResultCardGridImpl() {
+	public CartGridImpl() {
 		super();
 
-		SC.logWarn("==========> ResultCardGridImpl.CTOR");
+		SC.logWarn("==========> CartGridImpl.CTOR");
 
         /*
 		 * Register data
@@ -51,10 +50,10 @@ public class ResultCardGridImpl extends LocalGridImpl {
 		 * Retrieve affected grid record
 		 */
 		Record record = event.getRecord();
-		// TODO: delete dialog
-		
+
 		// test getGridData
-		getGridData();
+//		HashMap<String,String> checkoutAttributes = new HashMap<String,String>();
+//		new CheckoutController().doView(checkoutAttributes, getGridData());
 
 	}
 
@@ -72,17 +71,17 @@ public class ResultCardGridImpl extends LocalGridImpl {
 			if (attributes == null)
 				attributes = record.getAttributes();
 
-			SC.logWarn("======> RCG.getGriddata: attributes.length: " + attributes.length);
+			// SC.logWarn("======> RCG.getGriddata: attributes.length: " + attributes.length);
 
 			for (int j = 0; j < attributes.length; j++) {
 				String attribute = attributes[j];
-				SC.logWarn("====> RCG.getGriddata: attribute value: " + attribute +" :: "+ record.getAttributeAsString(attribute)); 
+				//SC.logWarn("====> RCG.getGriddata: attribute value: " + attribute +" :: "+ record.getAttributeAsString(attribute)); 
 				jRecord.put(attribute, new JSONString(record.getAttributeAsString(attribute)));
 			}
 			jData.set(i, jRecord);
 		}
 		
-		SC.logWarn("====> RCG.getGridData: " + jData.toString());
+		//SC.logWarn("====> RCG.getGridData: " + jData.toString());
 		return jData;
 	}
 
@@ -91,7 +90,7 @@ public class ResultCardGridImpl extends LocalGridImpl {
 	 * @return
 	 */
 	private DataObject createDataObject() {
-		return new ResultCartObject();
+		return new CartObject();
 	}
 
 	public boolean hasCombinedId(String id) {

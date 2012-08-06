@@ -5,8 +5,13 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.data.SuggestGridImpl;
 import de.kp.ames.search.client.globals.GUIGlobals;
@@ -32,9 +37,18 @@ public class SuggestImpl extends VLayout {
 		 */
 		this.setOverflow(Overflow.HIDDEN);
 
+		/*
+		 * Build ToolStrip
+		 */
+		ToolStrip toolStrip = createToolStrip();
+
+		
+		/*
+		 * Build Grid
+		 */
 		grid = new SuggestGridImpl(query);
 	
-		this.addMember(grid);
+		this.setMembers(toolStrip, grid);
 		
 	};
 
@@ -59,6 +73,48 @@ public class SuggestImpl extends VLayout {
 //
 //	}
 
+	/**
+	 * Create ToolStrip element
+	 * 
+	 * @param url
+	 * @param params
+	 * @param fields
+	 * @return
+	 */
+	private ToolStrip createToolStrip() {
+
+		ToolStrip ts = new ToolStrip();
+//		ts.setStyleName("x-searchbox");
+
+		ts.setWidth100();
+		ts.setHeight(25);
+		ts.addFill();
+
+        ImgButton closeButton = new ImgButton();  
+        closeButton.setSize(24);  
+        closeButton.setShowRollOver(true);  
+        closeButton.setSrc("[SKIN]/headerIcons/close.png");  
+        closeButton.setActionType(SelectionType.BUTTON);
+        closeButton.setTooltip("Close suggestions");
+        closeButton.setAltText("Close suggestions");
+        
+        closeButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				SC.logWarn("====> SuggestImpl.closeButton.onClick");
+
+				//TODO:
+			}
+		});
+		
+		
+        ts.addMember(closeButton);  
+		return ts;
+
+	}
+
+	
 	/*
 	 * focus moves from SearchBox to SuggestGrid
 	 */

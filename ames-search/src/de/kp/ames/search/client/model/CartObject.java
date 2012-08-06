@@ -10,12 +10,12 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import de.kp.ames.search.client.model.external.ExternalObject;
 
 
-public class ResultCartObject extends ExternalObject {
+public class CartObject extends ExternalObject {
 
 	/**
 	 * Constructor
 	 */
-	public ResultCartObject() {
+	public CartObject() {
 	}
 	
 	/* (non-Javadoc)
@@ -26,9 +26,9 @@ public class ResultCartObject extends ExternalObject {
 		ArrayList<DataSourceField> fields = new ArrayList<DataSourceField>();
 
 		/* 
-		 * Primary Key
+		 * Primary Key combinedId
 		 */
-		DataSourceTextField id = new DataSourceTextField("id");
+		DataSourceTextField id = new DataSourceTextField("cid");
 		id.setPrimaryKey(true);
 	    fields.add(id);
 
@@ -41,6 +41,7 @@ public class ResultCartObject extends ExternalObject {
 		 * Module
 		 */
 	    fields.add(new DataSourceTextField("choice"));
+	    fields.add(new DataSourceTextField("id"));
 
 	    return fields;
 	    

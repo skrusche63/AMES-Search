@@ -7,14 +7,14 @@ import de.kp.ames.search.client.control.SimilarityController;
 import de.kp.ames.search.client.data.Grid;
 
 
-public class SearchRecordHandlerImpl extends GridRecordHandlerImpl {
+public class ResultRecordHandlerImpl extends GridRecordHandlerImpl {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param grid
 	 */
-	public SearchRecordHandlerImpl(Grid grid) {
+	public ResultRecordHandlerImpl(Grid grid) {
 		super(grid);
 	}
 
@@ -22,7 +22,7 @@ public class SearchRecordHandlerImpl extends GridRecordHandlerImpl {
 	 * @see de.kp.ames.search.client.handler.GridRecordHandlerImpl#doSelect(com.smartgwt.client.widgets.grid.ListGridRecord)
 	 */
 	public void doSelect(Record record) {
-		SC.logWarn("======> SearchRecordHandlerImpl.doSelect");
+		SC.logWarn("======> RecordHandlerImpl.doSelect");
 		
 		//SearchEventManager.getInstance().doAfterSearchResultSelected(record);
 		

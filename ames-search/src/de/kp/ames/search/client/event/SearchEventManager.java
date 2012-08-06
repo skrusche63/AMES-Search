@@ -21,34 +21,38 @@ package de.kp.ames.search.client.event;
 
 import java.util.ArrayList;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 
-public class SearchEventManager implements SearchResultSelectedListener, SearchResultConfirmedListener,
-		SearchUpdateListener, SuggestListener, SimilarityListener {
+public class SearchEventManager implements SearchResultConfirmedListener,
+		SearchUpdateListener, SuggestListener, SimilarityListener, CheckoutListener, DownloadListener {
 
 	private static SearchEventManager instance = new SearchEventManager();
 
 	/*
 	 * List of registered symbol listeners
 	 */
-	private ArrayList<SearchResultSelectedListener> searchResultSelectedListener;
+//	private ArrayList<SearchResultSelectedListener> searchResultSelectedListener;
 	private ArrayList<SearchResultConfirmedListener> searchResultConfirmedListener;
 	private ArrayList<SearchUpdateListener> searchUpdateListener;
 	private ArrayList<SuggestListener> suggestListener;
 	private ArrayList<SimilarityListener> similarityListener;
+	private ArrayList<CheckoutListener> checkoutListener;
+	private ArrayList<DownloadListener> downloadListener;
 
 	/**
 	 * Constructor
 	 */
 	private SearchEventManager() {
 
-		searchResultSelectedListener = new ArrayList<SearchResultSelectedListener>();
 		searchResultConfirmedListener = new ArrayList<SearchResultConfirmedListener>();
 		suggestListener = new ArrayList<SuggestListener>();
 		searchUpdateListener = new ArrayList<SearchUpdateListener>();
 		similarityListener = new ArrayList<SimilarityListener>();
+		checkoutListener = new ArrayList<CheckoutListener>();
+		downloadListener = new ArrayList<DownloadListener>();
 
 	}
 
@@ -63,22 +67,23 @@ public class SearchEventManager implements SearchResultSelectedListener, SearchR
 		return instance;
 	}
 
-	/**
-	 * Register search result selected listener
-	 * 
-	 * @param listener
-	 */
-	public void addSearchResultSelectedListener(SearchResultSelectedListener listener) {
-		searchResultSelectedListener.add(listener);
+
+	public void addDownloadListener(DownloadListener listener) {
+		downloadListener.add(listener);	
+		
 	}
 
-	/**
-	 * Unregister search-result selected listener
-	 * 
-	 * @param listener
-	 */
-	public void removeSearchResultSelectedListener(SearchResultSelectedListener listener) {
-		searchResultSelectedListener.remove(listener);
+	public void removeDownloadListener(DownloadListener listener) {
+		downloadListener.remove(listener);
+	}
+
+	
+	public void addCheckoutListener(CheckoutListener listener) {
+		checkoutListener.add(listener);	
+	}
+
+	public void removeCheckoutListener(CheckoutListener listener) {
+		checkoutListener.remove(listener);
 	}
 
 	/**
@@ -153,6 +158,10 @@ public class SearchEventManager implements SearchResultSelectedListener, SearchR
 		similarityListener.remove(listener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.SuggestListener#doAfterSuggest(com.smartgwt.client.data.Record)
+	 */
 	@Override
 	public void doAfterSuggest(Record record) {
 
@@ -163,15 +172,11 @@ public class SearchEventManager implements SearchResultSelectedListener, SearchR
 		}
 	}
 
-	@Override
-	public void doAfterSearchResultSelected(Record record) {
-		SC.logWarn("======> SearchEventManager.doAfterSearchResultSelected # " + searchResultSelectedListener.size());
-		for (SearchResultSelectedListener listener : searchResultSelectedListener) {
-			listener.doAfterSearchResultSelected(record);
-		}
 
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.SearchUpdateListener#doAfterSearchUpdate(com.smartgwt.client.data.Record)
+	 */
 	@Override
 	public void doAfterSearchUpdate(Record record) {
 		SC.logWarn("======> SearchEventManager.doAfterSearchResultSelected # " + searchUpdateListener.size());
@@ -181,15 +186,23 @@ public class SearchEventManager implements SearchResultSelectedListener, SearchR
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.SearchResultConfirmedListener#doAfterSearchResultConfirmed(com.smartgwt.client.data.Record)
+	 */
 	@Override
-	public void doAfterSearchResultConfirmed(Record record) {
-		SC.logWarn("======> SearchEventManager.doAfterSearchResultConfirmed # " + searchResultConfirmedListener.size());
+	public void doAfterResultRecordConfirmed(Record record) {
+		SC.logWarn("======> SearchEventManager.doAfterResultRecordConfirmed # " + searchResultConfirmedListener.size());
 		for (SearchResultConfirmedListener listener : searchResultConfirmedListener) {
-			listener.doAfterSearchResultConfirmed(record);
+			listener.doAfterResultRecordConfirmed(record);
 		}
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.SimilarityListener#doShowSimilarity(com.google.gwt.json.client.JSONValue)
+	 */
 	@Override
 	public void doShowSimilarity(JSONValue jValue) {
 		SC.logWarn("======> SearchEventManager.doShowSimilarity # " + similarityListener.size());
@@ -198,5 +211,34 @@ public class SearchEventManager implements SearchResultSelectedListener, SearchR
 		}
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.CheckoutListener#doAfterUpdate(com.google.gwt.json.client.JSONObject)
+	 */
+	@Override
+	public void doAfterUpdate(JSONObject jObject) {
+		SC.logWarn("======> SearchEventManager.doAfterUpdate # " + checkoutListener.size());
+		for (CheckoutListener listener : checkoutListener) {
+			listener.doAfterUpdate(jObject);
+		}
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.search.client.event.DownloadListener#doTriggerDownload()
+	 */
+	@Override
+	public void doTriggerDownload() {
+		SC.logWarn("======> SearchEventManager.doTriggerDownload # " + downloadListener.size());
+		for (DownloadListener listener : downloadListener) {
+			listener.doTriggerDownload();
+		}
+		
+	}
+
+
+
 
 }

@@ -41,9 +41,9 @@ public class SearchWidget extends VLayout {
 	/*
 	 * Predefined dimensions
 	 */
-	private static int SEARCHBOX_WIDTH = 320;
+	private static int SEARCHBOX_WIDTH = 360;
 
-	private static int WIDGET_WIDTH = 360;
+	private static int WIDGET_WIDTH = 440;
 	private static int WIDGET_HEIGHT = 28;
 
 	/**

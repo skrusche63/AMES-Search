@@ -7,10 +7,13 @@ package de.kp.ames.search.client.data;
 import java.util.HashMap;
 
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.DataArrivedEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 
+import de.kp.ames.search.client.control.SimilarityController;
 import de.kp.ames.search.client.event.SearchEventManager;
 import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
@@ -50,6 +53,7 @@ public class ResultGridImpl extends RemoteGridImpl {
 
 		this.setFixedRecordHeights(false);
 		this.setWrapCells(true);
+		this.setSelectionType(SelectionStyle.SINGLE);
 
 
 		/*
@@ -123,6 +127,31 @@ public class ResultGridImpl extends RemoteGridImpl {
 		 */
 		Record record = event.getRecord();
 		SearchEventManager.getInstance().doAfterResultRecordConfirmed(record);
+	}
+
+	/**
+	 * @param event
+	 */
+	@Override
+	public void afterDataArrived(DataArrivedEvent event) {
+
+		SC.logWarn("====> ResultGridImpl.afterDataArrived -> focus");
+		
+		this.focus();
+		
+		if ((this.getRecords().length>0) && (this.getSelectedRecords().length == 0)) {
+			/*
+			 * nothing selected yet, select first in row if records are
+			 * available there must be a group header first because of this we
+			 * select second record, which contains first suggestion
+			 */
+			SC.logWarn("======> ResultGridImpl.afterDataArrived 2");
+			this.selectSingleRecord(0);
+			// force similarity
+			new SimilarityController().doGetSimilarity(this.getSelectedRecord());
+
+			
+		}
 	}
 
 	/**

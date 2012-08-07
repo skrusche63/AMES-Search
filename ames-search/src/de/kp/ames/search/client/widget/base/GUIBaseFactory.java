@@ -19,8 +19,10 @@ package de.kp.ames.search.client.widget.base;
  */
 
 import com.smartgwt.client.types.BkgndRepeat;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+import de.kp.ames.search.client.globals.CoreGlobals;
 import de.kp.ames.search.client.style.GuiStyles;
 
 
@@ -49,6 +51,8 @@ public class GUIBaseFactory {
 		vLayout.setBackgroundImage(GuiStyles.APP_BG_IMAGE);
 		vLayout.setBackgroundRepeat(BkgndRepeat.REPEAT);
 	
+		SC.logWarn("======> GUIBaseFactory.createHeadline: "); 
+		
 		vLayout.addMember(new BaseHeadline(title, slogan));		
 		return vLayout;
 	

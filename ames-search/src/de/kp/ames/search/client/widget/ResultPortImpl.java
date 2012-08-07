@@ -1,11 +1,18 @@
 package de.kp.ames.search.client.widget;
 
+import java.util.HashMap;
+
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 
+import de.kp.ames.search.client.control.CheckoutController;
 import de.kp.ames.search.client.event.SearchEventManager;
 import de.kp.ames.search.client.event.SearchResultConfirmedListener;
 import de.kp.ames.search.client.event.SearchUpdateListener;
@@ -15,11 +22,12 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 
 	private final static String CART_TITLE = "Semantic Cart";
 	private SuggestFeedbackImpl suggestFeedback;
-	private SearchResultImpl searchResult;
+	private ResultImpl searchResult;
 	private CartImpl resultCartResult;
 
 	private Record suggestFeedbackRecord;
 	final private SectionStack sectionStack;
+	private ImgButton checkoutButton;
 
 	public ResultPortImpl(Record record) {
 		super();
@@ -30,12 +38,40 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		 * remember suggestion record
 		 */
 		this.suggestFeedbackRecord = record;
+
 		
 
 		suggestFeedback = new SuggestFeedbackImpl(record);
-		suggestFeedback.setHeight("160");
-		searchResult = new SearchResultImpl(record);
+		suggestFeedback.setHeight("120");
+		searchResult = new ResultImpl(record);
 		resultCartResult = new CartImpl();
+		
+        checkoutButton = new ImgButton();  
+        checkoutButton.setSize(16);  
+        checkoutButton.setShowRollOver(false);  
+        checkoutButton.setShowFocused(false);  
+        checkoutButton.setShowDown(false);  
+        
+        checkoutButton.setActionType(SelectionType.BUTTON);
+        checkoutButton.setSrc("silk/cart.png");  
+        checkoutButton.setTooltip("Checkout your semantic research");
+        checkoutButton.setAltText("Checkout your semantic research");
+        //checkoutButton.disable(); // switches image to *_disable.png
+        checkoutButton.setVisible(false);
+        
+        checkoutButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				SC.logWarn("====> ResultPortImpl.checkoutButton.onClick");
+
+				HashMap<String,String> attributes = new HashMap<String,String>();
+				new CheckoutController().doView(attributes, resultCartResult.getGridData());
+
+			}
+		});
+
+		
 		sectionStack = new SectionStack();
 		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 		sectionStack.setWidth100();
@@ -56,6 +92,7 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		SectionStackSection sectionResultCart = new SectionStackSection(CART_TITLE);
 		sectionResultCart.setExpanded(false);
 		sectionResultCart.setCanCollapse(true);
+		sectionResultCart.setControls(checkoutButton);
 		sectionResultCart.addItem(resultCartResult);
 		sectionStack.addSection(sectionResultCart);
 		
@@ -96,7 +133,7 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
 		// expand on first cart item
 		if (cartCount==1) {
 			sectionResultCart.setExpanded(true);
-			resultCartResult.activateCheckout();
+			checkoutButton.setVisible(true);
 		}
 		
 	}

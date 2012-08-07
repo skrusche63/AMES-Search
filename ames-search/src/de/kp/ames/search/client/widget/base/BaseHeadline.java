@@ -1,4 +1,5 @@
 package de.kp.ames.search.client.widget.base;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,9 +19,11 @@ package de.kp.ames.search.client.widget.base;
  *
  */
 
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.HTMLPane;
 
 import de.kp.ames.search.client.globals.CoreGlobals;
+import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.style.GuiStyles;
 
 public class BaseHeadline extends HTMLPane {
@@ -35,21 +38,21 @@ public class BaseHeadline extends HTMLPane {
 	 * @param slogan
 	 */
 	public BaseHeadline(String title, String slogan) {
-		
-		this.title  = title;
+
+		this.title = title;
 		this.slogan = slogan;
-		
+
 		this.setStyleName(GuiStyles.X_TOPLINE);
-		
+
 		this.setShowEdges(false);
-		
+
 		this.setWidth100();
 		this.setHeight(64);
 
 		this.setHeadline(title, slogan);
-		
+
 	}
-	
+
 	/**
 	 * Method to initially set title and slogan
 	 * 
@@ -58,11 +61,11 @@ public class BaseHeadline extends HTMLPane {
 	 */
 	public void setHeadline(String title, String slogan) {
 
-		this.title  = title;
+		this.title = title;
 		this.slogan = slogan;
 
-		setContents(getHtml());
-		
+		this.setContents(getHtml());
+
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class BaseHeadline extends HTMLPane {
 		this.title = title;
 
 		this.setContents(getHtml());
-		
+
 	}
 
 	/**
@@ -85,31 +88,40 @@ public class BaseHeadline extends HTMLPane {
 	 */
 	private String getHtml() {
 
+		// TODO: why does CoreGlobal get an undefined?!?
+		// but same code in GUIGlobals not
+		// SC.logWarn("======> BaselineHeadline.getHtml: " + CoreGlobals.SHOWCASE_FLAG);
+		// SC.logWarn("======> BaselineHeadline.getHtml: " + GUIGlobals.SHOWCASE_FLAG);
+
 		String html = "";
-		
-		if (CoreGlobals.SHOWCASE_FLAG) {
+
+		// if (CoreGlobals.SHOWCASE_FLAG) { // does get undefined for flag?!?
+		if (GUIGlobals.SHOWCASE_FLAG) {
 
 			/*
 			 * Showcase
 			 */
 			html = "<div class='x-topline'>";
-			html += "<div style='padding:8px 0px 0px 8px;font-size:20px;vertical-align:top;'><b>" + this.title + "</b><br/>";
+			html += "<div style='padding:8px 0px 0px 8px;font-size:20px;vertical-align:top;'><b>" + this.title
+					+ "</b><br/>";
 			html += "<span style='padding:8px 0px 0px 2px;font-size:11px;'>" + this.slogan + "</span></div>";
 			html += "</div";
-		
+
 		} else {
-			
+
 			/*
 			 * Operational use case
 			 */
 			html = "<div class='x-topline'>";
-			html += "<img src='" + GuiStyles.APP_ICON + "' height='48' width='48' style='display:block;float:left;margin:8px 4px 4px 4px;'>";
-			html += "<div style='padding:8px 0px 0px 8px;font-size:20px;vertical-align:top;'><b>" + this.title + "</b><br/>";
+			html += "<img src='" + GuiStyles.APP_ICON
+					+ "' height='48' width='48' style='display:block;float:left;margin:8px 4px 4px 4px;'>";
+			html += "<div style='padding:8px 0px 0px 8px;font-size:20px;vertical-align:top;'><b>" + this.title
+					+ "</b><br/>";
 			html += "<span style='padding:8px 0px 0px 2px;font-size:11px;'>" + this.slogan + "</span></div>";
 			html += "</div";
-		
+
 		}
-		
+
 		return html;
 
 	}

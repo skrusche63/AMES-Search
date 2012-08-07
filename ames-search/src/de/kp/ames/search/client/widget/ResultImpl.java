@@ -1,49 +1,39 @@
 package de.kp.ames.search.client.widget;
-/**
- * Copyright 2012. All rights reserved by Dr. Krusche & Partner PartG
- * Please contact: team@dr-kruscheundpartner.de
- */
 
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.layout.LeftportImpl;
-import de.kp.ames.search.client.layout.RightportImpl;
-import de.kp.ames.search.client.layout.SimilarityPortImpl;
+import de.kp.ames.search.client.data.ResultGridImpl;
+import de.kp.ames.search.client.style.GuiStyles;
 
-public class ResultImpl extends HLayout {
-	
-	private LeftportImpl leftPort;
-	private ResultPortImpl centerPort;
-	private RightportImpl rightPort;
+public class ResultImpl extends VLayout {
+	private ResultGridImpl grid;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param record
-	 */
 	public ResultImpl(Record record) {
+
+		this.setShowEdges(false);
+		this.setStyleName(GuiStyles.X_BD_STYLE_3);
 		
 		this.setWidth100();
 		this.setHeight100();
 		
-		/*
-		 * Left viewport is empty
-		 */
-		leftPort   = new LeftportImpl();
-		
-		/*
-		 * Center viewport holds search results
-		 */
-		centerPort = new ResultPortImpl(record);
-		
-		/*
-		 * Right viewport is empty
-		 */
-		rightPort  = new SimilarityPortImpl();
+		grid = new ResultGridImpl(record);
 
-		this.setMembers(leftPort, centerPort, rightPort);
+		this.setMembers(grid);
+	}
+
+	public void update(Record record) {
+		replacePlaceHolderByGrid(record);		
+	}
+
+	private void replacePlaceHolderByGrid(Record record) {
 		
-	};
+		ResultGridImpl grid = new ResultGridImpl(record);
+
+
+		this.removeMember(this.getMember(0));
+		this.addMember(grid);
+		
+	}
 
 }

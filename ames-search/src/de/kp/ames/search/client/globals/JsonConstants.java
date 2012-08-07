@@ -14,6 +14,7 @@ public class JsonConstants {
 	public static String J_HYPERNYM = "hypernym";
 	public static String J_SYNONYMS = "synonyms";
 	public static String J_RESULT   = "result";
+	public static String J_CID       = "cid";
 	
 	/*
 	 * Common exchange parameters

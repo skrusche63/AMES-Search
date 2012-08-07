@@ -62,13 +62,13 @@ public class SuggestObject extends ExternalObject {
 
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
-		ListGridField hypernymField = new ListGridField(JsonConstants.J_HYPERNYM);
-		hypernymField.setHidden(true);
+//		ListGridField hypernymField = new ListGridField(JsonConstants.J_HYPERNYM);
+//		hypernymField.setHidden(true);
 		
 		ListGridField resultField = new ListGridField(JsonConstants.J_RESULT);
 		resultField.setAlign(Alignment.LEFT);  
 
-		fields.add(hypernymField);
+//		fields.add(hypernymField);
 		fields.add(resultField);
 		
 		return fields;

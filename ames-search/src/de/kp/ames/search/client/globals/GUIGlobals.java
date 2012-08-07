@@ -30,6 +30,13 @@ public class GUIGlobals {
 	public static String SEARCH_SOURCE_ID  = "urn:de:kp:search:source";	
 	public static String SEARCH_SOURCE = DOM.getElementById(SEARCH_SOURCE_ID).getAttribute("content");
 
+	/*
+	 * Property (in index.html) to distinguish between showcase or operational use
+	 */
+	public static String SHOWCASE_FLAG_ID  = "urn:de:kp:showcase";
+	public static boolean SHOWCASE_FLAG = Boolean.valueOf(DOM.getElementById(SHOWCASE_FLAG_ID).getAttribute("content"));
+
+	
 	public static String BROADER_LABEL = SEARCH_SOURCE=="wn" ? "Hypernym" : "Context";
 
 	public static final String CHECKOUT_C_TITLE = "Checkout";

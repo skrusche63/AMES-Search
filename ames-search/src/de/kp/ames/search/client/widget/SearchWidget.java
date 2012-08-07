@@ -186,7 +186,7 @@ public class SearchWidget extends VLayout {
 				String keyName = event.getKeyName();
 				if (keyName.equals("Arrow_Down")) {
 					
-					SC.logWarn("====> searchBox.keydown Arrow Down");
+					SC.logWarn("====> SearchWidget.searchBox.keydown Arrow Down");
 					
 					SuggestController.getInstance().focusToSuggestGrid();
 				}				
@@ -219,6 +219,9 @@ public class SearchWidget extends VLayout {
 	 * @param event
 	 */
 	private void afterChanged(ChangedEvent event) {
+		
+		SC.logWarn("====> SearchWidget.afterChanged");
+
 		/*
 		 * Retrieve search query from text item
 		 */
@@ -247,6 +250,8 @@ public class SearchWidget extends VLayout {
 	 * Set focus back to TextWidget
 	 */
 	public void focusToSearchBox() {
+		SC.logWarn("====> SearchWidget.focusToSearchBox");
+
 		searchBox.focusInItem();
 		
 	}

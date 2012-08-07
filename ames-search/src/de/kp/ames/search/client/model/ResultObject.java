@@ -28,7 +28,7 @@ public class ResultObject extends ExternalObject {
 
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
-		fields.add(new ListGridField(JsonConstants.J_RESULT));
+		fields.add(new ListGridField(JsonConstants.J_TITLE));
 		ListGridField descField = new ListGridField(JsonConstants.J_DESC);
 		descField.setHidden(true);
 		fields.add(descField);

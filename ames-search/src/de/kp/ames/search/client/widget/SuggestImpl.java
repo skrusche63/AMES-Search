@@ -13,6 +13,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
+import de.kp.ames.search.client.control.SuggestController;
 import de.kp.ames.search.client.data.SuggestGridImpl;
 import de.kp.ames.search.client.globals.GUIGlobals;
 
@@ -91,7 +92,7 @@ public class SuggestImpl extends VLayout {
 		ts.addFill();
 
         ImgButton closeButton = new ImgButton();  
-        closeButton.setSize(24);  
+        closeButton.setSize(16);  
         closeButton.setShowRollOver(true);  
         closeButton.setSrc("[SKIN]/headerIcons/close.png");  
         closeButton.setActionType(SelectionType.BUTTON);
@@ -103,8 +104,8 @@ public class SuggestImpl extends VLayout {
 			@Override
 			public void onClick(ClickEvent event) {
 				SC.logWarn("====> SuggestImpl.closeButton.onClick");
+				SuggestController.getInstance().removeSuggestor();
 
-				//TODO:
 			}
 		});
 		

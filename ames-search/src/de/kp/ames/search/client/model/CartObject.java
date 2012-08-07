@@ -43,6 +43,7 @@ public class CartObject extends ExternalObject {
 	    fields.add(new DataSourceTextField("choice"));
 	    fields.add(new DataSourceTextField("id"));
 
+	    
 	    return fields;
 	    
 	}

@@ -18,7 +18,7 @@ import de.kp.ames.search.client.event.SuggestListener;
 import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.globals.JsonConstants;
 import de.kp.ames.search.client.layout.Viewport;
-import de.kp.ames.search.client.widget.ResultImpl;
+import de.kp.ames.search.client.widget.ResultFeedbackImpl;
 import de.kp.ames.search.client.widget.SearchWidget;
 
 public class MainController implements SuggestListener {
@@ -121,7 +121,7 @@ public class MainController implements SuggestListener {
 		VLayout newWrapper = new VLayout();
 		newWrapper.setOverflow(Overflow.AUTO);
 
-		newWrapper.addMember(new ResultImpl(suggestRecord));
+		newWrapper.addMember(new ResultFeedbackImpl(suggestRecord));
 		viewport.addMember(newWrapper);
 
 		container.draw();

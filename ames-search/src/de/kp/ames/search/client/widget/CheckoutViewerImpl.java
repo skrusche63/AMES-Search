@@ -19,18 +19,19 @@ package de.kp.ames.search.client.widget;
  */
 
 import com.google.gwt.json.client.JSONObject;
-import com.smartgwt.client.types.SelectionType;
+import com.google.gwt.json.client.JSONString;
+import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLPane;
-import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.HeaderControl;
+import com.smartgwt.client.widgets.HeaderControl.HeaderIcon;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.event.CheckoutListener;
 import de.kp.ames.search.client.event.SearchEventManager;
@@ -80,21 +81,27 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
 	    htmlPane.setHeight100();
 
 	    //htmlPane.setContents(html);
+	    
+        HeaderControl downloadControl = new HeaderControl(new HeaderIcon("silk/page_white_compressed.png"), new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				SC.logWarn("====> downloadButton.onClick");
 
-	    if (GUIGlobals.SEARCH_SOURCE == "scm") {
-			/*
-			 * Build ToolStrip
-			 */
-			ToolStrip toolStrip = createToolStrip();
+				SearchEventManager.getInstance().doTriggerDownload();
 
-			/*
-			 * Create headline & body
-			 */
-			vLayout.setMembers(createHeadline(title, slogan), toolStrip, createBody(htmlPane));
-	    } else {
-	    	// Wordnet use-case does not support download of Cart 
-	    	vLayout.setMembers(createHeadline(title, slogan), createBody(htmlPane));
-	    }
+			}
+		});
+        
+        downloadControl.setShowRollOver(false);  
+        downloadControl.setShowFocused(false);  
+        downloadControl.setShowDown(false); 
+        downloadControl.setTooltip("Checkout your semantic research");
+        downloadControl.setAltText("Checkout your semantic research");
+        
+        this.setHeaderControls(HeaderControls.HEADER_LABEL, downloadControl, HeaderControls.CLOSE_BUTTON);
+        
+        vLayout.setMembers(createHeadline(title, slogan), createBody(htmlPane));
 		
 		this.addItem(vLayout);
 		
@@ -127,48 +134,6 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
 		SearchEventManager.getInstance().addCheckoutListener(this);
 
 		
-	}
-
-	/**
-	 * Create ToolStrip element
-	 * 
-	 * @param url
-	 * @param params
-	 * @param fields
-	 * @return
-	 */
-	private ToolStrip createToolStrip() {
-
-		ToolStrip ts = new ToolStrip();
-//		ts.setStyleName("x-searchbox");
-
-		ts.setWidth100();
-		ts.setHeight(25);
-		ts.addFill();
-
-        ImgButton downloadButton = new ImgButton();  
-        downloadButton.setSize(24);  
-        downloadButton.setShowRollOver(true);  
-        downloadButton.setSrc("[SKIN]/headerIcons/save.png");  
-        downloadButton.setActionType(SelectionType.BUTTON);
-        downloadButton.setTooltip("Save all Java Module as ZIP file");
-        downloadButton.setAltText("Save all Java Module as ZIP file");
-        
-        downloadButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				SC.logWarn("====> downloadButton.onClick");
-
-				SearchEventManager.getInstance().doTriggerDownload();
-
-			}
-		});
-		
-		
-        ts.addMember(downloadButton);  
-		return ts;
-
 	}
 
 	/**
@@ -211,7 +176,7 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
 		/*
 		 * update HTML pane
 		 */
-		htmlPane.setContents(jObject.get("data").toString());
+		htmlPane.setContents(((JSONString) jObject.get("data")).stringValue());
 	}
 
 	

@@ -40,5 +40,5 @@ body {
 .sg-d {color:#606060;}
 
 /* suggest group header specific styles */
-.sgh {margin:4px;padding:2px;background-color:#a5d321;}
+.sgh {padding:6px;background-color:#a5d321;color: #333333;}
 .sgh-s {font:bold 12px tahoma,arial,sans-serif;}

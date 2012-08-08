@@ -37,7 +37,7 @@ public class GUIGlobals {
 	public static boolean SHOWCASE_FLAG = Boolean.valueOf(DOM.getElementById(SHOWCASE_FLAG_ID).getAttribute("content"));
 
 	
-	public static String BROADER_LABEL = SEARCH_SOURCE=="wn" ? "Hypernym" : "Context";
+	public static String BROADER_LABEL = SEARCH_SOURCE=="wn" ? "Hypernym" : "From context";
 
 	public static final String CHECKOUT_C_TITLE = "Checkout";
 	public static final String CHECKOUT_C_SLOGAN = "Add a comment for your checkout";
@@ -65,7 +65,7 @@ public class GUIGlobals {
 	 * Main title of the application
 	 */
 	public static String APP_SLOGAN = "Share and visualize knowledge through the web.";
-	public static String APP_TITLE  = "AMES SCM";
+	public static String APP_TITLE  = "Semantic Software Catalog";
 	
 	public static int APP_TITLE_WIDTH = 80;
 

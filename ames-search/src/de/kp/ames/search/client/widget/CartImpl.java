@@ -84,7 +84,13 @@ public class CartImpl extends HLayout implements DownloadListener {
 
 	public void addChoice(Record suggestFeedbackRecord, Record resultRecord) {
 		
-		String combinedId = suggestFeedbackRecord.getAttribute(JsonConstants.J_ID) + 
+		String suggestionLabel = suggestFeedbackRecord.getAttribute(JsonConstants.J_TERM) + 
+				" (" + suggestFeedbackRecord.getAttribute(JsonConstants.J_HYPERNYM)+ 
+				")";
+		/*
+		 * use label instead of id, which may differ for suggestions 
+		 */
+		String combinedId = suggestionLabel + 
 				"::" + resultRecord.getAttribute(JsonConstants.J_ID);
 		
 		if (this.hasCombinedId(combinedId)) return;
@@ -97,9 +103,7 @@ public class CartImpl extends HLayout implements DownloadListener {
 		/*
 		 * add suggest fields (with context term)
 		 */
-		record.setAttribute("suggest", suggestFeedbackRecord.getAttribute(JsonConstants.J_TERM) + 
-				" (" + suggestFeedbackRecord.getAttribute(JsonConstants.J_HYPERNYM)+ 
-				")");
+		record.setAttribute("suggest", suggestionLabel);
 
 		/*
 		 * add result fields

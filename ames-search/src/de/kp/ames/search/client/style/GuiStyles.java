@@ -21,6 +21,7 @@ package de.kp.ames.search.client.style;
 public class GuiStyles {
 
 
+	public static String X_HEADER_LABEL = "x-header-label";
 	/*
 	 * AMES Semantic Search specific
 	 */

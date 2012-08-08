@@ -26,8 +26,8 @@ public class CheckoutController {
 		/*
 		 * Build viewer
 		 */
-		String title  = GUIGlobals.APP_TITLE + ": Checkout Cart Viewer";
-		String slogan = "This is the cart with your researched items and its suggested contexts";
+		String title  = "Checkout Cart Viewer";
+		String slogan = "This is the cart with your researched items and their suggested contexts";
 		// this widget is a listener for checkout html
 		new CheckoutViewerImpl(title, slogan);
 
@@ -59,7 +59,7 @@ public class CheckoutController {
 	 * this callback is replaced by form download
 	 */
 	private void doAfterDataArrived(JSONObject jObject) {
-		SC.logWarn("======> CheckoutController.doAfterDataArrived: " + jObject.toString());
+		SC.logWarn("======> CheckoutController.doAfterDataArrived");
 		SearchEventManager.getInstance().doAfterUpdate(jObject);
 		
 	}

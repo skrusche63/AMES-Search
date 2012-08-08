@@ -53,7 +53,7 @@ public class ResultPortImpl extends CenterportImpl implements SearchUpdateListen
         checkoutButton.setShowDown(false);  
         
         checkoutButton.setActionType(SelectionType.BUTTON);
-        checkoutButton.setSrc("silk/cart.png");  
+        checkoutButton.setSrc("silk/cart_go.png");  
         checkoutButton.setTooltip("Checkout your semantic research");
         checkoutButton.setAltText("Checkout your semantic research");
         //checkoutButton.disable(); // switches image to *_disable.png

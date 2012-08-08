@@ -45,7 +45,7 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
 	/*
 	 * Default dimensions
 	 */
-	private static int DIM = GUIGlobals.VIEWER_DIM;
+	private static int DIM = 700;
 	private HTMLPane htmlPane;
 
 	/**
@@ -79,6 +79,8 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
 	    
 	    htmlPane.setWidth100();
 	    htmlPane.setHeight100();
+	    
+	    htmlPane.setPadding(15);
 
 	    //htmlPane.setContents(html);
 	    
@@ -97,6 +99,7 @@ public class CheckoutViewerImpl extends Window implements CheckoutListener {
         downloadControl.setShowFocused(false);  
         downloadControl.setShowDown(false); 
         downloadControl.setTooltip("Checkout your semantic research");
+        downloadControl.setHoverWidth(180);
         downloadControl.setAltText("Checkout your semantic research");
         
         this.setHeaderControls(HeaderControls.HEADER_LABEL, downloadControl, HeaderControls.CLOSE_BUTTON);

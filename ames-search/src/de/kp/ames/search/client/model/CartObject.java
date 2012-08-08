@@ -56,16 +56,16 @@ public class CartObject extends ExternalObject {
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 		
 		/*
-		 * Title
+		 * Suggestion
 		 */
-		ListGridField suggestField = new ListGridField("suggest", "Suggestion", 160);
+		ListGridField suggestField = new ListGridField("suggest", "Suggestion (context)", 160);
 		suggestField.setType(ListGridFieldType.TEXT);
 		fields.add(suggestField);
 		
 		/*
-		 * Srs (Projection)
+		 * Result choice
 		 */
-		ListGridField moduleField = new ListGridField("choice", "Result Choice");
+		ListGridField moduleField = new ListGridField("choice", "Result Choice (package)");
 		moduleField.setType(ListGridFieldType.TEXT);
 
 		fields.add(moduleField);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 import de.kp.ames.search.client.globals.JsonConstants;
@@ -20,6 +22,7 @@ public class ResultObject extends ExternalObject {
 		fields.add(new DataSourceTextField(JsonConstants.J_NAME));
 		fields.add(new DataSourceTextField(JsonConstants.J_DESC));
 		fields.add(new DataSourceTextField(JsonConstants.J_SOURCE));
+		fields.add(new DataSourceTextField(JsonConstants.J_ICON));
 
 		return fields; 
 }
@@ -28,10 +31,21 @@ public class ResultObject extends ExternalObject {
 
 		ArrayList<ListGridField> fields = new ArrayList<ListGridField>();
 
-		fields.add(new ListGridField(JsonConstants.J_TITLE));
-		ListGridField descField = new ListGridField(JsonConstants.J_DESC);
-		descField.setHidden(true);
-		fields.add(descField);
+		ListGridField icon = new ListGridField(JsonConstants.J_ICON, "LoC", 50);  
+		icon.setAlign(Alignment.CENTER);  
+		icon.setType(ListGridFieldType.IMAGE);  
+		icon.setImageURLPrefix("silk/");  
+		icon.setImageURLSuffix(".png");  
+		
+		fields.add(icon);
+		
+		ListGridField title = new ListGridField(JsonConstants.J_TITLE, "Module");
+		title.setWidth("*");
+		fields.add(title);
+		
+//		ListGridField descField = new ListGridField(JsonConstants.J_DESC);
+//		descField.setHidden(true);
+//		fields.add(descField);
 		
 		return fields;
 	}

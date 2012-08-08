@@ -6,6 +6,7 @@ package de.kp.ames.search.client.layout;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
@@ -14,11 +15,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 import de.kp.ames.search.client.control.MainController;
+import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.style.GuiStyles;
 
 public class Viewport extends VLayout {
 	
-	private static int TOP_HEIGHT = 56;
+	private static int TOP_HEIGHT = 58;
 	
 	public Viewport() {
 
@@ -83,15 +85,20 @@ public class Viewport extends VLayout {
 		ts.setWidth100();
 		ts.setHeight(TOP_HEIGHT);
 		
-		ts.addFill();
+		Label label = new Label();
+		label.setStyleName(GuiStyles.X_HEADER_LABEL);
+		label.setContents(GUIGlobals.APP_TITLE);
+		label.setWidth(500);
 		
-		ts.addSpacer(5);
+		ts.addMember(label);
+		
+		ts.addFill();
 				
 		ImgButton logo = new ImgButton();
 		logo.setSrc(GuiStyles.LOGO_IMAGE);
 		
-		logo.setWidth(256);
-		logo.setHeight(56);
+		logo.setWidth(221);
+		logo.setHeight(58);
 
 	    logo.setHoverStyle(GuiStyles.X_IMAGEHOVER);
 	    

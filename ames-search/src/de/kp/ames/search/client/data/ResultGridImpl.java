@@ -54,7 +54,7 @@ public class ResultGridImpl extends RemoteGridImpl {
 		this.setFixedRecordHeights(false);
 		this.setWrapCells(true);
 		this.setSelectionType(SelectionStyle.SINGLE);
-
+		this.setShowHeader(true);
 
 		/*
 		 * Register data
@@ -78,7 +78,6 @@ public class ResultGridImpl extends RemoteGridImpl {
 		 */
 		this.setFields(createGridFields());
 
-		this.setShowHeader(false);
 		
 		/*
 		 * Add Record Handler

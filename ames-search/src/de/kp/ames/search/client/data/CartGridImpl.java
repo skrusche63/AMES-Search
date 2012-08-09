@@ -49,7 +49,7 @@ public class CartGridImpl extends LocalGridImpl {
 		/*
 		 * Retrieve affected grid record
 		 */
-		Record record = event.getRecord();
+		//Record record = event.getRecord();
 
 		// test getGridData
 //		HashMap<String,String> checkoutAttributes = new HashMap<String,String>();

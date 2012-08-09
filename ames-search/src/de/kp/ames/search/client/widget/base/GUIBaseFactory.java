@@ -22,7 +22,6 @@ import com.smartgwt.client.types.BkgndRepeat;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-import de.kp.ames.search.client.globals.CoreGlobals;
 import de.kp.ames.search.client.style.GuiStyles;
 
 

@@ -19,10 +19,8 @@ package de.kp.ames.search.client.widget.base;
  *
  */
 
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.HTMLPane;
 
-import de.kp.ames.search.client.globals.CoreGlobals;
 import de.kp.ames.search.client.globals.GUIGlobals;
 import de.kp.ames.search.client.style.GuiStyles;
 

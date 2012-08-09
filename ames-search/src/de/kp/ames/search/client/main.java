@@ -17,27 +17,11 @@ public class main implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
-	 public void onModuleLoad() {
-	 MainController.getInstance().createWelcome();
-//	  MainController.getInstance().createTestCase();
-	
-//		 SimilarityFeedbackImpl s = new SimilarityFeedbackImpl();
-//		 HyperTreeExplorer s = new HyperTreeExplorer();
+	public void onModuleLoad() {
 
-//		 s.update("{\"id\":\"1\", \"name\":\"Core\", \"data\":[], \"children\":[" +
-//					"{\"id\":\"2\", \"name\":\"Leaf1\", \"data\":[]}, " +
-//					"{\"id\":\"3\", \"name\":\"Leaf2\", \"data\":[]}, " +
-//					"{\"id\":\"4\", \"name\":\"Leaf3\", \"data\":[]}, " +
-//					"{\"id\":\"5\", \"name\":\"Leaf4\", \"data\":[], \"children\":[" +
-//						"{\"id\":\"6\", \"name\":\"SubLeaf1\", \"data\":[]}, " +
-//						"{\"id\":\"7\", \"name\":\"SubLeaf2\", \"data\":[]} " +
-//					"] }" + 
-//				"] }");
-//		 s.draw();
-//		 s.update("{\"id\":\"1\", \"name\":\"Core\", \"children\":[" +
-//					"{\"id\":\"2\", \"name\":\"Leaf1\", \"data\":[], \"children\":[]}, " +
-//					"{\"id\":\"3\", \"name\":\"Leaf2\", \"data\":[], \"children\":[]}" +
-//		 		"], \"data\":[]}");
-//		 
-	 }
+		 MainController.getInstance().createWelcome();
+
+		 // MainController.getInstance().createTestCase();
+
+	}
 }

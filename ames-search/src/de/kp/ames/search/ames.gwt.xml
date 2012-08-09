@@ -21,6 +21,9 @@
   <!-- Access to Developer Console                                -->
   <inherits name="com.smartgwt.tools.SmartGwtTools"/>
   
+  <!-- http://cggis.wordpress.com/2012/02/16/adding-drawing-to-smartgwt-application/ -->
+   <inherits name="com.smartgwt.Drawing" />
+  
   <!-- thejit                                                     -->
   <inherits name="de.kp.ames.thejit.thejit"/>
   
@@ -31,7 +34,7 @@
   
   <!-- Optimze compile permutation during development.            -->
   <!-- <set-property name="user.agent" value="safari,gecko1_8" /> -->
-  <set-property name="user.agent" value="gecko1_8" />
+  <set-property name="user.agent" value="safari, gecko1_8" />
   
 
 </module>

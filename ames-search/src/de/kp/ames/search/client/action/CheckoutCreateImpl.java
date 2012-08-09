@@ -1,10 +1,5 @@
 package de.kp.ames.search.client.action;
 
-import java.util.HashMap;
-
-import com.google.gwt.json.client.JSONValue;
-
-import de.kp.ames.search.client.activity.ActivityImpl;
 
 public class CheckoutCreateImpl extends ActionImpl {
 		
